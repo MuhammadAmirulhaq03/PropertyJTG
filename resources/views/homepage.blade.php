@@ -51,18 +51,150 @@
                 </button>
 
                 <!-- Search Button -->
-                <button class="relative bg-gradient-to-r from-[#DB4437] to-[#c63c31] text-white text-sm font-semibold px-6 py-2.5 rounded-2xl w-full sm:w-auto transition-all duration-300 hover:shadow-lg hover:scale-105 transform overflow-hidden group">
-                    <div class="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500"></div>
-                    <span class="relative flex items-center justify-center gap-1.5">
-                        Search
-                        <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                        </svg>
-                    </span>
+                <button 
+                    id="search-overlay-open"
+                    type="button"
+                    class="bg-[#DB4437] text-white font-semibold px-6 py-2 rounded-full w-full sm:w-auto hover:bg-[#c63c31] transition-all duration-300 hover:scale-105 hover:shadow-xl transform hover:-translate-y-0.5"
+                >
+                    Search Now
                 </button>
             </div>
         </div>
     </section>
+
+    <!-- Search Overlay -->
+    <div 
+        id="search-overlay" 
+        class="fixed inset-0 z-40 hidden items-center justify-center p-4"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="search-overlay-title"
+    >
+        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300"></div>
+
+        <div class="relative z-10 max-w-4xl w-full bg-white/95 backdrop-blur-md rounded-3xl shadow-[0_30px_80px_rgba(16,24,40,0.25)] p-6 sm:p-10 overflow-y-auto max-h-[90vh] border border-white/60">
+            <div class="flex items-start justify-between gap-4 mb-6">
+                <div>
+                    <h2 id="search-overlay-title" class="text-2xl sm:text-3xl font-bold text-gray-900">Find Your Next Property</h2>
+                    <p class="text-gray-500 mt-1">Filter by location, type, budget, space, specifications, or keywords.</p>
+                </div>
+                <button 
+                    id="search-overlay-close" 
+                    type="button"
+                    class="shrink-0 bg-[#FFE7D6] text-gray-700 hover:bg-[#FFDCC4] transition-all duration-300 rounded-full p-2 shadow-sm hover:shadow-md"
+                    aria-label="Close search form"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                    </svg>
+                </button>
+            </div>
+
+            <form action="{{ url('/properties/search') }}" method="GET" class="space-y-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                    <label class="space-y-2">
+                        <span class="text-sm font-semibold text-gray-700">Location</span>
+                        <input 
+                            type="text" 
+                            name="location"
+                            placeholder="City, area, or landmark"
+                            class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-[#DB4437] focus:ring-2 focus:ring-[#DB4437]/40 transition-all duration-300 placeholder:text-gray-400"
+                        >
+                    </label>
+
+                    <label class="space-y-2">
+                        <span class="text-sm font-semibold text-gray-700">Property Type</span>
+                        <select 
+                            name="type"
+                            class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-[#DB4437] focus:ring-2 focus:ring-[#DB4437]/40 transition-all duration-300 text-gray-600"
+                        >
+                            <option value="">Select type</option>
+                            <option value="house">House</option>
+                            <option value="apartment">Apartment</option>
+                            <option value="villa">Villa</option>
+                            <option value="commercial">Commercial</option>
+                            <option value="land">Land</option>
+                        </select>
+                    </label>
+
+                    <div class="space-y-2">
+                        <span class="text-sm font-semibold text-gray-700 block">Price Range</span>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <input 
+                                type="number" 
+                                name="price_min"
+                                min="0"
+                                placeholder="Min price"
+                                class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-[#DB4437] focus:ring-2 focus:ring-[#DB4437]/40 transition-all duration-300 placeholder:text-gray-400"
+                            >
+                            <input 
+                                type="number" 
+                                name="price_max"
+                                min="0"
+                                placeholder="Max price"
+                                class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-[#DB4437] focus:ring-2 focus:ring-[#DB4437]/40 transition-all duration-300 placeholder:text-gray-400"
+                            >
+                        </div>
+                    </div>
+
+                    <div class="space-y-2">
+                        <span class="text-sm font-semibold text-gray-700 block">Land / Building Size</span>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <input 
+                                type="number" 
+                                name="area_min"
+                                min="0"
+                                placeholder="Min sqm"
+                                class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-[#DB4437] focus:ring-2 focus:ring-[#DB4437]/40 transition-all duration-300 placeholder:text-gray-400"
+                            >
+                            <input 
+                                type="number" 
+                                name="area_max"
+                                min="0"
+                                placeholder="Max sqm"
+                                class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-[#DB4437] focus:ring-2 focus:ring-[#DB4437]/40 transition-all duration-300 placeholder:text-gray-400"
+                            >
+                        </div>
+                    </div>
+
+                    <label class="space-y-2 sm:col-span-2">
+                        <span class="text-sm font-semibold text-gray-700">Specifications</span>
+                        <input 
+                            type="text" 
+                            name="specs"
+                            placeholder="Bedrooms, bathrooms, facilities, etc."
+                            class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-[#DB4437] focus:ring-2 focus:ring-[#DB4437]/40 transition-all duration-300 placeholder:text-gray-400"
+                        >
+                    </label>
+
+                    <label class="space-y-2 sm:col-span-2">
+                        <span class="text-sm font-semibold text-gray-700">Keywords</span>
+                        <input 
+                            type="text" 
+                            name="keywords"
+                            placeholder="e.g. swimming pool, near MRT"
+                            class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-[#DB4437] focus:ring-2 focus:ring-[#DB4437]/40 transition-all duration-300 placeholder:text-gray-400"
+                        >
+                    </label>
+                </div>
+
+                <div class="flex flex-col sm:flex-row justify-end gap-3">
+                    <button 
+                        type="reset" 
+                        class="w-full sm:w-auto px-6 py-3 rounded-full border border-gray-200 text-gray-600 hover:border-[#DB4437]/40 hover:text-[#DB4437] transition-all duration-300"
+                    >
+                        Reset Filters
+                    </button>
+                    <button 
+                        type="submit" 
+                        class="w-full sm:w-auto px-6 py-3 rounded-full bg-[#DB4437] text-white font-semibold hover:bg-[#c63c31] transition-all duration-300 shadow-lg hover:shadow-xl"
+                    >
+                        Search Property
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <!-- Properties Section -->
     <section class="max-w-7xl mx-auto py-16 px-4 sm:px-6 md:px-10 relative">
@@ -295,5 +427,44 @@
             transform: rotateY(3deg);
         }
     </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const overlay = document.getElementById('search-overlay');
+            const openBtn = document.getElementById('search-overlay-open');
+            const closeBtn = document.getElementById('search-overlay-close');
+
+            if (!overlay || !openBtn || !closeBtn) {
+                return;
+            }
+
+            const openOverlay = () => {
+                overlay.classList.remove('hidden');
+                overlay.classList.add('flex');
+                document.body.classList.add('overflow-hidden');
+            };
+
+            const closeOverlay = () => {
+                overlay.classList.add('hidden');
+                overlay.classList.remove('flex');
+                document.body.classList.remove('overflow-hidden');
+            };
+
+            openBtn.addEventListener('click', openOverlay);
+            closeBtn.addEventListener('click', closeOverlay);
+
+            overlay.addEventListener('click', (event) => {
+                if (event.target === overlay) {
+                    closeOverlay();
+                }
+            });
+
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape' && !overlay.classList.contains('hidden')) {
+                    closeOverlay();
+                }
+            });
+        });
+    </script>
 
 </x-app-layout>
