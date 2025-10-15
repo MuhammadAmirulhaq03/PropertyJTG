@@ -16,7 +16,7 @@
 
             <!-- Navigation Links -->
             <div class="hidden md:flex space-x-8 text-sm font-medium">
-                <a href="/" class="hover:text-gray-100 {{ request()->is('/') ? 'underline font-semibold' : '' }}">Home</a>
+                <a href="/" class="hover:text-gray-100 {{ request()->is('/') ? 'underline font-semibold' : '' }}">Home Page</a>
                 <a href="/buy" class="hover:text-gray-100 {{ request()->is('buy') ? 'underline font-semibold' : '' }}">Buy Home</a>
                 <a href="/consultation" class="hover:text-gray-100 {{ request()->is('consultation') ? 'underline font-semibold' : '' }}">Consultation</a>
                 <a href="/about" class="hover:text-gray-100 {{ request()->is('about') ? 'underline font-semibold' : '' }}">About</a>
@@ -74,7 +74,7 @@
     <!-- Mobile Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden md:hidden bg-[#DB4437] text-white font-['Roboto']">
         <div class="px-4 pt-2 pb-3 space-y-2">
-            <a href="/" class="block py-2 hover:text-gray-200">Home</a>
+            <a href="/" class="block py-2 hover:text-gray-200">Home Page</a>
             <a href="/buy" class="block py-2 hover:text-gray-200">Buy Home</a>
             <a href="/consultation" class="block py-2 hover:text-gray-200">Consultation</a>
             <a href="/about" class="block py-2 hover:text-gray-200">About</a>
