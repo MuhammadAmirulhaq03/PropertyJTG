@@ -15,26 +15,37 @@
                     {{ __('Stay on top of your leads, documents, and property listings in one place.') }}
                 </p>
             </div>
-            <div class="flex items-center gap-4">
-                <a
-                    href="{{ url('/properties') }}"
-                    class="inline-flex items-center gap-2 rounded-full bg-[#DB4437] px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-[#DB4437]/30 transition hover:-translate-y-0.5 hover:bg-[#c63c31]"
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 12h16m-8-8v16" />
-                    </svg>
-                    {{ __('Add New Property') }}
-                </a>
-                <a
-                    href="{{ url('/documents') }}"
-                    class="inline-flex items-center gap-2 rounded-full border border-gray-200 px-5 py-2.5 text-sm font-semibold text-gray-700 transition hover:-translate-y-0.5 hover:border-[#DB4437]/40 hover:text-[#DB4437]"
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 5v14m7-7H5" />
-                    </svg>
-                    {{ __('Upload Documents') }}
-                </a>
-            </div>
+            @canany(['manage-properties', 'manage-documents'])
+                <div class="flex items-center gap-4">
+                    @can('manage-properties')
+                        <a
+                            href="{{ url('/properties') }}"
+                            class="inline-flex items-center gap-2 rounded-full bg-[#DB4437] px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-[#DB4437]/30 transition hover:-translate-y-0.5 hover:bg-[#c63c31]"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 12h16m-8-8v16" />
+                            </svg>
+                            {{ __('Add New Property') }}
+                        </a>
+                    @endcan
+
+                    @can('manage-documents')
+                        <a
+                            href="{{ url('/documents') }}"
+                            class="inline-flex items-center gap-2 rounded-full border border-gray-200 px-5 py-2.5 text-sm font-semibold text-gray-700 transition hover:-translate-y-0.5 hover:border-[#DB4437]/40 hover:text-[#DB4437]"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 5v14m7-7H5" />
+                            </svg>
+                            {{ __('Upload Documents') }}
+                        </a>
+                    @endcan
+                </div>
+            @else
+                <p class="text-sm text-gray-400">
+                    {{ __('Need more access? Contact your administrator to upgrade your workspace privileges.') }}
+                </p>
+            @endcanany
         </div>
     </x-slot>
 
@@ -67,35 +78,43 @@
                                 </svg>
                                 {{ __('Explore Properties') }}
                             </a>
-                            <a
-                                href="{{ url('/documents') }}"
-                                class="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2 text-sm font-semibold text-[#DB4437] transition hover:bg-[#FFE7D6]"
-                            >
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.75 9V5.25m0 0L18 7.5m-2.25-2.25L15.75 3m-7.5 6V5.25m0 0L6 7.5m2.25-2.25L8.25 3M4.5 12h15m-12 6h9" />
-                                </svg>
-                                {{ __('Manage Documents') }}
-                            </a>
+                            @can('manage-documents')
+                                <a
+                                    href="{{ url('/documents') }}"
+                                    class="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2 text-sm font-semibold text-[#DB4437] transition hover:bg-[#FFE7D6]"
+                                >
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.75 9V5.25m0 0L18 7.5m-2.25-2.25L15.75 3m-7.5 6V5.25m0 0L6 7.5m2.25-2.25L8.25 3M4.5 12h15m-12 6h9" />
+                                    </svg>
+                                    {{ __('Manage Documents') }}
+                                </a>
+                            @endcan
                         </div>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-4 md:gap-6">
-                        @php
-                            $stats = [
-                                ['title' => __('Active Listings'), 'value' => '12', 'change' => '+3 this week'],
-                                ['title' => __('New Enquiries'), 'value' => '5', 'change' => __('2 follow-ups pending')],
-                                ['title' => __('Pending Documents'), 'value' => '3', 'change' => __('Awaiting signatures')],
-                                ['title' => __('Scheduled Visits'), 'value' => '4', 'change' => __('Next visit tomorrow')],
-                            ];
-                        @endphp
-                        @foreach ($stats as $stat)
-                            <div class="flex flex-col rounded-2xl border border-white/20 bg-white/10 p-4 text-sm backdrop-blur-lg">
-                                <span class="text-white/70">{{ $stat['title'] }}</span>
-                                <span class="mt-2 text-2xl font-bold">{{ $stat['value'] }}</span>
-                                <span class="mt-1 text-xs text-white/70">{{ $stat['change'] }}</span>
-                            </div>
-                        @endforeach
-                    </div>
+                    @can('view-team-metrics')
+                        <div class="grid grid-cols-2 gap-4 md:gap-6">
+                            @php
+                                $stats = [
+                                    ['title' => __('Active Listings'), 'value' => '12', 'change' => '+3 this week'],
+                                    ['title' => __('New Enquiries'), 'value' => '5', 'change' => __('2 follow-ups pending')],
+                                    ['title' => __('Pending Documents'), 'value' => '3', 'change' => __('Awaiting signatures')],
+                                    ['title' => __('Scheduled Visits'), 'value' => '4', 'change' => __('Next visit tomorrow')],
+                                ];
+                            @endphp
+                            @foreach ($stats as $stat)
+                                <div class="flex flex-col rounded-2xl border border-white/20 bg-white/10 p-4 text-sm backdrop-blur-lg">
+                                    <span class="text-white/70">{{ $stat['title'] }}</span>
+                                    <span class="mt-2 text-2xl font-bold">{{ $stat['value'] }}</span>
+                                    <span class="mt-1 text-xs text-white/70">{{ $stat['change'] }}</span>
+                                </div>
+                            @endforeach
+                        </div>
+                    @else
+                        <div class="rounded-2xl border border-white/15 bg-white/10 p-6 text-sm text-white/80 backdrop-blur-lg">
+                            {{ __('Metrics will appear here once your administrator grants analytics access.') }}
+                        </div>
+                    @endcan
                 </div>
             </section>
 
@@ -139,65 +158,77 @@
                     </div>
 
                     <!-- Quick Shortcuts -->
-                    <div class="rounded-3xl border border-gray-100 bg-white p-6 shadow-md shadow-gray-200/30">
-                        <h3 class="text-lg font-semibold text-gray-900">{{ __('Quick Shortcuts') }}</h3>
-                        <p class="mt-1 text-sm text-gray-500">{{ __('Jump straight to the tools you use the most.') }}</p>
+                    @can('access-shortcuts')
+                        <div class="rounded-3xl border border-gray-100 bg-white p-6 shadow-md shadow-gray-200/30">
+                            <h3 class="text-lg font-semibold text-gray-900">{{ __('Quick Shortcuts') }}</h3>
+                            <p class="mt-1 text-sm text-gray-500">{{ __('Jump straight to the tools you use the most.') }}</p>
 
-                        <div class="mt-6 grid gap-4 sm:grid-cols-2">
-                            @foreach ([
-                                ['title' => __('Property Listings'), 'href' => url('/properties'), 'description' => __('Manage, publish, and archive property inventory.')],
-                                ['title' => __('Document Center'), 'href' => url('/documents'), 'description' => __('Upload requirements and track client submissions.')],
-                                ['title' => __('Client Directory'), 'href' => url('/clients'), 'description' => __('Keep your buyer and investor records organised.')],
-                                ['title' => __('Consultation Calendar'), 'href' => url('/consultations'), 'description' => __('Plan meetings and follow-up appointments with ease.')],
-                            ] as $shortcut)
-                                <a
-                                    href="{{ $shortcut['href'] }}"
-                                    class="group relative flex flex-col rounded-2xl border border-gray-200 bg-gray-50/60 p-5 transition hover:border-[#DB4437]/30 hover:bg-white"
-                                >
-                                    <div class="flex items-center justify-between">
-                                        <p class="font-semibold text-gray-900">{{ $shortcut['title'] }}</p>
-                                        <span class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#DB4437] shadow group-hover:translate-x-1 transition">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7" />
-                                            </svg>
-                                        </span>
-                                    </div>
-                                    <p class="mt-3 text-sm text-gray-500">{{ $shortcut['description'] }}</p>
-                                </a>
-                            @endforeach
+                            <div class="mt-6 grid gap-4 sm:grid-cols-2">
+                                @foreach ([
+                                    ['title' => __('Property Listings'), 'href' => url('/properties'), 'description' => __('Manage, publish, and archive property inventory.')],
+                                    ['title' => __('Document Center'), 'href' => url('/documents'), 'description' => __('Upload requirements and track client submissions.')],
+                                    ['title' => __('Client Directory'), 'href' => url('/clients'), 'description' => __('Keep your buyer and investor records organised.')],
+                                    ['title' => __('Consultation Calendar'), 'href' => url('/consultations'), 'description' => __('Plan meetings and follow-up appointments with ease.')],
+                                ] as $shortcut)
+                                    <a
+                                        href="{{ $shortcut['href'] }}"
+                                        class="group relative flex flex-col rounded-2xl border border-gray-200 bg-gray-50/60 p-5 transition hover:border-[#DB4437]/30 hover:bg-white"
+                                    >
+                                        <div class="flex items-center justify-between">
+                                            <p class="font-semibold text-gray-900">{{ $shortcut['title'] }}</p>
+                                            <span class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#DB4437] shadow group-hover:translate-x-1 transition">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7" />
+                                                </svg>
+                                            </span>
+                                        </div>
+                                        <p class="mt-3 text-sm text-gray-500">{{ $shortcut['description'] }}</p>
+                                    </a>
+                                @endforeach
+                            </div>
                         </div>
-                    </div>
+                    @else
+                        <div class="rounded-3xl border border-dashed border-gray-200 bg-white p-6 text-sm text-gray-500 shadow-md shadow-gray-200/30">
+                            {{ __('Shortcut modules are hidden for your role. Reach out to your admin if you need quick access to management tools.') }}
+                        </div>
+                    @endcan
                 </section>
 
                 <!-- Side Column -->
                 <aside class="space-y-6">
                     <!-- Upcoming Schedule -->
-                    <div class="rounded-3xl bg-white p-6 shadow-lg shadow-gray-200/40">
-                        <div class="flex items-center justify-between">
-                            <h3 class="text-lg font-semibold text-gray-900">{{ __('Upcoming Schedule') }}</h3>
-                            <span class="rounded-full bg-[#FFE7D6] px-3 py-1 text-xs font-semibold uppercase text-[#DB4437]">
-                                {{ __('This Week') }}
-                            </span>
-                        </div>
-                        <div class="mt-6 space-y-4">
-                            @foreach ([
-                                ['day' => __('Tue'), 'time' => '10:30', 'title' => __('Site visit — Cluster 15'), 'location' => __('Central Park Residence')],
-                                ['day' => __('Wed'), 'time' => '14:00', 'title' => __('Virtual consultation'), 'location' => __('Zoom / Overseas investor')],
-                                ['day' => __('Fri'), 'time' => '09:00', 'title' => __('Document signing'), 'location' => __('Head office meeting room')],
-                            ] as $schedule)
-                                <div class="flex gap-4 rounded-2xl border border-gray-100 bg-gray-50/80 p-4 transition hover:border-[#DB4437]/30 hover:bg-white">
-                                    <div class="flex flex-col items-center justify-center rounded-2xl bg-white px-3 py-2 text-center shadow">
-                                        <span class="text-xs font-semibold uppercase text-gray-400">{{ $schedule['day'] }}</span>
-                                        <span class="text-sm font-bold text-gray-900">{{ $schedule['time'] }}</span>
+                    @can('manage-schedule')
+                        <div class="rounded-3xl bg-white p-6 shadow-lg shadow-gray-200/40">
+                            <div class="flex items-center justify-between">
+                                <h3 class="text-lg font-semibold text-gray-900">{{ __('Upcoming Schedule') }}</h3>
+                                <span class="rounded-full bg-[#FFE7D6] px-3 py-1 text-xs font-semibold uppercase text-[#DB4437]">
+                                    {{ __('This Week') }}
+                                </span>
+                            </div>
+                            <div class="mt-6 space-y-4">
+                                @foreach ([
+                                    ['day' => __('Tue'), 'time' => '10:30', 'title' => __('Site visit - Cluster 15'), 'location' => __('Central Park Residence')],
+                                    ['day' => __('Wed'), 'time' => '14:00', 'title' => __('Virtual consultation'), 'location' => __('Zoom / Overseas investor')],
+                                    ['day' => __('Fri'), 'time' => '09:00', 'title' => __('Document signing'), 'location' => __('Head office meeting room')],
+                                ] as $schedule)
+                                    <div class="flex gap-4 rounded-2xl border border-gray-100 bg-gray-50/80 p-4 transition hover:border-[#DB4437]/30 hover:bg-white">
+                                        <div class="flex flex-col items-center justify-center rounded-2xl bg-white px-3 py-2 text-center shadow">
+                                            <span class="text-xs font-semibold uppercase text-gray-400">{{ $schedule['day'] }}</span>
+                                            <span class="text-sm font-bold text-gray-900">{{ $schedule['time'] }}</span>
+                                        </div>
+                                        <div>
+                                            <p class="text-sm font-semibold text-gray-900">{{ $schedule['title'] }}</p>
+                                            <p class="text-xs text-gray-500">{{ $schedule['location'] }}</p>
+                                        </div>
                                     </div>
-                                    <div>
-                                        <p class="text-sm font-semibold text-gray-900">{{ $schedule['title'] }}</p>
-                                        <p class="text-xs text-gray-500">{{ $schedule['location'] }}</p>
-                                    </div>
-                                </div>
-                            @endforeach
+                                @endforeach
+                            </div>
                         </div>
-                    </div>
+                    @else
+                        <div class="rounded-3xl border border-dashed border-gray-200 bg-white p-6 text-sm text-gray-500 shadow-lg shadow-gray-200/40">
+                            {{ __('Scheduling tools are restricted. Request schedule management access from your administrator.') }}
+                        </div>
+                    @endcan
 
                     <!-- Support Card -->
                     <div class="rounded-3xl border border-gray-100 bg-white p-6 shadow-md shadow-gray-200/30">
