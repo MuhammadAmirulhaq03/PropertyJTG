@@ -118,6 +118,43 @@
         </div>
     </section>
 
+    <!-- Explore Property Section -->
+    <section class="relative rounded-[40px] overflow-hidden my-10 sm:my-16 mx-4 md:mx-20 group">
+        <div class="relative h-72 sm:h-96">
+            <img 
+                src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=1400&q=80" 
+                alt="Modern House" 
+                class="absolute inset-0 w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110"
+            >
+            <!-- Gradient Overlays -->
+            <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+        </div>
+        
+        <div class="absolute inset-x-4 sm:right-12 md:right-20 top-1/2 transform -translate-y-1/2 bg-white/95 backdrop-blur-xl p-8 rounded-[32px] shadow-2xl max-w-md mx-auto sm:mx-0 text-center sm:text-left transition-all duration-700 hover:shadow-[0_30px_90px_rgba(0,0,0,0.3)] group-hover:scale-105 border border-white/50">
+            <div class="absolute -top-4 -left-4 w-20 h-20 bg-gradient-to-br from-[#DB4437] to-[#c63c31] rounded-2xl opacity-20 blur-2xl"></div>
+            
+            <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 mb-4 leading-relaxed">
+                When searching for the <span class="relative inline-block text-[#DB4437] hover:scale-110 transition-transform duration-300">
+                    best home
+                    <svg class="absolute -bottom-1 left-0 w-full" height="4" viewBox="0 0 100 4" preserveAspectRatio="none">
+                        <path d="M0,2 Q25,0 50,2 T100,2" stroke="#DB4437" stroke-width="2" fill="none" />
+                    </svg>
+                </span> or investment opportunity, we are your ideal choice.
+            </h2>
+            
+            <button class="mt-6 bg-gradient-to-r from-[#DB4437] to-[#c63c31] text-white px-8 py-3 rounded-full font-semibold hover:shadow-[0_15px_40px_rgba(219,68,55,0.4)] transition-all duration-500 hover:scale-110 transform hover:-translate-y-1 group/btn relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-r from-white/0 via-white/30 to-white/0 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700"></div>
+                <span class="relative flex items-center justify-center gap-2">
+                    Explore All Property
+                    <svg class="w-5 h-5 group-hover/btn:translate-x-2 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                </span>
+            </button>
+        </div>
+    </section>
+
     <!-- Why Choose Us Section -->
     <section class="bg-gradient-to-br from-[#FFF2E9] via-[#FFE7D6]/50 to-[#FFF2E9] py-20 px-4 sm:px-6 md:px-10 relative overflow-hidden">
         <!-- Animated Background Elements -->
@@ -202,43 +239,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Explore Property Section -->
-    <section class="relative rounded-[40px] overflow-hidden my-10 sm:my-16 mx-4 md:mx-20 group">
-        <div class="relative h-72 sm:h-96">
-            <img 
-                src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=1400&q=80" 
-                alt="Modern House" 
-                class="absolute inset-0 w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110"
-            >
-            <!-- Gradient Overlays -->
-            <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent"></div>
-            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-        </div>
-        
-        <div class="absolute inset-x-4 sm:right-12 md:right-20 top-1/2 transform -translate-y-1/2 bg-white/95 backdrop-blur-xl p-8 rounded-[32px] shadow-2xl max-w-md mx-auto sm:mx-0 text-center sm:text-left transition-all duration-700 hover:shadow-[0_30px_90px_rgba(0,0,0,0.3)] group-hover:scale-105 border border-white/50">
-            <div class="absolute -top-4 -left-4 w-20 h-20 bg-gradient-to-br from-[#DB4437] to-[#c63c31] rounded-2xl opacity-20 blur-2xl"></div>
-            
-            <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 mb-4 leading-relaxed">
-                When searching for the <span class="relative inline-block text-[#DB4437] hover:scale-110 transition-transform duration-300">
-                    best home
-                    <svg class="absolute -bottom-1 left-0 w-full" height="4" viewBox="0 0 100 4" preserveAspectRatio="none">
-                        <path d="M0,2 Q25,0 50,2 T100,2" stroke="#DB4437" stroke-width="2" fill="none" />
-                    </svg>
-                </span> or investment opportunity, we are your ideal choice.
-            </h2>
-            
-            <button class="mt-6 bg-gradient-to-r from-[#DB4437] to-[#c63c31] text-white px-8 py-3 rounded-full font-semibold hover:shadow-[0_15px_40px_rgba(219,68,55,0.4)] transition-all duration-500 hover:scale-110 transform hover:-translate-y-1 group/btn relative overflow-hidden">
-                <div class="absolute inset-0 bg-gradient-to-r from-white/0 via-white/30 to-white/0 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700"></div>
-                <span class="relative flex items-center justify-center gap-2">
-                    Explore All Property
-                    <svg class="w-5 h-5 group-hover/btn:translate-x-2 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg>
-                </span>
-            </button>
         </div>
     </section>
     <!-- Brochure Section -->
