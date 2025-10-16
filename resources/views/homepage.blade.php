@@ -52,6 +52,7 @@
 
                 <!-- Search Button -->
                 <button 
+                    id="search-overlay-open"
                     type="button"
                     data-search-overlay-open
                     class="bg-[#DB4437] text-white font-semibold px-6 py-2 rounded-full w-full sm:w-auto hover:bg-[#c63c31] transition-all duration-300 hover:scale-105 hover:shadow-xl transform hover:-translate-y-0.5"
@@ -499,6 +500,39 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            const overlay = document.getElementById('search-overlay');
+            const openButtons = document.querySelectorAll('[data-search-overlay-open], #search-overlay-open');
+            const closeBtn = document.getElementById('search-overlay-close');
+
+            if (overlay && closeBtn && openButtons.length > 0) {
+                const openOverlay = () => {
+                    overlay.classList.remove('hidden');
+                    overlay.classList.add('flex');
+                    document.body.classList.add('overflow-hidden');
+                };
+
+                const closeOverlay = () => {
+                    overlay.classList.add('hidden');
+                    overlay.classList.remove('flex');
+                    document.body.classList.remove('overflow-hidden');
+                };
+
+                openButtons.forEach((btn) => btn.addEventListener('click', openOverlay));
+                closeBtn.addEventListener('click', closeOverlay);
+
+                overlay.addEventListener('click', (event) => {
+                    if (event.target === overlay) {
+                        closeOverlay();
+                    }
+                });
+
+                document.addEventListener('keydown', (event) => {
+                    if (event.key === 'Escape' && !overlay.classList.contains('hidden')) {
+                        closeOverlay();
+                    }
+                });
+            }
+
             const brochureSection = document.getElementById('brochure-showcase');
             if (!brochureSection) {
                 return;
