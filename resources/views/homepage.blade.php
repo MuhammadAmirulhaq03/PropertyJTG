@@ -118,25 +118,6 @@
         </div>
     </section>
 
-    <!-- Explore Property Section -->
-    <section class="relative rounded-3xl overflow-hidden my-10 sm:my-16 mx-4 md:mx-20 group">
-        <img 
-            src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=1400&q=80" 
-            alt="Modern House" 
-            class="w-full h-72 sm:h-96 object-cover rounded-3xl transition-transform duration-700 group-hover:scale-110"
-        >
-        <div class="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent rounded-3xl"></div>
-        <div class="absolute inset-x-4 sm:right-10 md:right-16 top-1/2 transform -translate-y-1/2 bg-white/95 backdrop-blur-sm p-6 rounded-xl shadow-lg max-w-md mx-auto sm:mx-0 text-center sm:text-left transition-all duration-500 hover:shadow-2xl hover:bg-white group-hover:scale-105">
-            <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 mb-3">
-                When searching for the <span class="text-[#DB4437] inline-block transition-transform duration-300 hover:scale-110">best home</span> or investment opportunity,
-                we are your ideal choice.
-            </h2>
-            <button class="mt-4 bg-[#DB4437] text-white px-6 py-2 rounded-full font-medium hover:bg-[#c63c30] transition-all duration-300 hover:scale-110 hover:shadow-xl transform hover:-translate-y-1">
-                Explore All Property
-            </button>
-        </div>
-    </section>
-
     <!-- Why Choose Us Section -->
     <section class="bg-gradient-to-br from-[#FFF2E9] via-[#FFE7D6]/50 to-[#FFF2E9] py-20 px-4 sm:px-6 md:px-10 relative overflow-hidden">
         <!-- Animated Background Elements -->
