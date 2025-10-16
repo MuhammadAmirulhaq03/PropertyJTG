@@ -37,13 +37,17 @@
                         <p class="text-sm opacity-80 mt-3">{{ now()->translatedFormat('l, d F Y') }}</p>
                     </div>
                     <nav class="px-4 py-6 space-y-1 text-sm font-medium text-gray-600">
+                        <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-3 py-2 rounded-xl bg-[#DB4437]/10 text-[#DB4437] shadow-sm hover:shadow-md hover:-translate-y-0.5 transition">
+                            <span class="w-2 h-2 bg-[#DB4437] rounded-full"></span>
+                            {{ __('Customer Dashboard') }}
+                        </a>
                         <a href="{{ route('homepage') }}" class="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-[#FFF2E9] transition">
                             <span class="w-2 h-2 bg-[#DB4437]/60 rounded-full"></span>
-                            Home Page
+                            {{ __('Home Page') }}
                         </a>
                         <span class="flex items-center gap-3 px-3 py-2 rounded-xl bg-[#FFF2E9] text-[#DB4437]">
                             <span class="w-2 h-2 bg-[#DB4437] rounded-full"></span>
-                            Document
+                            {{ __('Document') }}
                         </span>
                         <span class="flex items-center gap-3 px-3 py-2 rounded-xl text-gray-300 cursor-not-allowed">
                             <span class="w-2 h-2 bg-gray-200 rounded-full"></span>
