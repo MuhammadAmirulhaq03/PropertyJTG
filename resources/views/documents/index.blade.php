@@ -1,4 +1,31 @@
 <x-app-layout>
+    <style>
+        @keyframes document-upload-sweep {
+            0% {
+                transform: translateY(100%);
+                opacity: 0.45;
+            }
+            100% {
+                transform: translateY(-120%);
+                opacity: 0;
+            }
+        }
+
+        .uploaded-card {
+            position: relative;
+        }
+
+        .uploaded-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(16, 185, 129, 0.25) 0%, rgba(16, 185, 129, 0) 80%);
+            border-radius: inherit;
+            transform: translateY(100%);
+            animation: document-upload-sweep 0.9s ease-out forwards;
+            pointer-events: none;
+        }
+    </style>
     <section class="bg-[#FFF5EE] min-h-screen py-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-10">
             <div class="flex flex-col lg:flex-row gap-10">
@@ -70,7 +97,7 @@
                                     $hasUpload = !is_null($upload);
                                     $isErrored = old('document_type') === $key && $errors->any();
                                 @endphp
-                                <div class="rounded-3xl border border-[#FFDCC4] bg-[#FFFBF8] shadow-sm hover:shadow-md transition overflow-hidden">
+                                <div class="rounded-3xl border border-[#FFDCC4] bg-[#FFFBF8] shadow-sm hover:shadow-md transition overflow-hidden {{ $hasUpload ? 'uploaded-card' : '' }}">
                                     <div class="p-6 flex flex-col h-full">
                                         <div class="flex items-start justify-between gap-3">
                                             <div>
@@ -87,7 +114,14 @@
                                                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9 9V5a1 1 0 112 0v4h4a1 1 0 110 2h-4v4a1 1 0 11-2 0v-4H5a1 1 0 110-2h4z" clip-rule="evenodd" />
                                                     @endif
                                                 </svg>
-                                                {{ $hasUpload ? 'Terkirim' : 'Belum ada' }}
+                                                @if ($hasUpload)
+                                                    <span>{{ __('Terkirim') }}</span>
+                                                    <span class="text-[10px] font-medium text-emerald-500">
+                                                        • {{ $upload->updated_at->diffForHumans() }}
+                                                    </span>
+                                                @else
+                                                    {{ __('Belum ada') }}
+                                                @endif
                                             </span>
                                         </div>
 
