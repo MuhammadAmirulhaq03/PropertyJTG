@@ -55,7 +55,7 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 6h18M3 12h18M7 18h10" />
                                 </svg>
                                 <span>
-                                    {{ auth()->user()->hasRole('customer') ? __('Documents Center') : __('Manage Documents') }}
+                                    {{ auth()->user()->hasRole('customer') ? __('Pelanggan Center') : __('Manage Documents') }}
                                 </span>
                             </x-dropdown-link>
                             <x-dropdown-link :href="route('profile.edit')" class="flex items-center gap-2">
@@ -124,7 +124,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#DB4437]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 6h18M3 12h18M7 18h10" />
                     </svg>
-                    {{ auth()->user()->hasRole('customer') ? __('Documents Center') : __('Manage Documents') }}
+                    {{ auth()->user()->hasRole('customer') ? __('Pelanggan Center') : __('Manage Documents') }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('profile.edit')" class="flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#DB4437]" fill="none" viewBox="0 0 24 24" stroke="currentColor">

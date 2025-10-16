@@ -61,22 +61,6 @@
                 </button>
             </div>
         </div>
-        @auth
-            @if (auth()->user()->hasRole('customer'))
-                <div class="mt-6 flex justify-center md:justify-start">
-                    <a
-                        href="{{ route('dashboard') }}"
-                        class="group relative inline-flex items-center gap-3 overflow-hidden rounded-full bg-white/15 px-6 py-2.5 text-sm font-semibold tracking-wide text-white shadow-lg shadow-black/20 transition hover:-translate-y-1 hover:shadow-xl"
-                    >
-                        <span class="absolute inset-0 bg-gradient-to-r from-white/60 via-white/20 to-transparent opacity-0 transition group-hover:opacity-100"></span>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="relative h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9.75l9-6 9 6M4.5 10.5v9.75h6V15h3v5.25h6V10.5" />
-                        </svg>
-                        <span class="relative">{{ __('Go to Customer Dashboard') }}</span>
-                    </a>
-                </div>
-            @endif
-        @endauth
     </section>
 
     @include('components.property-search-overlay')
