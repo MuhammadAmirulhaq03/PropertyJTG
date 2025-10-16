@@ -52,8 +52,8 @@
 
                 <!-- Search Button -->
                 <button 
-                    id="search-overlay-open"
                     type="button"
+                    data-search-overlay-open
                     class="bg-[#DB4437] text-white font-semibold px-6 py-2 rounded-full w-full sm:w-auto hover:bg-[#c63c31] transition-all duration-300 hover:scale-105 hover:shadow-xl transform hover:-translate-y-0.5"
                 >
                     Search Now
@@ -62,139 +62,7 @@
         </div>
     </section>
 
-    <!-- Search Overlay -->
-    <div 
-        id="search-overlay" 
-        class="fixed inset-0 z-40 hidden items-center justify-center p-4"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="search-overlay-title"
-    >
-        <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300"></div>
-
-        <div class="relative z-10 max-w-4xl w-full bg-white/95 backdrop-blur-md rounded-3xl shadow-[0_30px_80px_rgba(16,24,40,0.25)] p-6 sm:p-10 overflow-y-auto max-h-[90vh] border border-white/60">
-            <div class="flex items-start justify-between gap-4 mb-6">
-                <div>
-                    <h2 id="search-overlay-title" class="text-2xl sm:text-3xl font-bold text-gray-900">Find Your Next Property</h2>
-                    <p class="text-gray-500 mt-1">Filter by location, type, budget, space, specifications, or keywords.</p>
-                </div>
-                <button 
-                    id="search-overlay-close" 
-                    type="button"
-                    class="shrink-0 bg-[#FFE7D6] text-gray-700 hover:bg-[#FFDCC4] transition-all duration-300 rounded-full p-2 shadow-sm hover:shadow-md"
-                    aria-label="Close search form"
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
-                    </svg>
-                </button>
-            </div>
-
-            <form action="{{ url('/properties/search') }}" method="GET" class="space-y-6">
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                    <label class="space-y-2">
-                        <span class="text-sm font-semibold text-gray-700">Location</span>
-                        <input 
-                            type="text" 
-                            name="location"
-                            placeholder="City, area, or landmark"
-                            class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-[#DB4437] focus:ring-2 focus:ring-[#DB4437]/40 transition-all duration-300 placeholder:text-gray-400"
-                        >
-                    </label>
-
-                    <label class="space-y-2">
-                        <span class="text-sm font-semibold text-gray-700">Property Type</span>
-                        <select 
-                            name="type"
-                            class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-[#DB4437] focus:ring-2 focus:ring-[#DB4437]/40 transition-all duration-300 text-gray-600"
-                        >
-                            <option value="">Select type</option>
-                            <option value="house">House</option>
-                            <option value="apartment">Apartment</option>
-                            <option value="villa">Villa</option>
-                            <option value="commercial">Commercial</option>
-                            <option value="land">Land</option>
-                        </select>
-                    </label>
-
-                    <div class="space-y-2">
-                        <span class="text-sm font-semibold text-gray-700 block">Price Range</span>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <input 
-                                type="number" 
-                                name="price_min"
-                                min="0"
-                                placeholder="Min price"
-                                class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-[#DB4437] focus:ring-2 focus:ring-[#DB4437]/40 transition-all duration-300 placeholder:text-gray-400"
-                            >
-                            <input 
-                                type="number" 
-                                name="price_max"
-                                min="0"
-                                placeholder="Max price"
-                                class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-[#DB4437] focus:ring-2 focus:ring-[#DB4437]/40 transition-all duration-300 placeholder:text-gray-400"
-                            >
-                        </div>
-                    </div>
-
-                    <div class="space-y-2">
-                        <span class="text-sm font-semibold text-gray-700 block">Land / Building Size</span>
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                            <input 
-                                type="number" 
-                                name="area_min"
-                                min="0"
-                                placeholder="Min sqm"
-                                class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-[#DB4437] focus:ring-2 focus:ring-[#DB4437]/40 transition-all duration-300 placeholder:text-gray-400"
-                            >
-                            <input 
-                                type="number" 
-                                name="area_max"
-                                min="0"
-                                placeholder="Max sqm"
-                                class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-[#DB4437] focus:ring-2 focus:ring-[#DB4437]/40 transition-all duration-300 placeholder:text-gray-400"
-                            >
-                        </div>
-                    </div>
-
-                    <label class="space-y-2 sm:col-span-2">
-                        <span class="text-sm font-semibold text-gray-700">Specifications</span>
-                        <input 
-                            type="text" 
-                            name="specs"
-                            placeholder="Bedrooms, bathrooms, facilities, etc."
-                            class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-[#DB4437] focus:ring-2 focus:ring-[#DB4437]/40 transition-all duration-300 placeholder:text-gray-400"
-                        >
-                    </label>
-
-                    <label class="space-y-2 sm:col-span-2">
-                        <span class="text-sm font-semibold text-gray-700">Keywords</span>
-                        <input 
-                            type="text" 
-                            name="keywords"
-                            placeholder="e.g. swimming pool, near MRT"
-                            class="w-full px-4 py-3 rounded-2xl border border-gray-200 focus:border-[#DB4437] focus:ring-2 focus:ring-[#DB4437]/40 transition-all duration-300 placeholder:text-gray-400"
-                        >
-                    </label>
-                </div>
-
-                <div class="flex flex-col sm:flex-row justify-end gap-3">
-                    <button 
-                        type="reset" 
-                        class="w-full sm:w-auto px-6 py-3 rounded-full border border-gray-200 text-gray-600 hover:border-[#DB4437]/40 hover:text-[#DB4437] transition-all duration-300"
-                    >
-                        Reset Filters
-                    </button>
-                    <button 
-                        type="submit" 
-                        class="w-full sm:w-auto px-6 py-3 rounded-full bg-[#DB4437] text-white font-semibold hover:bg-[#c63c31] transition-all duration-300 shadow-lg hover:shadow-xl"
-                    >
-                        Search Property
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
+    @include('components.property-search-overlay')
 
     <!-- Properties Section -->
     <section class="max-w-7xl mx-auto py-16 px-4 sm:px-6 md:px-10 relative">
@@ -247,6 +115,25 @@
                     </div>
                 </div>
             @endforeach
+        </div>
+    </section>
+
+    <!-- Explore Property Section -->
+    <section class="relative rounded-3xl overflow-hidden my-10 sm:my-16 mx-4 md:mx-20 group">
+        <img 
+            src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=1400&q=80" 
+            alt="Modern House" 
+            class="w-full h-72 sm:h-96 object-cover rounded-3xl transition-transform duration-700 group-hover:scale-110"
+        >
+        <div class="absolute inset-0 bg-gradient-to-r from-black/50 to-transparent rounded-3xl"></div>
+        <div class="absolute inset-x-4 sm:right-10 md:right-16 top-1/2 transform -translate-y-1/2 bg-white/95 backdrop-blur-sm p-6 rounded-xl shadow-lg max-w-md mx-auto sm:mx-0 text-center sm:text-left transition-all duration-500 hover:shadow-2xl hover:bg-white group-hover:scale-105">
+            <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 mb-3">
+                When searching for the <span class="text-[#DB4437] inline-block transition-transform duration-300 hover:scale-110">best home</span> or investment opportunity,
+                we are your ideal choice.
+            </h2>
+            <button class="mt-4 bg-[#DB4437] text-white px-6 py-2 rounded-full font-medium hover:bg-[#c63c30] transition-all duration-300 hover:scale-110 hover:shadow-xl transform hover:-translate-y-1">
+                Explore All Property
+            </button>
         </div>
     </section>
 
@@ -373,6 +260,98 @@
             </button>
         </div>
     </section>
+    <!-- Brochure Section -->
+    <section id="brochure-showcase" class="relative py-20 bg-gradient-to-b from-[#FFF2E9] via-[#FFF7F1] to-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-10">
+            <div class="brochure-card relative overflow-hidden rounded-[2.5rem] border border-transparent bg-white/60 shadow-[0_28px_60px_rgba(15,23,42,0.08)] backdrop-blur">
+                <div class="brochure-content px-16 sm:px-24 pt-16 pb-12 space-y-8">
+                    <div class="space-y-5">
+                        <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.32em] text-[#DB4437]/70">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 13l4 4L17 7" />
+                            </svg>
+                            Brochure Update
+                        </span>
+                        <h2 class="text-3xl sm:text-4xl font-bold text-[#DB4437] leading-tight">
+                            Check Our Newest Property Showcase
+                        </h2>
+                        <p class="text-gray-600 leading-relaxed text-base md:text-lg">
+                            Jelajahi katalog properti terbaru kami yang dikurasi langsung dari listing eksklusif Jaya Tibar Group. Temukan desain, fasilitas, dan promo pembiayaan terbaik untuk investasi atau hunian idamanmu.
+                        </p>
+                    </div>
+                    <div class="grid gap-3 text-sm text-gray-600">
+                        <div class="flex items-start gap-3">
+                            <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-[#FFE7D6] text-[#DB4437] font-semibold text-xs mt-0.5">1</span>
+                            <span>Highlight unit premium lengkap dengan spesifikasi utama.</span>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-[#FFE7D6] text-[#DB4437] font-semibold text-xs mt-0.5">2</span>
+                            <span>Tips pembiayaan, simulasi cicilan, dan insight investasi terkini.</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-4">
+                        <a 
+                            href="{{ asset('assets/brochures/latest-property.pdf') }}" 
+                            class="inline-flex items-center gap-3 bg-[#DB4437] text-white px-6 py-3 rounded-full font-semibold shadow-lg hover:bg-[#c63c31] transition-all duration-300"
+                            download
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4" />
+                            </svg>
+                            Download Our Newest Flyer
+                        </a>
+                        <a 
+                            href="{{ asset('assets/brochures/latest-property.pdf') }}" 
+                            class="inline-flex items-center gap-2 text-[#DB4437] font-medium hover:text-[#c63c31] transition-all duration-300"
+                            target="_blank"
+                        >
+                            Pratinjau secara online
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14 3h7m0 0v7m0-7L10 14M5 5h3m-3 0v14h14v-3" />
+                            </svg>
+                        </a>
+                    </div>
+                    <p class="text-xs text-gray-500">
+                        Simpan file terbaru kamu sebagai <code class="font-mono bg-white/70 px-2 py-1 rounded">public/assets/brochures/latest-property.pdf</code> untuk memperbarui tautan ini.
+                    </p>
+                </div>
+
+                <div class="brochure-media relative px-6 sm:px-16 pb-14 mt-8">
+                    <div class="brochure-slider rounded-[2.5rem] overflow-hidden shadow-[0_25px_55px_rgba(16,24,40,0.16)] ring-1 ring-[#E4E7F2]/70" data-slider>
+                        <div class="brochure-slide is-active" data-slide>
+                            <img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1600&q=80" alt="Modern villa exterior" class="w-full h-full object-cover">
+                        </div>
+                        <div class="brochure-slide" data-slide>
+                            <img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1600&q=80" alt="Cozy living room interior" class="w-full h-full object-cover">
+                        </div>
+                        <div class="brochure-slide" data-slide>
+                            <img src="https://images.unsplash.com/photo-1580587774054-7c9549d3df4e?auto=format&fit=crop&w=1600&q=80" alt="Luxury bedroom design" class="w-full h-full object-cover">
+                        </div>
+
+                        <div class="brochure-slider-overlay pointer-events-none"></div>
+
+                        <div class="brochure-slider-controls">
+                            <button type="button" class="brochure-nav-button" data-slider-prev aria-label="Slide sebelumnya">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7" />
+                                </svg>
+                            </button>
+                            <div class="brochure-dots" role="tablist" aria-label="Brochure images">
+                                <button type="button" class="brochure-dot is-active" data-slider-dot="0" aria-label="Slide 1"></button>
+                                <button type="button" class="brochure-dot" data-slider-dot="1" aria-label="Slide 2"></button>
+                                <button type="button" class="brochure-dot" data-slider-dot="2" aria-label="Slide 3"></button>
+                            </div>
+                            <button type="button" class="brochure-nav-button" data-slider-next aria-label="Slide selanjutnya">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <style>
         @keyframes float {
@@ -426,44 +405,198 @@
         .hover\:rotate-y-3:hover {
             transform: rotateY(3deg);
         }
+
+        #brochure-showcase .brochure-content,
+        #brochure-showcase .brochure-media {
+            opacity: 0;
+            transform: translateY(32px);
+            transition: transform 0.8s ease, opacity 0.8s ease;
+        }
+
+        #brochure-showcase .brochure-content {
+            transition-delay: 0.15s;
+        }
+
+        #brochure-showcase.is-visible .brochure-content,
+        #brochure-showcase.is-visible .brochure-media {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .brochure-slider {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            min-height: 320px;
+        }
+
+        .brochure-slide {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.7s ease, transform 0.7s ease;
+            transform: scale(1.02);
+        }
+
+        .brochure-slide.is-active {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+
+        .brochure-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .brochure-slider-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.05) 45%, rgba(0,0,0,0) 100%);
+        }
+
+        .brochure-slider-controls {
+            position: absolute;
+            bottom: 1.9rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: grid;
+            grid-template-columns: auto auto auto;
+            align-items: center;
+            gap: 1.25rem;
+            z-index: 5;
+        }
+
+        .brochure-nav-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.75rem;
+            height: 2.75rem;
+            border-radius: 9999px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #DB4437;
+            border: 1px solid rgba(255, 231, 214, 0.85);
+            box-shadow: 0 12px 26px rgba(219, 68, 55, 0.18);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .brochure-nav-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 16px 32px rgba(219, 68, 55, 0.25);
+        }
+
+        .brochure-dots {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .brochure-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 9999px;
+            background: rgba(255, 255, 255, 0.6);
+            border: none;
+            transition: background 0.25s ease, transform 0.25s ease;
+        }
+
+        .brochure-dot.is-active {
+            background: #DB4437;
+            transform: scale(1.2);
+        }
+
+        @media (max-width: 640px) {
+            .brochure-slider {
+                min-height: 240px;
+            }
+        }
     </style>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const overlay = document.getElementById('search-overlay');
-            const openBtn = document.getElementById('search-overlay-open');
-            const closeBtn = document.getElementById('search-overlay-close');
-
-            if (!overlay || !openBtn || !closeBtn) {
+            const brochureSection = document.getElementById('brochure-showcase');
+            if (!brochureSection) {
                 return;
             }
 
-            const openOverlay = () => {
-                overlay.classList.remove('hidden');
-                overlay.classList.add('flex');
-                document.body.classList.add('overflow-hidden');
+            const slider = brochureSection.querySelector('[data-slider]');
+            const slides = slider ? Array.from(slider.querySelectorAll('[data-slide]')) : [];
+            const dots = slider ? Array.from(slider.querySelectorAll('[data-slider-dot]')) : [];
+            const prevBtn = slider ? slider.querySelector('[data-slider-prev]') : null;
+            const nextBtn = slider ? slider.querySelector('[data-slider-next]') : null;
+            let currentIndex = 0;
+            let autoRotate;
+
+            const showSlide = (index) => {
+                if (slides.length === 0) {
+                    return;
+                }
+                currentIndex = (index + slides.length) % slides.length;
+                slides.forEach((slide, idx) => {
+                    slide.classList.toggle('is-active', idx === currentIndex);
+                });
+                dots.forEach((dot, idx) => {
+                    dot.classList.toggle('is-active', idx === currentIndex);
+                });
             };
 
-            const closeOverlay = () => {
-                overlay.classList.add('hidden');
-                overlay.classList.remove('flex');
-                document.body.classList.remove('overflow-hidden');
+            const scheduleAutoRotate = () => {
+                if (slides.length === 0) {
+                    return;
+                }
+                clearInterval(autoRotate);
+                autoRotate = setInterval(() => {
+                    showSlide(currentIndex + 1);
+                }, 5500);
             };
 
-            openBtn.addEventListener('click', openOverlay);
-            closeBtn.addEventListener('click', closeOverlay);
-
-            overlay.addEventListener('click', (event) => {
-                if (event.target === overlay) {
-                    closeOverlay();
-                }
+            prevBtn?.addEventListener('click', () => {
+                showSlide(currentIndex - 1);
+                scheduleAutoRotate();
             });
 
-            document.addEventListener('keydown', (event) => {
-                if (event.key === 'Escape' && !overlay.classList.contains('hidden')) {
-                    closeOverlay();
-                }
+            nextBtn?.addEventListener('click', () => {
+                showSlide(currentIndex + 1);
+                scheduleAutoRotate();
             });
+
+            dots.forEach((dot) => {
+                dot.addEventListener('click', () => {
+                    const target = Number(dot.getAttribute('data-slider-dot'));
+                    if (!Number.isNaN(target)) {
+                        showSlide(target);
+                        scheduleAutoRotate();
+                    }
+                });
+            });
+
+            slider?.addEventListener('mouseenter', () => clearInterval(autoRotate));
+            slider?.addEventListener('mouseleave', scheduleAutoRotate);
+
+            const activate = () => {
+                brochureSection.classList.add('is-visible');
+                showSlide(0);
+                scheduleAutoRotate();
+            };
+
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            activate();
+                            observer.disconnect();
+                        }
+                    });
+                }, { threshold: 0.3 });
+
+                observer.observe(brochureSection);
+            } else {
+                activate();
+            }
         });
     </script>
 
