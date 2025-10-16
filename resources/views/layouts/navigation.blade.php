@@ -25,6 +25,19 @@
             <!-- Right Side -->
             <div class="hidden md:flex items-center space-x-4">
                 @auth
+                    @if (auth()->user()->hasRole('customer'))
+                        <a
+                            href="{{ route('dashboard') }}"
+                            class="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-white/15 px-4 py-2 text-sm font-semibold tracking-wide text-white transition hover:scale-105 hover:shadow-lg"
+                        >
+                            <span class="absolute inset-0 bg-gradient-to-r from-white/30 to-transparent opacity-0 transition group-hover:opacity-100"></span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="relative h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9.75l9-6 9 6M4.5 10.5v9.75h6V15h3v5.25h6V10.5" />
+                            </svg>
+                            <span class="relative">{{ __('Customer Dashboard') }}</span>
+                        </a>
+                    @endif
+
                     <!-- Dropdown User -->
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
@@ -41,7 +54,9 @@
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-[#DB4437]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 6h18M3 12h18M7 18h10" />
                                 </svg>
-                                <span>{{ __('User Dashboard') }}</span>
+                                <span>
+                                    {{ auth()->user()->hasRole('customer') ? __('Pelanggan Center') : __('Manage Documents') }}
+                                </span>
                             </x-dropdown-link>
                             <x-dropdown-link :href="route('profile.edit')" class="flex items-center gap-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-[#DB4437]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -97,11 +112,19 @@
             @auth
                 <div class="font-semibold">{{ Auth::user()->name }}</div>
                 <div class="text-sm text-white/80 mb-3">{{ Auth::user()->email }}</div>
+                @if (auth()->user()->hasRole('customer'))
+                    <x-responsive-nav-link :href="route('dashboard')" class="flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#DB4437]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9.75l9-6 9 6M4.5 10.5v9.75h6V15h3v5.25h6V10.5" />
+                        </svg>
+                        {{ __('Customer Dashboard') }}
+                    </x-responsive-nav-link>
+                @endif
                 <x-responsive-nav-link :href="route('documents.index')" class="flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#DB4437]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 6h18M3 12h18M7 18h10" />
                     </svg>
-                    User Dashboard
+                    {{ auth()->user()->hasRole('customer') ? __('Pelanggan Center') : __('Manage Documents') }}
                 </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('profile.edit')" class="flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#DB4437]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
