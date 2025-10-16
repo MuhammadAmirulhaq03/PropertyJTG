@@ -26,7 +26,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware(['auth', 'can:manage-documents'])->group(function () {
+Route::middleware('auth')->group(function () {
     Route::get('/documents', [DocumentUploadController::class, 'index'])->name('documents.index');
     Route::post('/documents', [DocumentUploadController::class, 'store'])->name('documents.store');
     Route::get('/documents/{documentUpload}/download', [DocumentUploadController::class, 'download'])
