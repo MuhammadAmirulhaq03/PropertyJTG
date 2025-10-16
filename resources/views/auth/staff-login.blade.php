@@ -3,18 +3,18 @@
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
     <div class="mb-6 text-center">
-        <h1 class="text-2xl font-semibold text-gray-900">{{ __('Customer Sign In') }}</h1>
+        <h1 class="text-2xl font-semibold text-gray-900">{{ __('Staff Portal Sign In') }}</h1>
         <p class="mt-2 text-sm text-gray-500">
-            {{ __('Log in to continue your property journey. Company representatives should use the staff portal.') }}
+            {{ __('Only authorised administrators and agents may access this portal.') }}
         </p>
     </div>
 
-    <form method="POST" action="{{ route('login') }}">
+    <form method="POST" action="{{ route('staff.login') }}">
         @csrf
 
         <!-- Email Address -->
         <div>
-            <x-input-label for="email" :value="__('Email')" />
+            <x-input-label for="email" :value="__('Company Email')" />
             <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="username" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
@@ -31,31 +31,21 @@
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
         </div>
 
-        <!-- Remember Me -->
         <div class="block mt-4">
             <label for="remember_me" class="inline-flex items-center">
                 <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
+                <span class="ms-2 text-sm text-gray-600">{{ __('Remember my staff session') }}</span>
             </label>
         </div>
 
-        <div class="flex items-center justify-end mt-4">
-            @if (Route::has('password.request'))
-                <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('password.request') }}">
-                    {{ __('Forgot your password?') }}
-                </a>
-            @endif
-
-            <x-primary-button class="ms-3">
-                {{ __('Log in') }}
-            </x-primary-button>
+        <div class="mt-6 flex items-center justify-between text-sm">
+            <a href="{{ route('login') }}" class="text-gray-500 hover:text-gray-700">
+                {{ __('Back to customer login') }}
+            </a>
+            <button type="submit" class="inline-flex items-center rounded-md bg-[#DB4437] px-4 py-2 font-semibold text-white shadow-sm transition hover:bg-[#c63c31]">
+                {{ __('Sign in') }}
+            </button>
         </div>
     </form>
-
-    <p class="mt-6 text-center text-sm text-gray-500">
-        {{ __('Are you an agent or administrator?') }}
-        <a href="{{ route('staff.login') }}" class="font-semibold text-[#DB4437] hover:text-[#c63c31]">
-            {{ __('Access the staff portal') }}
-        </a>
-    </p>
 </x-guest-layout>
+

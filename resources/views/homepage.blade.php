@@ -51,18 +51,19 @@
                 </button>
 
                 <!-- Search Button -->
-                <button class="relative bg-gradient-to-r from-[#DB4437] to-[#c63c31] text-white text-sm font-semibold px-6 py-2.5 rounded-2xl w-full sm:w-auto transition-all duration-300 hover:shadow-lg hover:scale-105 transform overflow-hidden group">
-                    <div class="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500"></div>
-                    <span class="relative flex items-center justify-center gap-1.5">
-                        Search
-                        <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                        </svg>
-                    </span>
+                <button 
+                    id="search-overlay-open"
+                    type="button"
+                    data-search-overlay-open
+                    class="bg-[#DB4437] text-white font-semibold px-6 py-2 rounded-full w-full sm:w-auto hover:bg-[#c63c31] transition-all duration-300 hover:scale-105 hover:shadow-xl transform hover:-translate-y-0.5"
+                >
+                    Search Now
                 </button>
             </div>
         </div>
     </section>
+
+    @include('components.property-search-overlay')
 
     <!-- Properties Section -->
     <section class="max-w-7xl mx-auto py-16 px-4 sm:px-6 md:px-10 relative">
@@ -115,6 +116,43 @@
                     </div>
                 </div>
             @endforeach
+        </div>
+    </section>
+
+    <!-- Explore Property Section -->
+    <section class="relative rounded-[40px] overflow-hidden my-10 sm:my-16 mx-4 md:mx-20 group">
+        <div class="relative h-72 sm:h-96">
+            <img 
+                src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=1400&q=80" 
+                alt="Modern House" 
+                class="absolute inset-0 w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110"
+            >
+            <!-- Gradient Overlays -->
+            <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+        </div>
+        
+        <div class="absolute inset-x-4 sm:right-12 md:right-20 top-1/2 transform -translate-y-1/2 bg-white/95 backdrop-blur-xl p-8 rounded-[32px] shadow-2xl max-w-md mx-auto sm:mx-0 text-center sm:text-left transition-all duration-700 hover:shadow-[0_30px_90px_rgba(0,0,0,0.3)] group-hover:scale-105 border border-white/50">
+            <div class="absolute -top-4 -left-4 w-20 h-20 bg-gradient-to-br from-[#DB4437] to-[#c63c31] rounded-2xl opacity-20 blur-2xl"></div>
+            
+            <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 mb-4 leading-relaxed">
+                When searching for the <span class="relative inline-block text-[#DB4437] hover:scale-110 transition-transform duration-300">
+                    best home
+                    <svg class="absolute -bottom-1 left-0 w-full" height="4" viewBox="0 0 100 4" preserveAspectRatio="none">
+                        <path d="M0,2 Q25,0 50,2 T100,2" stroke="#DB4437" stroke-width="2" fill="none" />
+                    </svg>
+                </span> or investment opportunity, we are your ideal choice.
+            </h2>
+            
+            <button class="mt-6 bg-gradient-to-r from-[#DB4437] to-[#c63c31] text-white px-8 py-3 rounded-full font-semibold hover:shadow-[0_15px_40px_rgba(219,68,55,0.4)] transition-all duration-500 hover:scale-110 transform hover:-translate-y-1 group/btn relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-r from-white/0 via-white/30 to-white/0 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700"></div>
+                <span class="relative flex items-center justify-center gap-2">
+                    Explore All Property
+                    <svg class="w-5 h-5 group-hover/btn:translate-x-2 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                </span>
+            </button>
         </div>
     </section>
 
@@ -204,41 +242,96 @@
             </div>
         </div>
     </section>
+    <!-- Brochure Section -->
+    <section id="brochure-showcase" class="relative py-20 bg-gradient-to-b from-[#FFF2E9] via-[#FFF7F1] to-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-10">
+            <div class="brochure-card relative overflow-hidden rounded-[2.5rem] border border-transparent bg-white/60 shadow-[0_28px_60px_rgba(15,23,42,0.08)] backdrop-blur">
+                <div class="brochure-content px-16 sm:px-24 pt-16 pb-12 space-y-8">
+                    <div class="space-y-5">
+                        <span class="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.32em] text-[#DB4437]/70">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 13l4 4L17 7" />
+                            </svg>
+                            Brochure Update
+                        </span>
+                        <h2 class="text-3xl sm:text-4xl font-bold text-[#DB4437] leading-tight">
+                            Check Our Newest Property Showcase
+                        </h2>
+                        <p class="text-gray-600 leading-relaxed text-base md:text-lg">
+                            Jelajahi katalog properti terbaru kami yang dikurasi langsung dari listing eksklusif Jaya Tibar Group. Temukan desain, fasilitas, dan promo pembiayaan terbaik untuk investasi atau hunian idamanmu.
+                        </p>
+                    </div>
+                    <div class="grid gap-3 text-sm text-gray-600">
+                        <div class="flex items-start gap-3">
+                            <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-[#FFE7D6] text-[#DB4437] font-semibold text-xs mt-0.5">1</span>
+                            <span>Highlight unit premium lengkap dengan spesifikasi utama.</span>
+                        </div>
+                        <div class="flex items-start gap-3">
+                            <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-[#FFE7D6] text-[#DB4437] font-semibold text-xs mt-0.5">2</span>
+                            <span>Tips pembiayaan, simulasi cicilan, dan insight investasi terkini.</span>
+                        </div>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-4">
+                        <a 
+                            href="{{ asset('assets/brochures/latest-property.pdf') }}" 
+                            class="inline-flex items-center gap-3 bg-[#DB4437] text-white px-6 py-3 rounded-full font-semibold shadow-lg hover:bg-[#c63c31] transition-all duration-300"
+                            download
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4" />
+                            </svg>
+                            Download Our Newest Flyer
+                        </a>
+                        <a 
+                            href="{{ asset('assets/brochures/latest-property.pdf') }}" 
+                            class="inline-flex items-center gap-2 text-[#DB4437] font-medium hover:text-[#c63c31] transition-all duration-300"
+                            target="_blank"
+                        >
+                            Pratinjau secara online
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14 3h7m0 0v7m0-7L10 14M5 5h3m-3 0v14h14v-3" />
+                            </svg>
+                        </a>
+                    </div>
+                    <p class="text-xs text-gray-500">
+                        Simpan file terbaru kamu sebagai <code class="font-mono bg-white/70 px-2 py-1 rounded">public/assets/brochures/latest-property.pdf</code> untuk memperbarui tautan ini.
+                    </p>
+                </div>
 
-    <!-- Explore Property Section -->
-    <section class="relative rounded-[40px] overflow-hidden my-10 sm:my-16 mx-4 md:mx-20 group">
-        <div class="relative h-72 sm:h-96">
-            <img 
-                src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=1400&q=80" 
-                alt="Modern House" 
-                class="absolute inset-0 w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110"
-            >
-            <!-- Gradient Overlays -->
-            <div class="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent"></div>
-            <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-        </div>
-        
-        <div class="absolute inset-x-4 sm:right-12 md:right-20 top-1/2 transform -translate-y-1/2 bg-white/95 backdrop-blur-xl p-8 rounded-[32px] shadow-2xl max-w-md mx-auto sm:mx-0 text-center sm:text-left transition-all duration-700 hover:shadow-[0_30px_90px_rgba(0,0,0,0.3)] group-hover:scale-105 border border-white/50">
-            <div class="absolute -top-4 -left-4 w-20 h-20 bg-gradient-to-br from-[#DB4437] to-[#c63c31] rounded-2xl opacity-20 blur-2xl"></div>
-            
-            <h2 class="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 mb-4 leading-relaxed">
-                When searching for the <span class="relative inline-block text-[#DB4437] hover:scale-110 transition-transform duration-300">
-                    best home
-                    <svg class="absolute -bottom-1 left-0 w-full" height="4" viewBox="0 0 100 4" preserveAspectRatio="none">
-                        <path d="M0,2 Q25,0 50,2 T100,2" stroke="#DB4437" stroke-width="2" fill="none" />
-                    </svg>
-                </span> or investment opportunity, we are your ideal choice.
-            </h2>
-            
-            <button class="mt-6 bg-gradient-to-r from-[#DB4437] to-[#c63c31] text-white px-8 py-3 rounded-full font-semibold hover:shadow-[0_15px_40px_rgba(219,68,55,0.4)] transition-all duration-500 hover:scale-110 transform hover:-translate-y-1 group/btn relative overflow-hidden">
-                <div class="absolute inset-0 bg-gradient-to-r from-white/0 via-white/30 to-white/0 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700"></div>
-                <span class="relative flex items-center justify-center gap-2">
-                    Explore All Property
-                    <svg class="w-5 h-5 group-hover/btn:translate-x-2 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg>
-                </span>
-            </button>
+                <div class="brochure-media relative px-6 sm:px-16 pb-14 mt-8">
+                    <div class="brochure-slider rounded-[2.5rem] overflow-hidden shadow-[0_25px_55px_rgba(16,24,40,0.16)] ring-1 ring-[#E4E7F2]/70" data-slider>
+                        <div class="brochure-slide is-active" data-slide>
+                            <img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1600&q=80" alt="Modern villa exterior" class="w-full h-full object-cover">
+                        </div>
+                        <div class="brochure-slide" data-slide>
+                            <img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1600&q=80" alt="Cozy living room interior" class="w-full h-full object-cover">
+                        </div>
+                        <div class="brochure-slide" data-slide>
+                            <img src="https://images.unsplash.com/photo-1580587774054-7c9549d3df4e?auto=format&fit=crop&w=1600&q=80" alt="Luxury bedroom design" class="w-full h-full object-cover">
+                        </div>
+
+                        <div class="brochure-slider-overlay pointer-events-none"></div>
+
+                        <div class="brochure-slider-controls">
+                            <button type="button" class="brochure-nav-button" data-slider-prev aria-label="Slide sebelumnya">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7" />
+                                </svg>
+                            </button>
+                            <div class="brochure-dots" role="tablist" aria-label="Brochure images">
+                                <button type="button" class="brochure-dot is-active" data-slider-dot="0" aria-label="Slide 1"></button>
+                                <button type="button" class="brochure-dot" data-slider-dot="1" aria-label="Slide 2"></button>
+                                <button type="button" class="brochure-dot" data-slider-dot="2" aria-label="Slide 3"></button>
+                            </div>
+                            <button type="button" class="brochure-nav-button" data-slider-next aria-label="Slide selanjutnya">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
@@ -294,6 +387,232 @@
         .hover\:rotate-y-3:hover {
             transform: rotateY(3deg);
         }
+
+        #brochure-showcase .brochure-content,
+        #brochure-showcase .brochure-media {
+            opacity: 0;
+            transform: translateY(32px);
+            transition: transform 0.8s ease, opacity 0.8s ease;
+        }
+
+        #brochure-showcase .brochure-content {
+            transition-delay: 0.15s;
+        }
+
+        #brochure-showcase.is-visible .brochure-content,
+        #brochure-showcase.is-visible .brochure-media {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .brochure-slider {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            min-height: 320px;
+        }
+
+        .brochure-slide {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.7s ease, transform 0.7s ease;
+            transform: scale(1.02);
+        }
+
+        .brochure-slide.is-active {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: auto;
+        }
+
+        .brochure-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .brochure-slider-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.05) 45%, rgba(0,0,0,0) 100%);
+        }
+
+        .brochure-slider-controls {
+            position: absolute;
+            bottom: 1.9rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: grid;
+            grid-template-columns: auto auto auto;
+            align-items: center;
+            gap: 1.25rem;
+            z-index: 5;
+        }
+
+        .brochure-nav-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.75rem;
+            height: 2.75rem;
+            border-radius: 9999px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #DB4437;
+            border: 1px solid rgba(255, 231, 214, 0.85);
+            box-shadow: 0 12px 26px rgba(219, 68, 55, 0.18);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .brochure-nav-button:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 16px 32px rgba(219, 68, 55, 0.25);
+        }
+
+        .brochure-dots {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .brochure-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 9999px;
+            background: rgba(255, 255, 255, 0.6);
+            border: none;
+            transition: background 0.25s ease, transform 0.25s ease;
+        }
+
+        .brochure-dot.is-active {
+            background: #DB4437;
+            transform: scale(1.2);
+        }
+
+        @media (max-width: 640px) {
+            .brochure-slider {
+                min-height: 240px;
+            }
+        }
     </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const overlay = document.getElementById('search-overlay');
+            const openButtons = document.querySelectorAll('[data-search-overlay-open], #search-overlay-open');
+            const closeBtn = document.getElementById('search-overlay-close');
+
+            if (overlay && closeBtn && openButtons.length > 0) {
+                const openOverlay = () => {
+                    overlay.classList.remove('hidden');
+                    overlay.classList.add('flex');
+                    document.body.classList.add('overflow-hidden');
+                };
+
+                const closeOverlay = () => {
+                    overlay.classList.add('hidden');
+                    overlay.classList.remove('flex');
+                    document.body.classList.remove('overflow-hidden');
+                };
+
+                openButtons.forEach((btn) => btn.addEventListener('click', openOverlay));
+                closeBtn.addEventListener('click', closeOverlay);
+
+                overlay.addEventListener('click', (event) => {
+                    if (event.target === overlay) {
+                        closeOverlay();
+                    }
+                });
+
+                document.addEventListener('keydown', (event) => {
+                    if (event.key === 'Escape' && !overlay.classList.contains('hidden')) {
+                        closeOverlay();
+                    }
+                });
+            }
+
+            const brochureSection = document.getElementById('brochure-showcase');
+            if (!brochureSection) {
+                return;
+            }
+
+            const slider = brochureSection.querySelector('[data-slider]');
+            const slides = slider ? Array.from(slider.querySelectorAll('[data-slide]')) : [];
+            const dots = slider ? Array.from(slider.querySelectorAll('[data-slider-dot]')) : [];
+            const prevBtn = slider ? slider.querySelector('[data-slider-prev]') : null;
+            const nextBtn = slider ? slider.querySelector('[data-slider-next]') : null;
+            let currentIndex = 0;
+            let autoRotate;
+
+            const showSlide = (index) => {
+                if (slides.length === 0) {
+                    return;
+                }
+                currentIndex = (index + slides.length) % slides.length;
+                slides.forEach((slide, idx) => {
+                    slide.classList.toggle('is-active', idx === currentIndex);
+                });
+                dots.forEach((dot, idx) => {
+                    dot.classList.toggle('is-active', idx === currentIndex);
+                });
+            };
+
+            const scheduleAutoRotate = () => {
+                if (slides.length === 0) {
+                    return;
+                }
+                clearInterval(autoRotate);
+                autoRotate = setInterval(() => {
+                    showSlide(currentIndex + 1);
+                }, 5500);
+            };
+
+            prevBtn?.addEventListener('click', () => {
+                showSlide(currentIndex - 1);
+                scheduleAutoRotate();
+            });
+
+            nextBtn?.addEventListener('click', () => {
+                showSlide(currentIndex + 1);
+                scheduleAutoRotate();
+            });
+
+            dots.forEach((dot) => {
+                dot.addEventListener('click', () => {
+                    const target = Number(dot.getAttribute('data-slider-dot'));
+                    if (!Number.isNaN(target)) {
+                        showSlide(target);
+                        scheduleAutoRotate();
+                    }
+                });
+            });
+
+            slider?.addEventListener('mouseenter', () => clearInterval(autoRotate));
+            slider?.addEventListener('mouseleave', scheduleAutoRotate);
+
+            const activate = () => {
+                brochureSection.classList.add('is-visible');
+                showSlide(0);
+                scheduleAutoRotate();
+            };
+
+            if ('IntersectionObserver' in window) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            activate();
+                            observer.disconnect();
+                        }
+                    });
+                }, { threshold: 0.3 });
+
+                observer.observe(brochureSection);
+            } else {
+                activate();
+            }
+        });
+    </script>
 
 </x-app-layout>
