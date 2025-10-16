@@ -1,14 +1,14 @@
 ## Access Control Overview
 
-This project now uses a lightweight role → permission matrix that is stored in `config/roles.php` and backed by the existing `users.role` column (values: `admin`, `agen`, `customer`). The matrix drives both backend authorisation gates and Blade UI visibility.
+This project uses a lightweight role → permission matrix stored in `config/roles.php` and backed by the `users.role` column (values: `admin`, `agen`, `customer`). The matrix drives both backend authorisation gates and Blade UI visibility.
 
 ### Roles and Capabilities
 
-| Role        | Description                                 | Permissions                                                                 |
-| ----------- | ------------------------------------------- | --------------------------------------------------------------------------- |
-| `admin`     | Full platform control                       | `*` (all permissions inherit every ability, including agent + customer set) |
-| `agen`      | Property/agent workspace                    | `view-dashboard`, `manage-properties`, `manage-documents`, `manage-schedule`, `view-team-metrics`, `access-shortcuts` |
-| `customer`  | Read-only / self-service experience         | `view-dashboard`                                                            |
+| Role       | Description                       | Permissions                                                                 |
+| ---------- | --------------------------------- | --------------------------------------------------------------------------- |
+| `admin`    | Full platform control             | `*` (inherits every ability, including the agent + customer sets)           |
+| `agen`     | Internal sales / agent workspace  | `view-dashboard`, `manage-properties`, `manage-documents`, `manage-schedule`, `view-team-metrics`, `access-shortcuts` |
+| `customer` | Read-only self-service experience | `view-dashboard`                                                            |
 
 Inheritance is defined in the same config file, so admins inherit agent permissions and agents inherit customer permissions.
 
@@ -19,12 +19,18 @@ Inheritance is defined in the same config file, so admins inherit agent permissi
 ### Using Permissions in Code
 
 - **Routes / Controllers** – apply middleware such as `->middleware('can:manage-documents')` to protect actions.
-- **Blade Templates** – wrap components with `@can('manage-properties')`, `@cannot`, or `@canany` so users only see what they’re allowed to use.
+- **Blade Templates** – wrap components with `@can('manage-properties')`, `@cannot`, or `@canany` so users only see what they are allowed to use.
 - **User Helpers** – the `User` model exposes `roleSlug()`, `hasRole()`, and `hasPermission()` helpers for ad-hoc checks.
+
+### Authentication Flows
+
+- Customers register/sign in through `/register` and `/login`. If a non-customer uses the public login, they are asked to switch to the staff portal.
+- Agents and administrators authenticate via `/staff/login`, which enforces the `admin` / `agen` roles before establishing a session.
+- After login, `DashboardController` routes each role to its own dashboard view (`dashboards.customer` for customers, `dashboards.agent` for agents and admins with extras for administrators).
 
 ### Assigning Roles
 
-Roles continue to live on the `users` table. You can set them when creating users or update existing rows:
+Roles live on the `users` table. You can set them when creating users (the public registration flow automatically assigns `customer`) or update existing records:
 
 ```bash
 php artisan tinker
@@ -37,8 +43,8 @@ If no role is present, the system falls back to the configured default (`custome
 
 1. Add the new permission to the relevant role(s) inside `config/roles.php`.
 2. Optionally update `config/roles.php['inherits']` if the ability should cascade.
-3. Reference the ability anywhere in your code via `Gate`, `@can`, or route middleware.
+3. Reference the ability anywhere via `Gate`, `@can`, or route middleware.
 4. Document UI changes so the team understands which roles can access the new functionality.
 
-Because permissions are centrally defined, you can review the entire access policy through a single configuration file, keeping future updates straightforward.
+Because permissions are centrally defined, you can review and evolve the entire access policy from a single configuration file.
 
