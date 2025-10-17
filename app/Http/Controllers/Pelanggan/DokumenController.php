@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Pelanggan;
 
+use App\Http\Controllers\Controller;
 use App\Models\DocumentUpload;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-class DocumentUploadController extends Controller
+class DokumenController extends Controller
 {
     private const MAX_FILE_SIZE_KB = 5120; // 5 MB
     private const STORAGE_DISK = 'local';
@@ -24,7 +25,7 @@ class DocumentUploadController extends Controller
             ->get()
             ->keyBy('document_type');
 
-        return view('documents.index', [
+        return view('pelanggan.dokumen.index', [
             'requirements' => $requirements,
             'uploads' => $existingUploads,
             'maxFileSizeMb' => (int) ceil(self::MAX_FILE_SIZE_KB / 1024),
@@ -82,7 +83,7 @@ class DocumentUploadController extends Controller
                 'file_path' => $storedPath,
                 'mime_type' => $file->getClientMimeType(),
                 'file_size' => $file->getSize(),
-                'status' => 'submitted',
+                'status' => DocumentUpload::STATUS_SUBMITTED,
                 'review_notes' => null,
             ]
         );

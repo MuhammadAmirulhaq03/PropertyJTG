@@ -2,33 +2,38 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Admin\DashboardAdminController as AdminDashboard;
+use App\Http\Controllers\Agen\DashboardController as AgentDashboard;
+use App\Http\Controllers\Pelanggan\DashboardController as CustomerDashboard;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
     /**
-     * Handle the incoming dashboard request and render the view appropriate for the user's role.
+     * Handle the incoming dashboard request and delegate to the role-specific controller.
      */
     public function __invoke(Request $request): View
     {
-        $user = $request->user();
+        $role = $request->user()?->roleSlug() ?? config('roles.default', 'customer');
 
-        $role = $user?->roleSlug() ?? config('roles.default', 'customer');
+        if ($role === 'admin') {
+            /** @var \Illuminate\View\View $response */
+            $response = app(AdminDashboard::class)($request);
 
-        return match ($role) {
-            'admin' => view('dashboards.agent', [
-                'showAdminExtras' => true,
-                'role' => $role,
-            ]),
-            'agen' => view('dashboards.agent', [
-                'showAdminExtras' => false,
-                'role' => $role,
-            ]),
-            default => view('dashboards.customer', [
-                'role' => $role,
-            ]),
-        };
+            return $response;
+        }
+
+        if ($role === 'agen') {
+            /** @var \Illuminate\View\View $response */
+            $response = app(AgentDashboard::class)($request);
+
+            return $response;
+        }
+
+        /** @var \Illuminate\View\View $response */
+        $response = app(CustomerDashboard::class)($request);
+
+        return $response;
     }
 }
-
