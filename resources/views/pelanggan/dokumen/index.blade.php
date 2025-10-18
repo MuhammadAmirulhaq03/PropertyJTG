@@ -53,11 +53,6 @@
                             <span class="w-2 h-2 bg-gray-200 rounded-full"></span>
                             Favorite (coming soon)
                         </span>
-                        <a href="{{ route('profile.edit') }}#search-history"
-                            class="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-[#FFF2E9] transition">
-                            <span class="w-2 h-2 bg-[#DB4437]/60 rounded-full"></span>
-                            {{ __('Search History') }}
-                        </a>
                         <span class="flex items-center gap-3 px-3 py-2 rounded-xl text-gray-300 cursor-not-allowed">
                             <span class="w-2 h-2 bg-gray-200 rounded-full"></span>
                             Visit Date

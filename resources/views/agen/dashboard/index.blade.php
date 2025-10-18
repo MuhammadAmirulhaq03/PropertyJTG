@@ -25,15 +25,6 @@
                     </svg>
                     {{ __('Add New Property') }}
                 </a>
-                <a
-                    href="{{ url('/documents') }}"
-                    class="inline-flex items-center gap-2 rounded-full border border-gray-200 px-5 py-2.5 text-sm font-semibold text-gray-700 transition hover:-translate-y-0.5 hover:border-[#DB4437]/40 hover:text-[#DB4437]"
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 5v14m7-7H5" />
-                    </svg>
-                    {{ __('Upload Documents') }}
-                </a>
             </div>
         </div>
     </x-slot>
@@ -68,13 +59,13 @@
                                 {{ __('Explore Properties') }}
                             </a>
                             <a
-                                href="{{ url('/documents') }}"
+                                href="{{ route('agent.documents.index') }}"
                                 class="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2 text-sm font-semibold text-[#DB4437] transition hover:bg-[#FFE7D6]"
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.75 9V5.25m0 0L18 7.5m-2.25-2.25L15.75 3m-7.5 6V5.25m0 0L6 7.5m2.25-2.25L8.25 3M4.5 12h15m-12 6h9" />
                                 </svg>
-                                {{ __('Manage Documents') }}
+                                {{ __('Document Verification') }}
                             </a>
                         </div>
                     </div>
@@ -178,7 +169,6 @@
                         <div class="mt-6 grid gap-4 sm:grid-cols-2">
                             @foreach ([
                                 ['title' => __('Property Listings'), 'href' => url('/properties'), 'description' => __('Manage, publish, and archive property inventory.')],
-                                ['title' => __('Document Center'), 'href' => url('/documents'), 'description' => __('Upload requirements and track client submissions.')],
                                 ['title' => __('Client Directory'), 'href' => url('/clients'), 'description' => __('Keep your buyer and investor records organised.')],
                                 ['title' => __('Consultation Calendar'), 'href' => url('/consultations'), 'description' => __('Plan meetings and follow-up appointments with ease.')],
                             ] as $shortcut)
@@ -263,4 +253,5 @@
         </div>
     </div>
 </x-app-layout>
+
 
