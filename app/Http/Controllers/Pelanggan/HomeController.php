@@ -1,17 +1,22 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Pelanggan;
 
+use App\Http\Controllers\Controller;
+use App\Models\SearchHistory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Illuminate\View\View;
 
-class PropertyController extends Controller
+class HomeController extends Controller
 {
-    /**
-     * Handle property search requests using the static dataset.
-     */
-    public function search(Request $request)
+    public function index(): View
+    {
+        return view('pelanggan.home.index');
+    }
+
+    public function search(Request $request): View
     {
         $properties = collect(config('properties', []));
 
@@ -29,7 +34,9 @@ class PropertyController extends Controller
         $filtered = $this->applyFilters($properties, $filters);
         $activeFilters = $this->buildActiveFilters($filters);
 
-        return view('properties.search-results', [
+        $this->recordSearchHistory($request, $filters, $activeFilters);
+
+        return view('pelanggan.home.search-results', [
             'properties' => $filtered,
             'total' => $filtered->count(),
             'filters' => $filters,
@@ -38,9 +45,6 @@ class PropertyController extends Controller
         ]);
     }
 
-    /**
-     * Apply search filters to the property collection.
-     */
     private function applyFilters(Collection $properties, array $filters): Collection
     {
         $filtered = $properties;
@@ -140,9 +144,6 @@ class PropertyController extends Controller
             ->values();
     }
 
-    /**
-     * Prepare a human-friendly filter summary for the UI.
-     */
     private function buildActiveFilters(array $filters): array
     {
         $summary = [];
@@ -166,21 +167,21 @@ class PropertyController extends Controller
                 $parts[] = 'max ' . $this->formatCurrency($filters['price_max']);
             }
 
-            $summary['Budget'] = implode(' • ', $parts);
+            $summary['Budget'] = implode(' - ', $parts);
         }
 
         if (!is_null($filters['area_min']) || !is_null($filters['area_max'])) {
             $parts = [];
 
             if (!is_null($filters['area_min'])) {
-                $parts[] = 'min ' . $filters['area_min'] . ' m²';
+                $parts[] = 'min ' . $filters['area_min'] . ' m2';
             }
 
             if (!is_null($filters['area_max'])) {
-                $parts[] = 'max ' . $filters['area_max'] . ' m²';
+                $parts[] = 'max ' . $filters['area_max'] . ' m2';
             }
 
-            $summary['Size'] = implode(' • ', $parts);
+            $summary['Size'] = implode(' - ', $parts);
         }
 
         if ($filters['specs'] !== '') {
@@ -197,5 +198,53 @@ class PropertyController extends Controller
     private function formatCurrency(int $value): string
     {
         return 'Rp ' . number_format($value, 0, ',', '.');
+    }
+
+    private function recordSearchHistory(Request $request, array $filters, array $activeFilters): void
+    {
+        $user = $request->user();
+
+        if (! $user || ! $user->hasRole('customer')) {
+            return;
+        }
+
+        $meaningfulFilters = collect($filters)->reject(fn ($value) => $value === '' || is_null($value));
+
+        if ($meaningfulFilters->isEmpty()) {
+            return;
+        }
+
+        $payload = [
+            'raw' => $filters,
+            'active' => $activeFilters,
+        ];
+
+        $latest = SearchHistory::query()
+            ->where('user_id', $user->id)
+            ->latest('id')
+            ->first();
+
+        if ($latest && $latest->filters === $payload) {
+            $latest->touch();
+
+            return;
+        }
+
+        SearchHistory::create([
+            'user_id' => $user->id,
+            'filters' => $payload,
+        ]);
+
+        $excessIds = SearchHistory::query()
+            ->where('user_id', $user->id)
+            ->latest('id')
+            ->skip(10)
+            ->pluck('id');
+
+        if ($excessIds->isNotEmpty()) {
+            SearchHistory::query()
+                ->whereIn('id', $excessIds)
+                ->delete();
+        }
     }
 }

@@ -73,6 +73,10 @@
             </section>
 
             <section class="rounded-3xl bg-white p-6 shadow-sm">
+                @include('pelanggan.shared.search-history', ['searchHistories' => $searchHistories])
+            </section>
+
+            <section class="rounded-3xl bg-white p-6 shadow-sm">
                 <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                     <div>
                         <h3 class="text-lg font-semibold text-gray-900">{{ __('Recommended For You') }}</h3>
@@ -127,4 +131,3 @@
         </div>
     </div>
 </x-app-layout>
-

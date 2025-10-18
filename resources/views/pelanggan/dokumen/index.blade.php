@@ -53,10 +53,11 @@
                             <span class="w-2 h-2 bg-gray-200 rounded-full"></span>
                             Favorite (coming soon)
                         </span>
-                        <span class="flex items-center gap-3 px-3 py-2 rounded-xl text-gray-300 cursor-not-allowed">
-                            <span class="w-2 h-2 bg-gray-200 rounded-full"></span>
-                            Search History
-                        </span>
+                        <a href="{{ route('profile.edit') }}#search-history"
+                            class="flex items-center gap-3 px-3 py-2 rounded-xl hover:bg-[#FFF2E9] transition">
+                            <span class="w-2 h-2 bg-[#DB4437]/60 rounded-full"></span>
+                            {{ __('Search History') }}
+                        </a>
                         <span class="flex items-center gap-3 px-3 py-2 rounded-xl text-gray-300 cursor-not-allowed">
                             <span class="w-2 h-2 bg-gray-200 rounded-full"></span>
                             Visit Date
@@ -145,7 +146,14 @@
                                                         </svg>
                                                         Lihat Dokumen
                                                     </a>
-                                                    <span class="text-xs text-amber-600 font-medium">Status: {{ ucfirst($upload->status) }}</span>
+                                                    <span class="inline-flex items-center gap-2 text-xs font-semibold {{ $upload->statusBadgeClass() }} rounded-full px-3 py-1">
+                                                        {{ $upload->statusLabel() }}
+                                                    </span>
+                                                    @if ($upload->review_notes)
+                                                        <p class="text-xs text-gray-500 mt-1">
+                                                            {{ $upload->review_notes }}
+                                                        </p>
+                                                    @endif
                                                 </div>
                                             </div>
                                         @else

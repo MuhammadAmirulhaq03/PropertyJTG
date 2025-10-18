@@ -36,6 +36,28 @@
                             </svg>
                             <span class="relative">{{ __('Customer Dashboard') }}</span>
                         </a>
+                    @elseif (auth()->user()->hasRole('admin'))
+                        <a
+                            href="{{ route('admin.dashboard') }}"
+                            class="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-white/15 px-4 py-2 text-sm font-semibold tracking-wide text-white transition hover:scale-105 hover:shadow-lg"
+                        >
+                            <span class="absolute inset-0 bg-gradient-to-r from-white/30 to-transparent opacity-0 transition group-hover:opacity-100"></span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="relative h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h10m-6 6h12" />
+                            </svg>
+                            <span class="relative">{{ __('Admin Workspace') }}</span>
+                        </a>
+                    @elseif (auth()->user()->hasRole('agen'))
+                        <a
+                            href="{{ route('agent.dashboard') }}"
+                            class="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-white/15 px-4 py-2 text-sm font-semibold tracking-wide text-white transition hover:scale-105 hover:shadow-lg"
+                        >
+                            <span class="absolute inset-0 bg-gradient-to-r from-white/30 to-transparent opacity-0 transition group-hover:opacity-100"></span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="relative h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h10m-6 6h12" />
+                            </svg>
+                            <span class="relative">{{ __('Agent Workspace') }}</span>
+                        </a>
                     @endif
 
                     <!-- Dropdown User -->
@@ -50,14 +72,28 @@
                         </x-slot>
 
                         <x-slot name="content">
-                            <x-dropdown-link :href="route('documents.index')" class="flex items-center gap-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-[#DB4437]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 6h18M3 12h18M7 18h10" />
-                                </svg>
-                                <span>
-                                    {{ auth()->user()->hasRole('customer') ? __('Pelanggan Center') : __('Manage Documents') }}
-                                </span>
-                            </x-dropdown-link>
+                            @if (auth()->user()->hasRole('customer'))
+                                <x-dropdown-link :href="route('documents.index')" class="flex items-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-[#DB4437]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 6h18M3 12h18M7 18h10" />
+                                    </svg>
+                                    <span>{{ __('Pelanggan Center') }}</span>
+                                </x-dropdown-link>
+                            @elseif (auth()->user()->hasRole('admin'))
+                                <x-dropdown-link :href="route('admin.documents.index')" class="flex items-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-[#DB4437]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 6h18M3 12h18M7 18h10" />
+                                    </svg>
+                                    <span>{{ __('Customer Module') }}</span>
+                                </x-dropdown-link>
+                            @elseif (auth()->user()->hasRole('agen'))
+                                <x-dropdown-link :href="route('agent.documents.index')" class="flex items-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-[#DB4437]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 6h18M3 12h18M7 18h10" />
+                                    </svg>
+                                    <span>{{ __('Document Verification') }}</span>
+                                </x-dropdown-link>
+                            @endif
                             <x-dropdown-link :href="route('profile.edit')" class="flex items-center gap-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-[#DB4437]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5.121 17.804A9 9 0 1118.9 17.806M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -119,13 +155,44 @@
                         </svg>
                         {{ __('Customer Dashboard') }}
                     </x-responsive-nav-link>
+                @elseif (auth()->user()->hasRole('admin'))
+                    <x-responsive-nav-link :href="route('admin.dashboard')" class="flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#DB4437]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h10m-6 6h12" />
+                        </svg>
+                        {{ __('Admin Workspace') }}
+                    </x-responsive-nav-link>
+                @elseif (auth()->user()->hasRole('agen'))
+                    <x-responsive-nav-link :href="route('agent.dashboard')" class="flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#DB4437]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h10m-6 6h12" />
+                        </svg>
+                        {{ __('Agent Workspace') }}
+                    </x-responsive-nav-link>
                 @endif
-                <x-responsive-nav-link :href="route('documents.index')" class="flex items-center gap-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#DB4437]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 6h18M3 12h18M7 18h10" />
-                    </svg>
-                    {{ auth()->user()->hasRole('customer') ? __('Pelanggan Center') : __('Manage Documents') }}
-                </x-responsive-nav-link>
+
+                @if (auth()->user()->hasRole('customer'))
+                    <x-responsive-nav-link :href="route('documents.index')" class="flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#DB4437]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 6h18M3 12h18M7 18h10" />
+                        </svg>
+                        {{ __('Pelanggan Center') }}
+                    </x-responsive-nav-link>
+                @elseif (auth()->user()->hasRole('admin'))
+                    <x-responsive-nav-link :href="route('admin.documents.index')" class="flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#DB4437]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 6h18M3 12h18M7 18h10" />
+                        </svg>
+                        {{ __('Customer Module') }}
+                    </x-responsive-nav-link>
+                @elseif (auth()->user()->hasRole('agen'))
+                    <x-responsive-nav-link :href="route('agent.documents.index')" class="flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#DB4437]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 6h18M3 12h18M7 18h10" />
+                        </svg>
+                        {{ __('Document Verification') }}
+                    </x-responsive-nav-link>
+                @endif
                 <x-responsive-nav-link :href="route('profile.edit')" class="flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#DB4437]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5.121 17.804A9 9 0 1118.9 17.806M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
