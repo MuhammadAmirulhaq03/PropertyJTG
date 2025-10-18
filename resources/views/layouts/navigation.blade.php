@@ -40,6 +40,11 @@
                             <x-dropdown-link :href="route('profile.edit')">
                                 {{ __('Profile') }}
                             </x-dropdown-link>
+
+                            <x-dropdown-link :href="route('kpr.calculator.show')">
+                                {{ __('Kalkulator KPR') }}
+                            </x-dropdown-link>
+
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
                                 <x-dropdown-link :href="route('logout')"
@@ -85,6 +90,8 @@
                 <div class="font-semibold">{{ Auth::user()->name }}</div>
                 <div class="text-sm text-white/80 mb-3">{{ Auth::user()->email }}</div>
                 <x-responsive-nav-link :href="route('profile.edit')">Profile</x-responsive-nav-link>
+
+                <x-responsive-nav-link :href="route('kpr.calculator.show')">Kalkulator KPR</x-responsive-nav-link>
 
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
