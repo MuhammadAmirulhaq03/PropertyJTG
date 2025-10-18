@@ -27,4 +27,8 @@ Route::get('/jadwal', [JadwalController::class, 'tampil'])->name('tampil.jadwal'
 Route::post('/jadwal/simpan', [JadwalController::class, 'simpan'])->name('simpan.jadwal');
 Route::delete('/jadwal/hapus/{id}', [JadwalController::class, 'hapus'])->name('hapus.jadwal');
 
+use App\Http\Controllers\ContractorController;
+Route::get('/contractor', [ContractorController::class, 'create'])->name('contractor.create');
+Route::post('/contractor', [ContractorController::class, 'store'])->name('contractor.store');
+
 require __DIR__.'/auth.php';
