@@ -34,6 +34,10 @@ use App\Http\Controllers\ConsultantController;
 Route::get('/consultant', [ConsultantController::class, 'create'])->name('consultant.create');
 Route::post('/consultant', [ConsultantController::class, 'store'])->name('consultant.store');
 
+use App\Http\Controllers\FeedbackController;
+Route::get('/feedback', [FeedbackController::class, 'index'])->name('feedback.form');
+Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
+
 
 require __DIR__.'/auth.php';
  
