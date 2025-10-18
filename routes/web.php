@@ -21,4 +21,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+use App\Http\Controllers\JadwalController;
+
+Route::get('/jadwal', [JadwalController::class, 'tampil'])->name('tampil.jadwal');
+Route::post('/jadwal/simpan', [JadwalController::class, 'simpan'])->name('simpan.jadwal');
+Route::delete('/jadwal/hapus/{id}', [JadwalController::class, 'hapus'])->name('hapus.jadwal');
+
 require __DIR__.'/auth.php';
