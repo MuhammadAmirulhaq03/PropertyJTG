@@ -1,7 +1,22 @@
 <x-guest-layout>
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
-
+        <!-- ✅ Flash Message with auto fade-out -->
+    @if (session('success') || session('error'))
+        <div 
+            x-data="{ show: true }" 
+            x-init="setTimeout(() => show = false, 3000)" 
+            x-show="show"
+            x-transition
+            class="mb-4 rounded-md p-3 border text-sm"
+            :class="{
+                'bg-green-100 border-green-400 text-green-700': '{{ session('success') }}',
+                'bg-red-100 border-red-400 text-red-700': '{{ session('error') }}'
+            }"
+        >
+            {{ session('success') ?? session('error') }}
+        </div>
+    @endif
     <div class="mb-6 text-center">
         <h1 class="text-2xl font-semibold text-gray-900">{{ __('Customer Sign In') }}</h1>
         <p class="mt-2 text-sm text-gray-500">
