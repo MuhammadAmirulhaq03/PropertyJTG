@@ -117,7 +117,7 @@ class User extends Authenticatable
 
     public function admin()
     {
-        return $this->hasOne(Admin::class, 'id');
+        return $this->hasOne(Admin::class, 'user_id');
     }
 
     public function agen()

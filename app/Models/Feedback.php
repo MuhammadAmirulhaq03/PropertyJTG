@@ -9,6 +9,8 @@ class Feedback extends Model
 {
     use HasFactory;
 
+    protected $table = 'feedbacks';
+
     protected $fillable = [
         'rating',
         'mood',
@@ -20,7 +22,13 @@ class Feedback extends Model
         'properti_id',
     ];
 
-        public function admin()
+    protected $casts = [
+        'tanggal' => 'date',
+        'rating' => 'integer',
+        'mood' => 'integer',
+    ];
+
+    public function admin()
     {
         return $this->belongsTo(Admin::class, 'admin_id');
     }

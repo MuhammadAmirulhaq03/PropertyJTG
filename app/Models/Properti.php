@@ -16,11 +16,23 @@ class Properti extends Model
         'tipe',
         'status',
         'spesifikasi',
+        'deskripsi',
         'tipe_properti',
         'admin_id',
     ];
 
-        public function admin()
+    protected $casts = [
+        'harga' => 'float',
+    ];
+
+    protected static function booted(): void
+    {
+        static::deleting(function (self $property): void {
+            $property->media()->get()->each->delete();
+        });
+    }
+
+    public function admin()
     {
         return $this->belongsTo(Admin::class, 'admin_id');
     }
@@ -35,4 +47,28 @@ class Properti extends Model
         return $this->belongsToMany(Customer::class, 'akses_properti', 'properti_id', 'customer_id');
     }
 
+    public function media()
+    {
+        return $this->hasMany(PropertiMedia::class, 'properti_id')->orderBy('sort_order');
+    }
+
+    public function primaryMedia()
+    {
+        return $this->hasOne(PropertiMedia::class, 'properti_id')->where('is_primary', true);
+    }
+
+    public function getPrimaryMediaUrlAttribute(): ?string
+    {
+        if ($this->relationLoaded('primaryMedia') && $this->primaryMedia) {
+            return $this->primaryMedia->url;
+        }
+
+        if ($this->relationLoaded('media')) {
+            return optional($this->media->sortBy('sort_order')->first())->url;
+        }
+
+        $media = $this->media()->orderBy('is_primary', 'desc')->orderBy('sort_order')->first();
+
+        return $media?->url;
+    }
 }

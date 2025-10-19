@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Pelanggan;
 
 use App\Http\Controllers\Controller;
+use App\Models\Properti;
 use App\Models\SearchHistory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -13,7 +14,16 @@ class HomeController extends Controller
 {
     public function index(): View
     {
-        return view('pelanggan.home.index');
+        $featuredProperties = Properti::query()
+            ->with(['primaryMedia'])
+            ->where('status', 'published')
+            ->orderByDesc('updated_at')
+            ->limit(6)
+            ->get();
+
+        return view('pelanggan.home.index', [
+            'featuredProperties' => $featuredProperties,
+        ]);
     }
 
     public function search(Request $request): View

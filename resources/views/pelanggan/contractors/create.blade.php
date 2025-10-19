@@ -9,18 +9,61 @@
                         <p class="text-sm opacity-80 mt-3">{{ now()->translatedFormat('l, d F Y') }}</p>
                     </div>
                     <nav class="px-5 py-6 space-y-2 text-sm text-gray-600">
-                        <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-3 py-2 rounded-2xl hover:bg-[#FFF2E9] transition">
-                            <span class="w-2 h-2 bg-[#DB4437]/60 rounded-full"></span>
-                            {{ __('Customer Dashboard') }}
-                        </a>
-                        <a href="{{ route('homepage') }}" class="flex items-center gap-3 px-3 py-2 rounded-2xl hover:bg-[#FFF2E9] transition">
-                            <span class="w-2 h-2 bg-[#DB4437]/60 rounded-full"></span>
-                            {{ __('Home Page') }}
-                        </a>
-                        <span class="flex items-center gap-3 px-3 py-2 rounded-2xl bg-[#FFF2E9] text-[#DB4437] font-medium">
-                            <span class="w-2 h-2 bg-[#DB4437] rounded-full"></span>
-                            {{ __('Contractor') }}
-                        </span>
+                        @php
+                            $customerLinks = [
+                                [
+                                    'label' => __('Customer Dashboard'),
+                                    'route' => route('dashboard'),
+                                    'active' => request()->routeIs('dashboard'),
+                                ],
+                                [
+                                    'label' => __('Home Page'),
+                                    'route' => route('homepage'),
+                                    'active' => request()->routeIs('homepage'),
+                                ],
+                                [
+                                    'label' => __('Document'),
+                                    'route' => route('documents.index'),
+                                    'active' => request()->routeIs('documents.*'),
+                                ],
+                                [
+                                    'label' => __('Feedback'),
+                                    'route' => route('pelanggan.feedback.create'),
+                                    'active' => request()->routeIs('pelanggan.feedback.*'),
+                                ],
+                                [
+                                    'label' => __('Konsultan Properti'),
+                                    'route' => route('pelanggan.consultants.create'),
+                                    'active' => request()->routeIs('pelanggan.consultants.*'),
+                                ],
+                                [
+                                    'label' => __('Pemesanan Kontraktor'),
+                                    'route' => route('pelanggan.contractors.create'),
+                                    'active' => request()->routeIs('pelanggan.contractors.*'),
+                                ],
+                                [
+                                    'label' => __('Jadwal Kunjungan'),
+                                    'route' => route('pelanggan.jadwal.index'),
+                                    'active' => request()->routeIs('pelanggan.jadwal.*'),
+                                ],
+                                [
+                                    'label' => __('Kalkulator KPR'),
+                                    'route' => route('pelanggan.kpr.show'),
+                                    'active' => request()->routeIs('pelanggan.kpr.*'),
+                                ],
+                            ];
+                        @endphp
+
+                        @foreach ($customerLinks as $item)
+                            <a
+                                href="{{ $item['route'] }}"
+                                class="flex items-center gap-3 px-3 py-2 rounded-2xl transition {{ $item['active'] ? 'bg-[#DB4437]/10 text-[#DB4437] font-semibold shadow-sm' : 'text-gray-600 hover:bg-[#FFF2E9]' }}"
+                            >
+                                <span class="w-2 h-2 rounded-full {{ $item['active'] ? 'bg-[#DB4437]' : 'bg-[#DB4437]/60' }}"></span>
+                                {{ $item['label'] }}
+                            </a>
+                        @endforeach
+
                         <span class="flex items-center gap-3 px-3 py-2 rounded-2xl text-gray-300 cursor-not-allowed">
                             <span class="w-2 h-2 bg-gray-200 rounded-full"></span>
                             Favorite (coming soon)
