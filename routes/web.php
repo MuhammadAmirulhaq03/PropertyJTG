@@ -11,9 +11,13 @@ use App\Http\Controllers\Agen\DashboardController as AgenDashboardController;
 use App\Http\Controllers\Agen\DokumenVerificationController as AgenDokumenVerificationController;
 use App\Http\Controllers\Agen\ProfileController as AgenProfileController;
 use App\Http\Controllers\Agen\ProgressController;
+use App\Http\Controllers\ConsultantController;
+use App\Http\Controllers\ContractorController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Pelanggan\DokumenController;
 use App\Http\Controllers\Pelanggan\HomeController;
+use App\Http\Controllers\Pelanggan\ConsultationScheduleController;
+use App\Http\Controllers\Pelanggan\FeedbackController as PelangganFeedbackController;
 use App\Http\Controllers\Pelanggan\ProfileController as PelangganProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -37,6 +41,20 @@ Route::middleware('auth')->group(function () {
     Route::get('/documents/{documentUpload}/download', [DokumenController::class, 'download'])
         ->whereNumber('documentUpload')
         ->name('documents.download');
+
+    Route::get('/feedback', [PelangganFeedbackController::class, 'create'])->name('pelanggan.feedback.create');
+    Route::post('/feedback', [PelangganFeedbackController::class, 'store'])->name('pelanggan.feedback.store');
+
+    Route::get('/consultants', [ConsultantController::class, 'create'])->name('pelanggan.consultants.create');
+    Route::post('/consultants', [ConsultantController::class, 'store'])->name('pelanggan.consultants.store');
+
+    Route::get('/contractors', [ContractorController::class, 'create'])->name('pelanggan.contractors.create');
+    Route::post('/contractors', [ContractorController::class, 'store'])->name('pelanggan.contractors.store');
+
+    Route::get('/consultation-schedules', [ConsultationScheduleController::class, 'index'])->name('pelanggan.jadwal.index');
+    Route::post('/consultation-schedules', [ConsultationScheduleController::class, 'store'])->name('pelanggan.jadwal.store');
+    Route::delete('/consultation-schedules/{schedule}', [ConsultationScheduleController::class, 'destroy'])
+        ->name('pelanggan.jadwal.destroy');
 });
 
 Route::prefix('admin')
