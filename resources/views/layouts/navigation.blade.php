@@ -1,4 +1,4 @@
-<nav x-data="{ open: false }" class="bg-[#DB4437] text-white font-['Roboto'] shadow">
+﻿<nav x-data="{ open: false }" class="bg-[#DB4437] text-white font-['Roboto'] shadow">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center h-16">
             <!-- Logo + Nama Brand -->
@@ -19,7 +19,14 @@
                 <a href="/" class="hover:text-gray-100 {{ request()->is('/') ? 'underline font-semibold' : '' }}">Home Page</a>
                 <a href="/buy" class="hover:text-gray-100 {{ request()->is('buy') ? 'underline font-semibold' : '' }}">Buy Home</a>
                 <a href="/consultation" class="hover:text-gray-100 {{ request()->is('consultation') ? 'underline font-semibold' : '' }}">Consultation</a>
-                <a href="/about" class="hover:text-gray-100 {{ request()->is('about') ? 'underline font-semibold' : '' }}">About</a>
+                <a href="{{ route('gallery.index') }}" class="hover:text-gray-100 {{ request()->routeIs('gallery.*') ? 'underline font-semibold' : '' }}">{{ __('Galeri Properti') }}</a>
+                @auth
+                    @if (auth()->user()->hasRole('customer'))
+                        <a href="{{ route('pelanggan.kpr.show') }}" class="hover:text-gray-100 {{ request()->routeIs('pelanggan.kpr.*') ? 'underline font-semibold' : '' }}">
+                            Kalkulator KPR
+                        </a>
+                    @endif
+                @endauth
             </div>
 
             <!-- Right Side -->
@@ -80,11 +87,17 @@
                                     <span>{{ __('Pelanggan Center') }}</span>
                                 </x-dropdown-link>
                             @elseif (auth()->user()->hasRole('admin'))
-                                <x-dropdown-link :href="route('admin.documents.index')" class="flex items-center gap-2">
+                                <x-dropdown-link :href="route('admin.crm.index')" class="flex items-center gap-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-[#DB4437]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 6h18M3 12h18M7 18h10" />
                                     </svg>
-                                    <span>{{ __('Customer Module') }}</span>
+                                    <span>{{ __('Customer CRM') }}</span>
+                                </x-dropdown-link>
+                                <x-dropdown-link :href="route('admin.visit-schedules.index', ['tab' => 'visit-schedules'])" class="flex items-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-[#DB4437]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2v-9a2 2 0 00-2-2H5a2 2 0 00-2 2v9a2 2 0 002 2z" />
+                                    </svg>
+                                    <span>{{ __('Kelola Jadwal Kunjungan') }}</span>
                                 </x-dropdown-link>
                             @elseif (auth()->user()->hasRole('agen'))
                                 <x-dropdown-link :href="route('agent.documents.index')" class="flex items-center gap-2">
@@ -141,7 +154,7 @@
             <a href="/" class="block py-2 hover:text-gray-200">Home Page</a>
             <a href="/buy" class="block py-2 hover:text-gray-200">Buy Home</a>
             <a href="/consultation" class="block py-2 hover:text-gray-200">Consultation</a>
-            <a href="/about" class="block py-2 hover:text-gray-200">About</a>
+            <a href="{{ route('gallery.index') }}" class="block py-2 hover:text-gray-200">{{ __('Galeri Properti') }}</a>
         </div>
 
         <div class="border-t border-white/30 px-4 py-3">
@@ -155,12 +168,42 @@
                         </svg>
                         {{ __('Customer Dashboard') }}
                     </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('documents.index')" class="flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#DB4437]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 6h18M3 12h18M7 18h10" />
+                        </svg>
+                        {{ __('Pelanggan Center') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('pelanggan.kpr.show')" class="flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#DB4437]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v6l4 2" />
+                        </svg>
+                        Kalkulator KPR
+                    </x-responsive-nav-link>
                 @elseif (auth()->user()->hasRole('admin'))
                     <x-responsive-nav-link :href="route('admin.dashboard')" class="flex items-center gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#DB4437]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h10m-6 6h12" />
                         </svg>
                         {{ __('Admin Workspace') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('admin.crm.index')" class="flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#DB4437]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 6h18M3 12h18M7 18h10" />
+                        </svg>
+                        {{ __('Customer CRM') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('admin.feedback.index')" class="flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#DB4437]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 8h10M7 12h6M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v11a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 17.5v-11Z" />
+                        </svg>
+                        {{ __('Kelola Feedback') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('admin.visit-schedules.index', ['tab' => 'visit-schedules'])" class="flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#DB4437]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2v-9a2 2 0 00-2-2H5a2 2 0 00-2 2v9a2 2 0 002 2z" />
+                        </svg>
+                        {{ __('Kelola Jadwal Kunjungan') }}
                     </x-responsive-nav-link>
                 @elseif (auth()->user()->hasRole('agen'))
                     <x-responsive-nav-link :href="route('agent.dashboard')" class="flex items-center gap-2">
@@ -169,23 +212,6 @@
                         </svg>
                         {{ __('Agent Workspace') }}
                     </x-responsive-nav-link>
-                @endif
-
-                @if (auth()->user()->hasRole('customer'))
-                    <x-responsive-nav-link :href="route('documents.index')" class="flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#DB4437]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 6h18M3 12h18M7 18h10" />
-                        </svg>
-                        {{ __('Pelanggan Center') }}
-                    </x-responsive-nav-link>
-                @elseif (auth()->user()->hasRole('admin'))
-                    <x-responsive-nav-link :href="route('admin.documents.index')" class="flex items-center gap-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#DB4437]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 6h18M3 12h18M7 18h10" />
-                        </svg>
-                        {{ __('Customer Module') }}
-                    </x-responsive-nav-link>
-                @elseif (auth()->user()->hasRole('agen'))
                     <x-responsive-nav-link :href="route('agent.documents.index')" class="flex items-center gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#DB4437]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 6h18M3 12h18M7 18h10" />
@@ -193,6 +219,7 @@
                         {{ __('Document Verification') }}
                     </x-responsive-nav-link>
                 @endif
+
                 <x-responsive-nav-link :href="route('profile.edit')" class="flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#DB4437]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5.121 17.804A9 9 0 1118.9 17.806M15 11a3 3 0 11-6 0 3 3 0 016 0z" />

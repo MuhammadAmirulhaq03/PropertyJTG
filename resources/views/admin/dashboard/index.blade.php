@@ -1,4 +1,4 @@
-@php
+﻿@php
     $timeRange = $filters['range'] ?? '30';
     $propertyType = $filters['type'] ?? 'all';
     $location = $filters['location'] ?? 'all';
@@ -20,15 +20,45 @@
                     {{ __('Monitor property KPIs, identify lead trends, and keep stakeholders informed with the latest activity across the portfolio.') }}
                 </p>
             </div>
-            <a href="{{ route('admin.documents.index') }}"
-                class="inline-flex items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-semibold transition hover:-translate-y-0.5"
-                style="background-color: {{ $accentSoft }}; color: {{ $accent }}; border-color: {{ $accent }}20;">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h10m-6 6h12" />
-                </svg>
-                {{ __('Customer Module') }}
-            </a>
+            <div class="flex flex-wrap items-center justify-end gap-2">
+                <a href="{{ route('admin.crm.index') }}"
+                    class="inline-flex items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-semibold transition hover:-translate-y-0.5"
+                    style="background-color: {{ $accentSoft }}; color: {{ $accent }}; border-color: {{ $accent }}20;">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h10m-6 6h12" />
+                    </svg>
+                    {{ __('Customer CRM') }}
+                </a>
+                @can('view-team-metrics')
+                <a href="{{ route('admin.feedback.index') }}"
+                    class="inline-flex items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-semibold transition hover:-translate-y-0.5"
+                    style="background-color: {{ $accentSoft }}; color: {{ $accent }}; border-color: {{ $accent }}20;">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 8h10M7 12h6M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v11a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 17.5v-11Z" />
+                    </svg>
+                    {{ __('Kelola Feedback') }}
+                </a>
+                @endcan
+                @can('manage-schedule')
+                <a href="{{ route('admin.visit-schedules.index', ['tab' => 'visit-schedules']) }}"
+                    class="inline-flex items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-semibold transition hover:-translate-y-0.5"
+                    style="background-color: {{ $accentSoft }}; color: {{ $accent }}; border-color: {{ $accent }}20;">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2Z" />
+                    </svg>
+                    {{ __('Kelola Jadwal Kunjungan') }}
+                </a>
+                @endcan
+                @can('manage-properties')
+                <a href="{{ route('admin.properties.index') }}"
+                    class="inline-flex items-center gap-2 rounded-full bg-[#2563EB] px-5 py-2.5 text-sm font-semibold text-white transition hover:-translate-y-0.5">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v12m6-6H6" />
+                    </svg>
+                    {{ __('Kelola Listing') }}
+                </a>
+                @endcan
+            </div>
         </div>
     </x-slot>
 
@@ -266,4 +296,5 @@
         </section>
     </div>
 </x-admin.layouts.app>
+
 
