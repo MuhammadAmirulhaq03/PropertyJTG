@@ -61,6 +61,146 @@
                 </button>
             </div>
         </div>
+</section>
+
+    @if(isset($featuredProperties) && $featuredProperties->isNotEmpty())
+        <section class="bg-white py-16">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+                    <div class="max-w-2xl">
+                        <span class="inline-flex items-center gap-2 rounded-full bg-[#DB4437]/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.35em] text-[#DB4437]">
+                            {{ __('Properti Unggulan') }}
+                        </span>
+                        <h2 class="mt-4 text-3xl font-bold text-[#1F2937] sm:text-4xl">
+                            {{ __('Terbaru dari Jaya Tibar Group') }}
+                        </h2>
+                        <p class="mt-2 text-sm text-gray-500">
+                            {{ __('Listing yang telah diupload admin akan tampil otomatis di beranda dan siap dijelajahi pelanggan.') }}
+                        </p>
+                    </div>
+                    <a href="{{ route('gallery.index') }}" class="inline-flex items-center gap-2 rounded-full border border-[#DB4437] px-5 py-2 text-sm font-semibold text-[#DB4437] transition hover:-translate-y-0.5 hover:bg-[#DB4437]/10">
+                        {{ __('Lihat Semua Properti') }}
+                    </a>
+                </div>
+
+                @php
+                    $statusLabels = [
+                        'published' => __('Tersedia'),
+                        'draft' => __('Draft'),
+                        'archived' => __('Diarsipkan'),
+                    ];
+                @endphp
+
+                <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                    @foreach($featuredProperties as $property)
+                        <article class="group flex h-full flex-col overflow-hidden rounded-3xl border border-gray-100 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
+                            <div class="relative h-52 overflow-hidden">
+                                @if($property->primaryMediaUrl)
+                                    <img src="{{ $property->primaryMediaUrl }}" alt="{{ $property->nama }}" class="h-full w-full object-cover transition duration-500 group-hover:scale-105">
+                                @else
+                                    <div class="flex h-full w-full items-center justify-center bg-gray-100 text-xs text-gray-500">
+                                        {{ __('Belum ada media') }}
+                                    </div>
+                                @endif
+                                <span class="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-[11px] font-semibold text-[#2563EB] shadow">
+                                    {{ $statusLabels[$property->status] ?? ucfirst($property->status) }}
+                                </span>
+                            </div>
+                            <div class="flex flex-1 flex-col gap-3 p-6">
+                                <div>
+                                    <h3 class="text-lg font-semibold text-gray-900">{{ $property->nama }}</h3>
+                                    <p class="text-xs uppercase tracking-widest text-gray-400">{{ $property->lokasi }}</p>
+                                </div>
+                                <div class="rounded-2xl bg-gray-50 px-4 py-3">
+                                    <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">{{ __('Harga') }}</p>
+                                    <p class="text-lg font-bold text-[#DB4437]">Rp {{ number_format($property->harga, 0, ',', '.') }}</p>
+                                </div>
+                                @if($property->deskripsi)
+                                    <p class="line-clamp-3 text-sm leading-relaxed text-gray-600">
+                                        {{ \Illuminate\Support\Str::limit($property->deskripsi, 140) }}
+                                    </p>
+                                @endif
+                                <div class="mt-auto flex items-center justify-between text-xs text-gray-400">
+                                    <span class="rounded-full bg-[#2563EB]/10 px-3 py-1 font-semibold text-[#2563EB]">
+                                        {{ \Illuminate\Support\Str::title($property->tipe_properti) }}
+                                    </span>
+                                    <span class="uppercase tracking-[0.3em]">
+                                        {{ $property->updated_at->translatedFormat('d M Y') }}
+                                    </span>
+                                </div>
+                            </div>
+                        </article>
+                    @endforeach
+                </div>
+            </div>
+        </section>
+    @endif
+
+    <!-- Customer Services Section -->
+    @php
+        $isCustomer = auth()->check() && auth()->user()->hasRole('customer');
+        $consultantUrl = $isCustomer ? route('pelanggan.consultants.create') : (auth()->check() ? route('dashboard') : route('login'));
+        $contractorUrl = $isCustomer ? route('pelanggan.contractors.create') : (auth()->check() ? route('dashboard') : route('login'));
+    @endphp
+    <section class="py-16 bg-[#FFF5E9]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="max-w-2xl">
+                <span class="inline-flex items-center gap-2 rounded-full bg-white/70 px-4 py-1 text-xs font-semibold uppercase tracking-widest text-[#DB4437]">
+                    <span class="h-2 w-2 rounded-full bg-[#DB4437]"></span>
+                    {{ __('Layanan Pelanggan') }}
+                </span>
+                <h2 class="mt-4 text-3xl sm:text-4xl font-bold text-[#DB4437]">
+                    {{ __('Butuh bantuan profesional?') }}
+                </h2>
+                <p class="mt-3 text-gray-600 text-base sm:text-lg">
+                    {{ __('Konsultan dan kontraktor kami siap membantu perjalanan properti Anda dari perencanaan hingga eksekusi.') }}
+                </p>
+            </div>
+
+            <div class="mt-10 grid gap-6 md:grid-cols-2">
+                <div class="group relative flex flex-col justify-between rounded-3xl border border-[#FFE7D6] bg-white/90 p-8 shadow-lg transition hover:-translate-y-1 hover:shadow-2xl">
+                    <div>
+                        <span class="inline-flex items-center gap-2 rounded-full bg-[#FFF2E9] px-3 py-1 text-xs font-semibold uppercase tracking-widest text-[#DB4437]">
+                            {{ __('Konsultan') }}
+                        </span>
+                        <h3 class="mt-4 text-2xl font-bold text-[#DB4437]">{{ __('Temui Konsultan Properti') }}</h3>
+                        <p class="mt-3 text-sm text-gray-600">
+                            {{ __('Diskusikan kebutuhan properti, legalitas, dan perencanaan finansial dengan pakar kami.') }}
+                        </p>
+                    </div>
+                    <a
+                        href="{{ $consultantUrl }}"
+                        class="mt-8 inline-flex items-center justify-center gap-2 rounded-full bg-[#DB4437] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#c63c31]"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12h12m0 0l-4-4m4 4l-4 4" />
+                        </svg>
+                        {{ __('Buat Jadwal Konsultasi') }}
+                    </a>
+                </div>
+
+                <div class="group relative flex flex-col justify-between rounded-3xl border border-[#FFE7D6] bg-white/90 p-8 shadow-lg transition hover:-translate-y-1 hover:shadow-2xl">
+                    <div>
+                        <span class="inline-flex items-center gap-2 rounded-full bg-[#FFF2E9] px-3 py-1 text-xs font-semibold uppercase tracking-widest text-[#DB4437]">
+                            {{ __('Kontraktor') }}
+                        </span>
+                        <h3 class="mt-4 text-2xl font-bold text-[#DB4437]">{{ __('Pesan Tim Kontraktor') }}</h3>
+                        <p class="mt-3 text-sm text-gray-600">
+                            {{ __('Bantu kami memahami proyek Anda dan kami akan menyiapkan tim kontraktor terbaik.') }}
+                        </p>
+                    </div>
+                    <a
+                        href="{{ $contractorUrl }}"
+                        class="mt-8 inline-flex items-center justify-center gap-2 rounded-full bg-[#DB4437] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#c63c31]"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12h12m0 0l-4-4m4 4l-4 4" />
+                        </svg>
+                        {{ __('Ajukan Pemesanan Kontraktor') }}
+                    </a>
+                </div>
+            </div>
+        </div>
     </section>
 
     @include('components.property-search-overlay')
@@ -331,6 +471,63 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="bg-white py-16">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <span class="inline-flex items-center gap-2 rounded-full bg-[#DB4437]/10 px-4 py-1 text-xs font-semibold uppercase tracking-widest text-[#DB4437]">
+                    <span class="h-2 w-2 rounded-full bg-[#DB4437]"></span>
+                    {{ __('Pertanyaan Umum') }}
+                </span>
+                <h2 class="mt-4 text-3xl sm:text-4xl font-bold text-[#DB4437]">
+                    {{ __('FAQ Seputar Jaya Tibar Group') }}
+                </h2>
+                <p class="mt-2 text-gray-600 max-w-3xl mx-auto">
+                    {{ __('Temukan jawaban atas pertanyaan yang paling sering diajukan pelanggan mengenai layanan, proses pembelian, dan dukungan kami.') }}
+                </p>
+            </div>
+
+            <div class="grid gap-4">
+                @php
+                    $faqs = [
+                        [
+                            'question' => __('Bagaimana proses memesan properti di Jaya Tibar Group?'),
+                            'answer' => __('Pilih properti yang diminati, ajukan jadwal kunjungan, dan tim kami akan membantu proses negosiasi, dokumen, hingga serah terima.'),
+                        ],
+                        [
+                            'question' => __('Apakah ada bantuan pembiayaan KPR?'),
+                            'answer' => __('Gunakan Kalkulator KPR untuk simulasi awal dan konsultasikan dengan konsultan kami untuk rekomendasi bank atau skema KPR yang sesuai.'),
+                        ],
+                        [
+                            'question' => __('Bagaimana cara mengunggah dokumen persyaratan?'),
+                            'answer' => __('Masuk sebagai pelanggan, buka Pelanggan Center &gt; Document, lalu unggah dokumen dalam format PDF atau JPG sesuai jenis persyaratan.'),
+                        ],
+                        [
+                            'question' => __('Apakah saya bisa memesan jasa kontraktor melalui platform ini?'),
+                            'answer' => __('Ya, ajukan permintaan di menu Pemesanan Kontraktor. Tim kami akan mencocokkan kebutuhan proyek Anda dengan mitra kontraktor terpercaya.'),
+                        ],
+                    ];
+                @endphp
+
+                @foreach ($faqs as $faq)
+                    <details class="group rounded-2xl border border-[#FFE7D6] bg-white px-6 py-5 shadow-sm transition hover:border-[#DB4437]/50">
+                        <summary class="flex cursor-pointer items-center justify-between text-left text-base font-semibold text-[#DB4437]">
+                            <span>{{ $faq['question'] }}</span>
+                            <span class="ml-4 flex h-8 w-8 items-center justify-center rounded-full bg-[#DB4437]/10 text-[#DB4437] transition group-open:rotate-45">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v12m6-6H6" />
+                                </svg>
+                            </span>
+                        </summary>
+                        <div class="mt-3 text-sm leading-relaxed text-gray-600">
+                            {{ $faq['answer'] }}
+                        </div>
+                    </details>
+                @endforeach
             </div>
         </div>
     </section>
