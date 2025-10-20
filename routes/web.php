@@ -28,6 +28,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'index'])->name('homepage');
 
 Route::get('/properties/search', [HomeController::class, 'search'])->name('properties.search');
+Route::get('/house-view', [HomeController::class, 'houseView'])->name('house-view');
 Route::get('/gallery', [PropertyGalleryController::class, 'index'])->name('gallery.index');
 
 Route::get('/dashboard', DashboardController::class)

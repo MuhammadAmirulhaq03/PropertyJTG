@@ -1,4 +1,4 @@
-<x-app-layout>
+﻿<x-app-layout>
 
     <!-- Hero Section -->
     <section 
@@ -142,7 +142,7 @@
         $consultantUrl = $isCustomer ? route('pelanggan.consultants.create') : (auth()->check() ? route('dashboard') : route('login'));
         $contractorUrl = $isCustomer ? route('pelanggan.contractors.create') : (auth()->check() ? route('dashboard') : route('login'));
     @endphp
-    <section class="py-16 bg-[#FFF5E9]">
+    <section class="py-16 bg-gradient-to-b from-[#FFF8F2] via-[#FFF5E9] to-[#FFF2E9]/80">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="max-w-2xl">
                 <span class="inline-flex items-center gap-2 rounded-full bg-white/70 px-4 py-1 text-xs font-semibold uppercase tracking-widest text-[#DB4437]">
@@ -205,57 +205,66 @@
 
     @include('components.property-search-overlay')
 
-    <!-- Properties Section -->
-    <section class="max-w-7xl mx-auto py-16 px-4 sm:px-6 md:px-10 relative">
-        <!-- Decorative Background -->
-        <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-[#FFF2E9]/30 rounded-full blur-[150px] -z-10"></div>
-        
-        <div class="mb-12 text-center md:text-left">
-            <h2 class="text-2xl md:text-4xl font-bold text-gray-900 mb-2 transform transition-all duration-500 hover:translate-x-2">Some of our Properties</h2>
-            <p class="text-gray-600 text-base md:text-lg flex items-center justify-center md:justify-start gap-2">
-                <span class="w-2 h-2 bg-[#DB4437] rounded-full animate-pulse"></span>
-                Exclusive Homes for You
-            </p>
+    <!-- Feature Overview Section -->
+    <section class="relative overflow-hidden bg-gradient-to-br from-[#FFF2E9]/80 via-white to-white py-16">
+        <div class="absolute inset-0 pointer-events-none">
+            <div class="absolute -top-32 left-1/3 h-80 w-80 rounded-full bg-[#FFE7D6]/40 blur-[140px]"></div>
+            <div class="absolute bottom-0 right-0 h-[520px] w-[520px] bg-[#FFF2E9]/30 rounded-full blur-[140px]"></div>
         </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-10 relative">
+        <div class="absolute top-0 right-0 w-[520px] h-[520px] bg-[#FFF2E9]/30 rounded-full blur-[140px] -z-10"></div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 md:gap-8">
-            @foreach ([
-                ['Cluster 12', 'https://images.unsplash.com/photo-1568605114967-8130f3a36994', 'Rp 750.000.000'],
-                ['Cluster 13', 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c', 'Rp 790.000.000'],
-                ['Cluster 14', 'https://images.unsplash.com/photo-1600047509807-ba8f99d2cdde', 'Rp 780.000.000'],
-                ['Cluster 15', 'https://images.unsplash.com/photo-1599423300746-b62533397364', 'Rp 795.000.000'],
-            ] as [$name, $img, $price])
-                <div class="group bg-gradient-to-br from-white to-gray-50 rounded-3xl shadow-lg hover:shadow-[0_20px_60px_rgba(0,0,0,0.15)] transition-all duration-700 overflow-hidden transform hover:-translate-y-3 hover:scale-[1.02] border border-gray-100 hover:border-[#DB4437]/20">
-                    <div class="relative overflow-hidden">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10"></div>
-                        <img src="{{ $img }}" alt="{{ $name }}" class="w-full h-48 sm:h-52 object-cover transition-all duration-700 group-hover:scale-125 group-hover:rotate-3">
-                        
-                        <!-- Floating Badge -->
-                        <div class="absolute top-4 right-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold text-[#DB4437] shadow-lg opacity-0 group-hover:opacity-100 transform translate-x-4 group-hover:translate-x-0 transition-all duration-500 z-20">
-                            View Details
-                        </div>
-                    </div>
-                    
-                    <div class="p-5">
-                        <h3 class="font-bold text-xl text-gray-900 mb-2 group-hover:text-[#DB4437] transition-colors duration-300">{{ $name }}</h3>
-                        <p class="text-sm text-gray-500 mb-4 line-clamp-2">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        </p>
+        @php
+            $facilityHighlights = [
+                ['title' => 'Integrated Camera', 'description' => 'Smart surveillance keeps every corner monitored at all times.'],
+                ['title' => 'Landscape Garden', 'description' => 'Curated green open space for daily recreation and family time.'],
+                ['title' => 'Prayer Building', 'description' => 'Dedicated mushola on-site for spiritual activities and gatherings.'],
+                ['title' => 'Security 24 Hours', 'description' => 'Professional guards and monitoring ensure round-the-clock safety.'],
+            ];
+        @endphp
 
-                        <div class="flex items-center justify-between pt-3 border-t border-gray-100">
-                            <div class="flex flex-col">
-                                <span class="text-xs text-gray-500 mb-1">Start at</span>
-                                <span class="font-bold text-base text-[#DB4437] group-hover:scale-110 inline-block transition-transform duration-300">{{ $price }}</span>
-                            </div>
-                            <a href="#" class="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-[#DB4437] to-[#c63c31] text-white rounded-full shadow-md hover:shadow-xl transition-all duration-300 transform group-hover:scale-110 group-hover:rotate-12">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 transform group-hover:translate-x-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" />
-                                </svg>
-                            </a>
-                        </div>
-                    </div>
+        <div class="grid gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
+            <div class="space-y-6">
+                <span class="inline-flex items-center gap-2 rounded-full bg-[#FFF2E9] px-3 py-1 text-xs font-semibold uppercase tracking-[0.35em] text-[#DB4437]">
+                    Overview
+                </span>
+                <div class="space-y-3">
+                    <h2 class="text-3xl font-bold leading-tight text-gray-900 md:text-4xl">
+                        Overview Feature &amp; Facility
+                    </h2>
+                    <p class="text-base leading-relaxed text-gray-600 md:text-lg">
+                        Where comfort meets security in a beautifully designed community. Our cluster houses are equipped with integrated security cameras, providing round-the-clock surveillance to ensure your peace of mind. Enjoy leisurely strolls in our landscaped park, a serene space perfect for relaxation and family activities.
+                    </p>
+                    <p class="text-base leading-relaxed text-gray-600 md:text-lg">
+                        Our dedicated on-site security personnel are available 24/7, adding an extra layer of safety for all residents. Additionally, our community features a prayer building, offering a tranquil space for spiritual reflection. Experience the ideal blend of convenience, safety, and tranquility at District 1 Cluster House.
+                    </p>
                 </div>
-            @endforeach
+                <div class="flex flex-wrap items-center gap-4 pt-4">
+                    <a href="{{ route('gallery.index') }}" class="inline-flex items-center gap-2 rounded-full bg-[#DB4437] px-6 py-3 text-sm font-semibold text-white transition hover:bg-[#c63c31]">
+                        Explore Full Gallery
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </a>
+                    <a href="#brochure-showcase" class="inline-flex items-center gap-2 rounded-full border border-[#DB4437]/40 px-6 py-3 text-sm font-semibold text-[#DB4437] transition hover:border-[#DB4437]">
+                        Download Brochure
+                    </a>
+                </div>
+            </div>
+            <div class="grid gap-4 sm:grid-cols-2">
+                @foreach ($facilityHighlights as $highlight)
+                    <div class="group relative overflow-hidden rounded-2xl border border-[#FFE7D6] bg-white/90 p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
+                        <div class="absolute -top-10 -right-10 h-24 w-24 rounded-full bg-[#FFE7D6]/60 blur-2xl transition group-hover:blur-3xl"></div>
+                        <div class="relative flex h-12 w-12 items-center justify-center rounded-2xl bg-[#FFE7D6] text-[#DB4437] shadow-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.75" d="M5 13l4 4L19 7" />
+                            </svg>
+                        </div>
+                        <h3 class="mt-4 text-lg font-semibold text-gray-900">{{ $highlight['title'] }}</h3>
+                        <p class="mt-2 text-sm text-gray-600">{{ $highlight['description'] }}</p>
+                    </div>
+                @endforeach
+            </div>
         </div>
     </section>
 
@@ -263,7 +272,7 @@
     <section class="relative rounded-[40px] overflow-hidden my-10 sm:my-16 mx-4 md:mx-20 group">
         <div class="relative h-72 sm:h-96">
             <img 
-                src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=1400&q=80" 
+                src="{{ asset('assets/house jtg1.jpg') }}" 
                 alt="Modern House" 
                 class="absolute inset-0 w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110"
             >
@@ -284,15 +293,7 @@
                 </span> or investment opportunity, we are your ideal choice.
             </h2>
             
-            <button class="mt-6 bg-gradient-to-r from-[#DB4437] to-[#c63c31] text-white px-8 py-3 rounded-full font-semibold hover:shadow-[0_15px_40px_rgba(219,68,55,0.4)] transition-all duration-500 hover:scale-110 transform hover:-translate-y-1 group/btn relative overflow-hidden">
-                <div class="absolute inset-0 bg-gradient-to-r from-white/0 via-white/30 to-white/0 translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-700"></div>
-                <span class="relative flex items-center justify-center gap-2">
-                    Explore All Property
-                    <svg class="w-5 h-5 group-hover/btn:translate-x-2 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg>
-                </span>
-            </button>
+            
         </div>
     </section>
 
@@ -444,10 +445,10 @@
                             <img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?auto=format&fit=crop&w=1600&q=80" alt="Modern villa exterior" class="w-full h-full object-cover">
                         </div>
                         <div class="brochure-slide" data-slide>
-                            <img src="https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1600&q=80" alt="Cozy living room interior" class="w-full h-full object-cover">
+                              <img src="{{ asset('assets/asset jtg1.jpg') }}" alt="Cozy living room interior" class="w-full h-full object-cover">
                         </div>
                         <div class="brochure-slide" data-slide>
-                            <img src="https://images.unsplash.com/photo-1580587774054-7c9549d3df4e?auto=format&fit=crop&w=1600&q=80" alt="Luxury bedroom design" class="w-full h-full object-cover">
+                            <img src="{{ asset('assets/asset jtg 2.jpg') }}" alt="Luxury bedroom design" class="w-full h-full object-cover">
                         </div>
 
                         <div class="brochure-slider-overlay pointer-events-none"></div>
@@ -813,3 +814,4 @@
     </script>
 
 </x-app-layout>
+

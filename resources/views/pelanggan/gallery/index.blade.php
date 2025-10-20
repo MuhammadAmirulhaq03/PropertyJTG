@@ -1,29 +1,30 @@
 <x-app-layout>
-    <section class="relative overflow-hidden bg-gradient-to-br from-[#0F172A] via-[#1E293B] to-[#0F172A] py-20">
+    <section class="relative overflow-hidden bg-gradient-to-br from-[#FFF5F0] via-[#FFE7D6] to-white py-20">
         <div class="absolute inset-0">
-            <div class="absolute -top-32 -right-20 h-80 w-80 rounded-full bg-[#DB4437]/30 blur-[120px]"></div>
-            <div class="absolute -bottom-24 -left-10 h-96 w-96 rounded-full bg-[#FFE7D6]/40 blur-[140px]"></div>
+            <div class="absolute -top-32 -right-20 h-80 w-80 rounded-full bg-[#DB4437]/20 blur-[120px]"></div>
+            <div class="absolute -bottom-24 -left-10 h-96 w-96 rounded-full bg-[#FFE7D6]/60 blur-[140px]"></div>
         </div>
-        <div class="relative mx-auto flex max-w-6xl flex-col items-center gap-8 px-4 text-center text-white md:flex-row md:text-left">
+        <div class="relative mx-auto flex max-w-6xl flex-col items-center gap-8 px-4 text-center text-gray-900 md:flex-row md:text-left">
             <div class="flex-1 space-y-6">
-                <span class="inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-1 text-xs font-semibold uppercase tracking-[0.35em] text-[#FFE7D6]">
+                <span class="inline-flex items-center gap-2 rounded-full bg-white/70 px-4 py-1 text-xs font-semibold uppercase tracking-[0.35em] text-[#DB4437]">
                     {{ __('Jaya Tibar Group') }}
                 </span>
                 <h1 class="text-4xl font-bold leading-snug md:text-5xl">
                     {{ __('Galeri Properti & Filosofi Kami') }}
                 </h1>
-                <p class="text-base text-slate-200 md:text-lg">
+                <p class="text-base text-gray-600 md:text-lg">
                     {{ __('Eksplorasi portofolio hunian unggulan kami dan temukan bagaimana visi, misi, serta nilai JTG menghadirkan kehidupan modern yang lebih baik.') }}
                 </p>
                 <div class="flex flex-wrap gap-3">
-                    <a href="#property-showcase" class="inline-flex items-center gap-2 rounded-full bg-[#FFE7D6] px-5 py-3 text-sm font-semibold text-[#0F172A] transition hover:-translate-y-0.5">
+                    <a href="#property-showcase" class="inline-flex items-center gap-2 rounded-full bg-[#DB4437] px-5 py-3 text-sm font-semibold text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-[#c63c31]">
                         {{ __('Lihat Koleksi Properti') }}
                     </a>
                 </div>
             </div>
             <div class="flex-1">
-                <div class="overflow-hidden rounded-3xl border border-white/20 bg-white/10 shadow-xl backdrop-blur">
-                    <img src="https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=1200&q=80" alt="Property Gallery" class="h-80 w-full object-cover">
+                <div class="relative overflow-hidden rounded-[2.5rem] border border-white/60 bg-white/80 shadow-xl backdrop-blur">
+                    <div class="pointer-events-none absolute inset-0 rounded-[2.5rem] border border-white/35 shadow-[0_24px_55px_rgba(255,255,255,0.32),0_22px_48px_rgba(17,24,39,0.18)]"></div>
+                    <img src="{{ asset('assets/asset gallery.jpg') }}" alt="Property Gallery" class="relative h-80 w-full rounded-[2.5rem] object-cover shadow-[0_16px_38px_rgba(255,255,255,0.4),0_20px_52px_rgba(15,23,42,0.2)]">
                 </div>
             </div>
         </div>

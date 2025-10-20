@@ -55,6 +55,61 @@ class HomeController extends Controller
         ]);
     }
 
+    public function houseView(): View
+    {
+        $quickFacts = [
+            ['label' => 'Cluster', 'value' => 'District 1'],
+            ['label' => 'Bedrooms', 'value' => '2 Bedrooms'],
+            ['label' => 'Bathrooms', 'value' => '1 Bathroom'],
+            ['label' => 'Building Area', 'value' => '±36 m²'],
+            ['label' => 'Land Area', 'value' => '±6 x 12 m'],
+            ['label' => 'Carport', 'value' => '1 Vehicle'],
+        ];
+
+        $technicalSpecifications = [
+            ['feature' => 'Pondasi', 'district1' => 'Foot foundation', 'district2' => 'Coming Soon'],
+            ['feature' => 'Dinding', 'district1' => 'White color painted', 'district2' => 'Coming Soon'],
+            ['feature' => 'Lantai', 'district1' => 'Homogenous tile 0.60 x 0.60 white color, plain + grouting nat light grey color', 'district2' => 'Coming Soon'],
+            ['feature' => 'Kusen & Pintu', 'district1' => 'Wooden leave door furnish finish + aluminium frame powder coated black + stainless accessories', 'district2' => 'Coming Soon'],
+            ['feature' => 'Jendela', 'district1' => 'Aluminium frame + casement (openable) powder coated black finish + clear glass 8 mm + stainless accessories', 'district2' => 'Coming Soon'],
+            ['feature' => 'Plafon', 'district1' => 'Gypsum board 9 mm white color painted finish / uPVC 0.8 mm', 'district2' => 'Coming Soon'],
+            ['feature' => 'Atap', 'district1' => 'uPVC surface + list plank + ceiling + light steel structure / zinc dark brown color + list plank plywood + ceiling kalsiboard white color finish', 'district2' => 'Coming Soon'],
+            ['feature' => 'Water Supply', 'district1' => 'Deep well system', 'district2' => 'Coming Soon'],
+        ];
+
+        $designImages = [
+            ['title' => 'House Front Perspective', 'description' => 'Facade concept with modern tropical lines and welcoming terrace.', 'path' => 'assets/asset jtg1.jpg'],
+            ['title' => 'Living & Dining Concept', 'description' => 'Open living area connecting to kitchen for functional daily flow.', 'path' => 'assets/asset jtg 2.jpg'],
+            ['title' => 'Floor Plan Overview', 'description' => 'District 1 floor plan featuring 2 bedrooms and integrated wet area.', 'path' => 'assets/house jtg1.jpg'],
+        ];
+
+        $amenities = [
+            [
+                'name' => 'SKA (10 Km)',
+                'tag' => 'Mall Shopping',
+                'description' => 'Regional shopping mall with retail, dining, and convention center that serves as the lifestyle hub for Pekanbaru.',
+            ],
+            [
+                'name' => 'AKAP Terminal (6.5 Km)',
+                'tag' => 'Bus Station',
+                'description' => 'Payung Sekaki terminal with intercity buses connecting Pekanbaru to Sumatra, Java, and major neighboring regions.',
+            ],
+            [
+                'name' => 'UNRI (9.5 Km)',
+                'tag' => 'University',
+                'description' => 'Universitas Riau campus supporting education, collaboration, and continuous community development.',
+            ],
+        ];
+
+        return view('pelanggan.home.house-view', [
+            'quickFacts' => $quickFacts,
+            'technicalSpecifications' => $technicalSpecifications,
+            'designImages' => $designImages,
+            'amenities' => $amenities,
+            'mapImage' => 'assets/house map 2.png',
+        ]);
+    }
+
     private function applyFilters(Collection $properties, array $filters): Collection
     {
         $filtered = $properties;
