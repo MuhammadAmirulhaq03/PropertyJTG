@@ -51,6 +51,11 @@
                                     'route' => route('pelanggan.kpr.show'),
                                     'active' => request()->routeIs('pelanggan.kpr.*'),
                                 ],
+                                [
+                                    'label' => __('Favorit'),
+                                    'route' => route('pelanggan.favorit.index'),
+                                    'active' => request()->routeIs('pelanggan.favorit.*'),
+                                ],
                             ];
                         @endphp
 
@@ -63,11 +68,6 @@
                                 {{ $item['label'] }}
                             </a>
                         @endforeach
-
-                        <span class="flex items-center gap-3 px-3 py-2 rounded-2xl text-gray-300 cursor-not-allowed">
-                            <span class="w-2 h-2 bg-gray-200 rounded-full"></span>
-                            Favorite (coming soon)
-                        </span>
                     </nav>
                 </aside>
 

@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -133,5 +134,16 @@ class User extends Authenticatable
     public function searchHistories(): HasMany
     {
         return $this->hasMany(SearchHistory::class);
+    }
+
+    public function propertyFavorites(): HasMany
+    {
+        return $this->hasMany(PropertyFavorite::class);
+    }
+
+    public function favoriteProperties(): BelongsToMany
+    {
+        return $this->belongsToMany(Properti::class, 'property_favorites', 'user_id', 'properti_id')
+            ->withTimestamps();
     }
 }

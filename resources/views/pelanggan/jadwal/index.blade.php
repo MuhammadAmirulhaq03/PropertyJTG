@@ -19,6 +19,7 @@
                                 ['label' => __('Pemesanan Kontraktor'), 'route' => route('pelanggan.contractors.create'), 'active' => request()->routeIs('pelanggan.contractors.*')],
                                 ['label' => __('Jadwal Kunjungan'), 'route' => route('pelanggan.jadwal.index'), 'active' => request()->routeIs('pelanggan.jadwal.*')],
                                 ['label' => __('Kalkulator KPR'), 'route' => route('pelanggan.kpr.show'), 'active' => request()->routeIs('pelanggan.kpr.*')],
+                                ['label' => __('Favorit'), 'route' => route('pelanggan.favorit.index'), 'active' => request()->routeIs('pelanggan.favorit.*')],
                             ];
                         @endphp
                         @foreach ($customerLinks as $item)
@@ -27,10 +28,6 @@
                                 {{ $item['label'] }}
                             </a>
                         @endforeach
-                        <span class="flex items-center gap-3 px-3 py-2 rounded-2xl text-gray-300 cursor-not-allowed">
-                            <span class="w-2 h-2 bg-gray-200 rounded-full"></span>
-                            Favorite (coming soon)
-                        </span>
                     </nav>
                 </aside>
 

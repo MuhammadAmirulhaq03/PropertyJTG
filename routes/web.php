@@ -11,11 +11,11 @@ use App\Http\Controllers\Admin\VisitScheduleController;
 use App\Http\Controllers\Agen\DashboardController as AgenDashboardController;
 use App\Http\Controllers\Agen\DokumenVerificationController as AgenDokumenVerificationController;
 use App\Http\Controllers\Agen\ProfileController as AgenProfileController;
-use App\Http\Controllers\Agen\ProgressController;
 use App\Http\Controllers\ConsultantController;
 use App\Http\Controllers\ContractorController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Pelanggan\DokumenController;
+use App\Http\Controllers\Pelanggan\FavoriteController;
 use App\Http\Controllers\Pelanggan\FeedbackController as PelangganFeedbackController;
 use App\Http\Controllers\Pelanggan\HomeController;
 use App\Http\Controllers\Pelanggan\KprCalculatorController;
@@ -64,6 +64,10 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/kpr/calculator', [KprCalculatorController::class, 'show'])->name('pelanggan.kpr.show');
         Route::post('/kpr/calculator', [KprCalculatorController::class, 'calculate'])->name('pelanggan.kpr.calculate');
+
+        Route::get('/favorites', [FavoriteController::class, 'index'])->name('pelanggan.favorit.index');
+        Route::post('/favorites/{property}', [FavoriteController::class, 'store'])->name('pelanggan.favorites.store');
+        Route::delete('/favorites/{property}', [FavoriteController::class, 'destroy'])->name('pelanggan.favorites.destroy');
     });
 });
 
@@ -132,10 +136,6 @@ Route::prefix('agent')
         Route::patch('/documents/{documentUpload}', [AgenDokumenVerificationController::class, 'update'])
             ->name('documents.update')
             ->middleware('can:manage-documents');
-
-        Route::get('/progress', [ProgressController::class, 'index'])
-            ->name('progress.index')
-            ->middleware('can:manage-properties');
 
         Route::get('/profile', [AgenProfileController::class, 'index'])
             ->name('profile.index')

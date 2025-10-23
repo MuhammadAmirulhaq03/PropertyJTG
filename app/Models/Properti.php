@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Properti extends Model
 {
@@ -70,5 +71,11 @@ class Properti extends Model
         $media = $this->media()->orderBy('is_primary', 'desc')->orderBy('sort_order')->first();
 
         return $media?->url;
+    }
+
+    public function favoritedBy(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'property_favorites', 'properti_id', 'user_id')
+            ->withTimestamps();
     }
 }
