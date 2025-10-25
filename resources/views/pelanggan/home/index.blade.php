@@ -22,44 +22,29 @@
                     Discover your dream home with flexible options and trusted consultants.
                 </p>
             </div>
-
-            <!-- Enhanced Search Bar -->
-            <div class="bg-white/95 backdrop-blur-xl rounded-3xl shadow-xl p-3 flex flex-col sm:flex-row items-center justify-between gap-2 max-w-4xl mx-auto transform transition-all duration-500 hover:shadow-2xl hover:-translate-y-1 border border-gray-100">
-                <!-- Location -->
-                <button class="group relative flex items-center gap-2 w-full sm:w-auto bg-gray-50 px-4 py-2.5 rounded-2xl text-sm font-medium text-gray-700 transition-all duration-300 hover:bg-white hover:shadow-md overflow-hidden">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-[#DB4437] transition-all duration-300 group-hover:scale-110" fill="currentColor" viewBox="0 0 20 20">
+            <!-- Decorative search icons (no search button) -->
+            <div class="bg-white/95 backdrop-blur-xl rounded-3xl shadow-xl p-3 flex flex-col sm:flex-row items-center justify-between gap-2 max-w-4xl mx-auto border border-gray-100">
+                <div class="group relative flex items-center gap-2 w-full sm:w-auto bg-gray-50 px-4 py-2.5 rounded-2xl text-sm font-medium text-gray-700 transition-all duration-300 hover:bg-white hover:shadow-md overflow-hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-[#DB4437] transition-all duration-300 group-hover:scale-110" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                         <path fill-rule="evenodd" d="M10 18a1 1 0 01-.832-.445C7.07 14.917 4 10.91 4 7a6 6 0 1112 0c0 3.91-3.07 7.917-5.168 10.555A1 1 0 0110 18zm0-13a3 3 0 100 6 3 3 0 000-6z" clip-rule="evenodd" />
                     </svg>
                     <span class="transition-transform duration-300 group-hover:translate-x-0.5">Location</span>
-                </button>
-
-                <!-- Property Type -->
-                <button class="group relative flex items-center gap-2 w-full sm:w-auto bg-gray-50 px-4 py-2.5 rounded-2xl text-sm font-medium text-gray-700 transition-all duration-300 hover:bg-white hover:shadow-md overflow-hidden">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-[#DB4437] transition-all duration-300 group-hover:scale-110" fill="currentColor" viewBox="0 0 20 20">
+                </div>
+                <div class="group relative flex items-center gap-2 w-full sm:w-auto bg-gray-50 px-4 py-2.5 rounded-2xl text-sm font-medium text-gray-700 transition-all duration-300 hover:bg-white hover:shadow-md overflow-hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-[#DB4437] transition-all duration-300 group-hover:scale-110" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                         <path d="M10.707 1.293a1 1 0 00-1.414 0l-8 8a1 1 0 001.414 1.414L3 10.414V18a2 2 0 002 2h10a2 2 0 002-2v-7.586l.293.293a1 1 0 001.414-1.414l-8-8z" />
                     </svg>
                     <span class="transition-transform duration-300 group-hover:translate-x-0.5">Property Type</span>
-                </button>
-
-                <!-- Budget -->
-                <button class="group relative flex items-center gap-2 w-full sm:w-auto bg-gray-50 px-4 py-2.5 rounded-2xl text-sm font-medium text-gray-700 transition-all duration-300 hover:bg-white hover:shadow-md overflow-hidden">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-[#DB4437] transition-all duration-300 group-hover:scale-110 group-hover:rotate-12" fill="currentColor" viewBox="0 0 20 20">
+                </div>
+                <div class="group relative flex items-center gap-2 w-full sm:w-auto bg-gray-50 px-4 py-2.5 rounded-2xl text-sm font-medium text-gray-700 transition-all duration-300 hover:bg-white hover:shadow-md overflow-hidden">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-[#DB4437] transition-all duration-300 group-hover:scale-110 group-hover:rotate-12" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                         <path d="M8.433 7.418c.155-.103.346-.196.567-.267v1.698a2.305 2.305 0 01-.567-.267C8.07 8.34 8 8.114 8 8c0-.114.07-.34.433-.582zM11 12.849v-1.698c.22.071.412.164.567.267.364.243.433.468.433.582 0 .114-.07.34-.433.582a2.305 2.305 0 01-.567.267z" />
                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-13a1 1 0 10-2 0v.092a4.535 4.535 0 00-1.676.662C6.602 6.234 6 7.009 6 8c0 .99.602 1.765 1.324 2.246.48.32 1.054.545 1.676.662v1.941c-.391-.127-.68-.317-.843-.504a1 1 0 10-1.51 1.31c.562.649 1.413 1.076 2.353 1.253V15a1 1 0 102 0v-.092a4.535 4.535 0 001.676-.662C13.398 13.766 14 12.991 14 12c0-.99-.602-1.765-1.324-2.246A4.535 4.535 0 0011 9.092V7.151c.391.127.68.317.843.504a1 1 0 101.511-1.31c-.563-.649-1.413-1.076-2.354-1.253V5z" clip-rule="evenodd" />
                     </svg>
                     <span class="transition-transform duration-300 group-hover:translate-x-0.5">Budget</span>
-                </button>
-
-                <!-- Search Button -->
-                <button 
-                    id="search-overlay-open"
-                    type="button"
-                    data-search-overlay-open
-                    class="bg-[#DB4437] text-white font-semibold px-6 py-2 rounded-full w-full sm:w-auto hover:bg-[#c63c31] transition-all duration-300 hover:scale-105 hover:shadow-xl transform hover:-translate-y-0.5"
-                >
-                    Search Now
-                </button>
+                </div>
             </div>
+            
         </div>
 </section>
 
@@ -203,7 +188,7 @@
         </div>
     </section>
 
-    @include('components.property-search-overlay')
+    {{-- Search overlay removed: gallery now hosts search --}}
 
     <!-- Feature Overview Section -->
     <section class="relative overflow-hidden bg-gradient-to-br from-[#FFF2E9]/80 via-white to-white py-16">
@@ -246,8 +231,8 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7" />
                         </svg>
                     </a>
-                    <a href="#brochure-showcase" class="inline-flex items-center gap-2 rounded-full border border-[#DB4437]/40 px-6 py-3 text-sm font-semibold text-[#DB4437] transition hover:border-[#DB4437]">
-                        Download Brochure
+                    <a href="{{ asset('assets/brochures/Jaya Tibar Group Newest Cluster.pdf') }}" download target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-full border border-[#DB4437]/40 px-6 py-3 text-sm font-semibold text-[#DB4437] transition hover:border-[#DB4437]">
+                        Download Brochure (PDF)
                     </a>
                 </div>
             </div>
@@ -414,7 +399,7 @@
                     </div>
                     <div class="flex flex-wrap items-center gap-4">
                         <a 
-                            href="{{ asset('assets/brochures/latest-property.pdf') }}" 
+                            href="{{ asset('assets/brochures/Jaya Tibar Group Newest Cluster.pdf') }}" 
                             class="inline-flex items-center gap-3 bg-[#DB4437] text-white px-6 py-3 rounded-full font-semibold shadow-lg hover:bg-[#c63c31] transition-all duration-300"
                             download
                         >
@@ -424,7 +409,7 @@
                             Download Our Newest Flyer
                         </a>
                         <a 
-                            href="{{ asset('assets/brochures/latest-property.pdf') }}" 
+                            href="{{ asset('assets/brochures/Jaya Tibar Group Newest Cluster.pdf') }}" 
                             class="inline-flex items-center gap-2 text-[#DB4437] font-medium hover:text-[#c63c31] transition-all duration-300"
                             target="_blank"
                         >
@@ -434,9 +419,7 @@
                             </svg>
                         </a>
                     </div>
-                    <p class="text-xs text-gray-500">
-                        Simpan file terbaru kamu sebagai <code class="font-mono bg-white/70 px-2 py-1 rounded">public/assets/brochures/latest-property.pdf</code> untuk memperbarui tautan ini.
-                    </p>
+                    <p class="text-xs text-gray-500">{{ __('Brochure file:') }} <code class="font-mono bg-white/70 px-2 py-1 rounded">public/assets/brochures/Jaya Tibar Group Newest Cluster.pdf</code></p>
                 </div>
 
                 <div class="brochure-media relative px-6 sm:px-16 pb-14 mt-8">
@@ -698,38 +681,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            const overlay = document.getElementById('search-overlay');
-            const openButtons = document.querySelectorAll('[data-search-overlay-open], #search-overlay-open');
-            const closeBtn = document.getElementById('search-overlay-close');
-
-            if (overlay && closeBtn && openButtons.length > 0) {
-                const openOverlay = () => {
-                    overlay.classList.remove('hidden');
-                    overlay.classList.add('flex');
-                    document.body.classList.add('overflow-hidden');
-                };
-
-                const closeOverlay = () => {
-                    overlay.classList.add('hidden');
-                    overlay.classList.remove('flex');
-                    document.body.classList.remove('overflow-hidden');
-                };
-
-                openButtons.forEach((btn) => btn.addEventListener('click', openOverlay));
-                closeBtn.addEventListener('click', closeOverlay);
-
-                overlay.addEventListener('click', (event) => {
-                    if (event.target === overlay) {
-                        closeOverlay();
-                    }
-                });
-
-                document.addEventListener('keydown', (event) => {
-                    if (event.key === 'Escape' && !overlay.classList.contains('hidden')) {
-                        closeOverlay();
-                    }
-                });
-            }
+            // Search overlay removed; search moved to Gallery
 
             const brochureSection = document.getElementById('brochure-showcase');
             if (!brochureSection) {
@@ -814,4 +766,3 @@
     </script>
 
 </x-app-layout>
-

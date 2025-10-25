@@ -6,6 +6,8 @@ use App\Http\Controllers\Admin\DokumenVerificationController as AdminDokumenVeri
 use App\Http\Controllers\Admin\FeedbackController;
 use App\Http\Controllers\Admin\JadwalController as AdminJadwalController;
 use App\Http\Controllers\Admin\ProfileController as AdminProfileController;
+use App\Http\Controllers\Admin\ConsultantRequestController;
+use App\Http\Controllers\Admin\ContractorRequestController;
 use App\Http\Controllers\Admin\PropertiController;
 use App\Http\Controllers\Admin\VisitScheduleController;
 use App\Http\Controllers\Agen\DashboardController as AgenDashboardController;
@@ -109,6 +111,17 @@ Route::prefix('admin')
             ->name('documents.index')
             ->middleware('can:manage-documents');
 
+        // Customer requests
+        Route::prefix('requests')->name('requests.')->group(function () {
+            Route::get('/consultants', [ConsultantRequestController::class, 'index'])->name('consultants.index');
+            Route::get('/consultants/export', [ConsultantRequestController::class, 'export'])->name('consultants.export');
+            Route::delete('/consultants/{consultant}', [ConsultantRequestController::class, 'destroy'])->name('consultants.destroy');
+
+            Route::get('/contractors', [ContractorRequestController::class, 'index'])->name('contractors.index');
+            Route::get('/contractors/export', [ContractorRequestController::class, 'export'])->name('contractors.export');
+            Route::delete('/contractors/{contractor}', [ContractorRequestController::class, 'destroy'])->name('contractors.destroy');
+        });
+
         Route::resource('visit-schedules', VisitScheduleController::class)->except(['show']);
         Route::patch('/visit-schedules/{visitSchedule}/close', [VisitScheduleController::class, 'close'])->name('visit-schedules.close');
         Route::patch('/visit-schedules/{visitSchedule}/reopen', [VisitScheduleController::class, 'reopen'])->name('visit-schedules.reopen');
@@ -143,7 +156,6 @@ Route::prefix('agent')
     });
 
 require __DIR__.'/auth.php';
-
 
 
 
