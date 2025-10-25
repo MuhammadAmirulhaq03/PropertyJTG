@@ -95,9 +95,32 @@
                         {{ __('Properti yang telah diupload akan tampil secara otomatis bagi publik di halaman galeri dan beranda.') }}
                     </p>
                 </div>
-                <span class="text-xs font-semibold uppercase tracking-[0.3em] text-[#DB4437]">
-                    {{ __('Menampilkan :count properti', ['count' => $properties->count()]) }}
-                </span>
+                <div class="flex w-full flex-col items-stretch gap-3 md:w-auto md:items-end">
+                    <form method="GET" action="{{ route('gallery.index') }}" class="grid grid-cols-2 gap-2 sm:grid-cols-5 md:grid-cols-6">
+                        <input
+                            type="text"
+                            name="q"
+                            value="{{ $filters['q'] ?? '' }}"
+                            placeholder="{{ __('Cari nama/lokasi/kata kunci') }}"
+                            class="col-span-2 rounded-2xl border border-gray-200 bg-white px-3 py-2 text-sm focus:border-[#DB4437] focus:ring-[#DB4437] sm:col-span-2"
+                        >
+                        <select name="type" class="rounded-2xl border border-gray-200 bg-white px-3 py-2 text-sm focus:border-[#DB4437] focus:ring-[#DB4437]">
+                            <option value="">{{ __('Tipe (semua)') }}</option>
+                            @foreach ($types as $key => $label)
+                                <option value="{{ $key }}" {{ ($filters['type'] ?? '') === $key ? 'selected' : '' }}>{{ $label }}</option>
+                            @endforeach
+                        </select>
+                        <input type="number" name="price_min" value="{{ $filters['price_min'] ?? '' }}" inputmode="numeric" min="0" placeholder="{{ __('Harga min') }}" class="rounded-2xl border border-gray-200 bg-white px-3 py-2 text-sm focus:border-[#DB4437] focus:ring-[#DB4437]">
+                        <input type="number" name="price_max" value="{{ $filters['price_max'] ?? '' }}" inputmode="numeric" min="0" placeholder="{{ __('Harga max') }}" class="rounded-2xl border border-gray-200 bg-white px-3 py-2 text-sm focus:border-[#DB4437] focus:ring-[#DB4437]">
+                        <button type="submit" class="inline-flex items-center justify-center rounded-2xl bg-[#DB4437] px-4 py-2 text-sm font-semibold text-white shadow hover:bg-[#c63c31]">{{ __('Cari') }}</button>
+                        @if (!empty(array_filter($filters ?? [])))
+                            <a href="{{ route('gallery.index') }}" class="inline-flex items-center justify-center rounded-2xl bg-gray-100 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-200">{{ __('Reset') }}</a>
+                        @endif
+                    </form>
+                    <span class="text-end text-xs font-semibold uppercase tracking-[0.3em] text-[#DB4437]">
+                        {{ __('Menampilkan :count properti', ['count' => $properties->count()]) }}
+                    </span>
+                </div>
             </div>
 
             @if ($properties->isEmpty())

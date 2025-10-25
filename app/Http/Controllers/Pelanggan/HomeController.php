@@ -44,7 +44,8 @@ class HomeController extends Controller
         $filtered = $this->applyFilters($properties, $filters);
         $activeFilters = $this->buildActiveFilters($filters);
 
-        $this->recordSearchHistory($request, $filters, $activeFilters);
+        // Disabled: do not record search history in profile anymore
+        // $this->recordSearchHistory($request, $filters, $activeFilters);
 
         return view('pelanggan.home.search-results', [
             'properties' => $filtered,

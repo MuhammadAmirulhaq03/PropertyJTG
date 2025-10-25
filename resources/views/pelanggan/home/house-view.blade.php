@@ -16,7 +16,7 @@
                     Kenali rancangan rumah District 1 secara lengkap—mulai dari spesifikasi teknis, tata letak ruang, hingga akses menuju fasilitas di sekitar kawasan.
                 </p>
                 <div class="flex flex-wrap gap-3">
-                    <a href="{{ asset('assets/brochures/latest-property.pdf') }}" class="inline-flex items-center gap-2 rounded-full bg-[#DB4437] px-5 py-3 text-sm font-semibold text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-[#c63c31]" download>
+                    <a href="{{ asset('assets/brochures/Jaya Tibar Group Newest Cluster.pdf') }}" class="inline-flex items-center gap-2 rounded-full bg-[#DB4437] px-5 py-3 text-sm font-semibold text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-[#c63c31]" download target="_blank" rel="noopener">
                         Download Brochure
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4" />

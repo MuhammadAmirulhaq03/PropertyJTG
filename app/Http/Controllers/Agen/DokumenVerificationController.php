@@ -128,6 +128,8 @@ class DokumenVerificationController extends Controller
         $documentUpload->update([
             'status' => $request->input('status'),
             'review_notes' => $request->input('review_notes'),
+            'reviewed_by' => $request->user()->id,
+            'reviewed_at' => now(),
         ]);
 
         if ($request->input('redirect_to') === 'customer') {

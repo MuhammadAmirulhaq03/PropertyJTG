@@ -15,17 +15,7 @@
                     {{ __('Monitor listings, manage documents, and coordinate upcoming schedules for your clients.') }}
                 </p>
             </div>
-            <div class="flex items-center gap-4">
-                <a
-                    href="{{ url('/properties') }}"
-                    class="inline-flex items-center gap-2 rounded-full bg-[#DB4437] px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-[#DB4437]/30 transition hover:-translate-y-0.5 hover:bg-[#c63c31]"
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 12h16m-8-8v16" />
-                    </svg>
-                    {{ __('Add New Property') }}
-                </a>
-            </div>
+            <div class="flex items-center gap-4"></div>
         </div>
     </x-slot>
 
@@ -50,7 +40,7 @@
 
                         <div class="mt-6 flex flex-wrap items-center gap-4">
                             <a
-                                href="{{ url('/properties/search') }}"
+                                href="{{ route('gallery.index') }}"
                                 class="inline-flex items-center gap-2 rounded-full bg-white/15 px-5 py-2 text-sm font-semibold text-white transition hover:bg-white/20"
                             >
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -71,15 +61,7 @@
                     </div>
 
                     <div class="grid grid-cols-2 gap-4 md:gap-6">
-                        @php
-                            $stats = [
-                                ['title' => __('Active Listings'), 'value' => '12', 'change' => '+3 '.strtolower(__('This Week'))],
-                                ['title' => __('New Enquiries'), 'value' => '5', 'change' => __('2 follow-ups pending')],
-                                ['title' => __('Pending Documents'), 'value' => '3', 'change' => __('Awaiting signatures')],
-                                ['title' => __('Scheduled Visits'), 'value' => '4', 'change' => __('Next visit tomorrow')],
-                            ];
-                        @endphp
-                        @foreach ($stats as $stat)
+                        @foreach (($agentStats ?? []) as $stat)
                             <div class="flex flex-col rounded-2xl border border-white/20 bg-white/10 p-4 text-sm backdrop-blur-lg">
                                 <span class="text-white/70">{{ $stat['title'] }}</span>
                                 <span class="mt-2 text-2xl font-bold">{{ $stat['value'] }}</span>
@@ -131,64 +113,37 @@
                             <div>
                                 <h3 class="text-lg font-semibold text-gray-900">{{ __('Recent Activity') }}</h3>
                                 <p class="text-sm text-gray-500">
-                                    {{ __('Stay informed about the latest updates across your workspace.') }}
+                                    {{ __('Your latest document reviews and visit bookings.') }}
                                 </p>
                             </div>
-                            <a href="{{ url('/notifications') }}" class="text-sm font-semibold text-[#DB4437] hover:text-[#c63c31]">
-                                {{ __('View all') }}
-                            </a>
+                            <span class="text-xs font-semibold text-gray-400">{{ now()->translatedFormat('d M Y') }}</span>
                         </div>
 
                         <div class="mt-6 space-y-4">
-                            @foreach ([
-                                ['title' => __('New lead assigned to you'), 'time' => __('15 minutes ago'), 'description' => __('Maria requested a viewing for Cluster 12 premium home.')],
-                                ['title' => __('Document review pending'), 'time' => __('1 hour ago'), 'description' => __('Purchase agreement for Cluster 14 awaits signature.')],
-                                ['title' => __('Property brochure updated'), 'time' => __('Yesterday'), 'description' => __('Latest financing options added to flagship brochure.')],
-                            ] as $activity)
+                            @forelse (($recentActivities ?? collect()) as $activity)
                                 <div class="flex items-start gap-4 rounded-2xl border border-gray-100 bg-gray-50/60 p-4 transition hover:border-[#DB4437]/30 hover:bg-white">
                                     <div class="flex h-10 w-10 items-center justify-center rounded-full bg-[#FFE7D6] text-[#DB4437]">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 16h-1v-4h-1m1 4v-4m8 4V7a2 2 0 00-2-2H6a2 2 0 00-2 2v9m16 0l-2.586-2.586a2 2 0 00-1.414-.586H8a2 2 0 00-1.414.586L4 16" />
-                                        </svg>
+                                        @if (($activity['type'] ?? '') === 'document_reviewed')
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16.5 10.5V6.75A2.25 2.25 0 0014.25 4.5h-6A2.25 2.25 0 006 6.75v10.5A2.25 2.25 0 008.25 19.5h7.5A2.25 2.25 0 0018 17.25V12" /></svg>
+                                        @else
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2Z" /></svg>
+                                        @endif
                                     </div>
                                     <div class="space-y-1">
-                                        <p class="text-sm font-semibold text-gray-900">{{ $activity['title'] }}</p>
-                                        <p class="text-sm text-gray-500">{{ $activity['description'] }}</p>
-                                        <p class="text-xs font-medium text-[#DB4437]/80">{{ $activity['time'] }}</p>
+                                        <p class="text-sm font-semibold text-gray-900">{{ $activity['title'] ?? '' }}</p>
+                                        <p class="text-sm text-gray-500">{{ $activity['description'] ?? '' }}</p>
+                                        <p class="text-xs font-medium text-[#DB4437]/80">{{ optional($activity['time'])->diffForHumans() }}</p>
                                     </div>
                                 </div>
-                            @endforeach
+                            @empty
+                                <div class="rounded-2xl border border-dashed border-gray-300 bg-gray-50 p-6 text-center text-sm text-gray-500">
+                                    {{ __('No recent activity') }}
+                                </div>
+                            @endforelse
                         </div>
                     </div>
 
-                    <!-- Quick Shortcuts -->
-                    <div class="rounded-3xl border border-gray-100 bg-white p-6 shadow-md shadow-gray-200/30">
-                        <h3 class="text-lg font-semibold text-gray-900">{{ __('Quick Shortcuts') }}</h3>
-                        <p class="mt-1 text-sm text-gray-500">{{ __('Jump straight to the tools you use the most.') }}</p>
-
-                        <div class="mt-6 grid gap-4 sm:grid-cols-2">
-                            @foreach ([
-                                ['title' => __('Property Listings'), 'href' => url('/properties'), 'description' => __('Manage, publish, and archive property inventory.')],
-                                ['title' => __('Client Directory'), 'href' => url('/clients'), 'description' => __('Keep your buyer and investor records organised.')],
-                                ['title' => __('Consultation Calendar'), 'href' => url('/consultations'), 'description' => __('Plan meetings and follow-up appointments with ease.')],
-                            ] as $shortcut)
-                                <a
-                                    href="{{ $shortcut['href'] }}"
-                                    class="group relative flex flex-col rounded-2xl border border-gray-200 bg-gray-50/60 p-5 transition hover:border-[#DB4437]/30 hover:bg-white"
-                                >
-                                    <div class="flex items-center justify-between">
-                                        <p class="font-semibold text-gray-900">{{ $shortcut['title'] }}</p>
-                                        <span class="inline-flex h-9 w-9 items-center justify-center rounded-full bg-white text-[#DB4437] shadow group-hover:translate-x-1 transition">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7" />
-                                            </svg>
-                                        </span>
-                                    </div>
-                                    <p class="mt-3 text-sm text-gray-500">{{ $shortcut['description'] }}</p>
-                                </a>
-                            @endforeach
-                        </div>
-                    </div>
+                    <!-- Quick Shortcuts removed per focus on documents and schedules -->
                 </section>
 
                 <!-- Side Column -->
@@ -198,26 +153,26 @@
                         <div class="flex items-center justify-between">
                             <h3 class="text-lg font-semibold text-gray-900">{{ __('Upcoming Schedule') }}</h3>
                             <span class="rounded-full bg-[#FFE7D6] px-3 py-1 text-xs font-semibold uppercase text-[#DB4437]">
-                                {{ __('This Week') }}
+                                {{ __('Bookings') }}: {{ $agentBookedCount ?? 0 }}
                             </span>
                         </div>
                         <div class="mt-6 space-y-4">
-                            @foreach ([
-                                ['day' => __('Tue'), 'time' => '10:30', 'title' => __('Site visit - Cluster 15'), 'location' => __('Central Park Residence')],
-                                ['day' => __('Wed'), 'time' => '14:00', 'title' => __('Virtual consultation'), 'location' => __('Zoom / Overseas investor')],
-                                ['day' => __('Fri'), 'time' => '09:00', 'title' => __('Document signing'), 'location' => __('Head office meeting room')],
-                            ] as $schedule)
+                            @forelse (($agentUpcoming ?? collect()) as $schedule)
                                 <div class="flex gap-4 rounded-2xl border border-gray-100 bg-gray-50/80 p-4 transition hover:border-[#DB4437]/30 hover:bg-white">
                                     <div class="flex flex-col items-center justify-center rounded-2xl bg-white px-3 py-2 text-center shadow">
-                                        <span class="text-xs font-semibold uppercase text-gray-400">{{ $schedule['day'] }}</span>
-                                        <span class="text-sm font-bold text-gray-900">{{ $schedule['time'] }}</span>
+                                        <span class="text-xs font-semibold uppercase text-gray-400">{{ optional($schedule->start_at)->translatedFormat('D') }}</span>
+                                        <span class="text-sm font-bold text-gray-900">{{ optional($schedule->start_at)->format('H:i') }}</span>
                                     </div>
                                     <div>
-                                        <p class="text-sm font-semibold text-gray-900">{{ $schedule['title'] }}</p>
-                                        <p class="text-xs text-gray-500">{{ $schedule['location'] }}</p>
+                                        <p class="text-sm font-semibold text-gray-900">{{ __('Visit with') }} {{ optional($schedule->customer)->name ?? __('Customer') }}</p>
+                                        <p class="text-xs text-gray-500">{{ $schedule->location ?? __('No location specified') }}</p>
                                     </div>
                                 </div>
-                            @endforeach
+                            @empty
+                                <div class="rounded-2xl border border-dashed border-gray-300 bg-gray-50 p-6 text-center text-sm text-gray-500">
+                                    {{ __('No upcoming visits') }}
+                                </div>
+                            @endforelse
                         </div>
                     </div>
 
@@ -253,5 +208,3 @@
         </div>
     </div>
 </x-app-layout>
-
-

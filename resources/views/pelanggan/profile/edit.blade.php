@@ -25,12 +25,7 @@
                 </div>
             </div>
 
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                @include('pelanggan.shared.search-history', [
-                    'searchHistories' => $searchHistories,
-                    'limit' => 10,
-                ])
-            </div>
+            <!-- Recent Searches removed per product direction -->
         </div>
     </div>
 </x-app-layout>

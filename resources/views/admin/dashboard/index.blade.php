@@ -49,6 +49,22 @@
                     {{ __('Kelola Jadwal Kunjungan') }}
                 </a>
                 @endcan
+                <a href="{{ route('admin.requests.consultants.index') }}"
+                    class="inline-flex items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-semibold transition hover:-translate-y-0.5"
+                    style="background-color: {{ $accentSoft }}; color: {{ $accent }}; border-color: {{ $accent }}20;">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7v.01M12 7v.01M16 7v.01M3 12h18M7 21h10a2 2 0 0 0 2-2v-7H5v7a2 2 0 0 0 2 2Z" />
+                    </svg>
+                    {{ __('Permintaan Konsultan') }}
+                </a>
+                <a href="{{ route('admin.requests.contractors.index') }}"
+                    class="inline-flex items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-semibold transition hover:-translate-y-0.5"
+                    style="background-color: {{ $accentSoft }}; color: {{ $accent }}; border-color: {{ $accent }}20;">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 7h18M5 7l1.5 12.5A2 2 0 0 0 8.5 21h7a2 2 0 0 0 1.99-1.75L19 7M9 10v7m6-7v7M8 7l2-4h4l2 4" />
+                    </svg>
+                    {{ __('Permintaan Kontraktor') }}
+                </a>
                 @can('manage-properties')
                 <a href="{{ route('admin.properties.index') }}"
                     class="inline-flex items-center gap-2 rounded-full bg-[#2563EB] px-5 py-2.5 text-sm font-semibold text-white transition hover:-translate-y-0.5">
@@ -296,5 +312,4 @@
         </section>
     </div>
 </x-admin.layouts.app>
-
 
