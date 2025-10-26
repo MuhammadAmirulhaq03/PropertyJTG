@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Pelanggan;
 
 use App\Http\Controllers\Controller;
+use App\Models\Properti;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -129,14 +130,21 @@ class KprCalculatorController extends Controller
      */
     private function availableProperties()
     {
-        return collect(config('properties', []))
-            ->map(fn ($property) => [
-                'id' => $property['id'],
-                'title' => $property['title'],
-                'location' => $property['location'] ?? '',
-                'price' => (int) ($property['price'] ?? 0),
-                'image' => $property['image'] ?? null,
-            ])
+        return Properti::query()
+            ->with(['primaryMedia'])
+            ->where('status', 'published')
+            ->where('tipe_properti', 'residensial')
+            ->orderByDesc('updated_at')
+            ->get()
+            ->map(function (Properti $property) {
+                return [
+                    'id' => $property->id,
+                    'title' => $property->nama,
+                    'location' => $property->lokasi ?? '',
+                    'price' => (int) ($property->harga ?? 0),
+                    'image' => $property->primaryMediaUrl ?? null,
+                ];
+            })
             ->values();
     }
 }

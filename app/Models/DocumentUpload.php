@@ -42,10 +42,13 @@ class DocumentUpload extends Model
         'file_size',
         'status',
         'review_notes',
+        'reviewed_by',
+        'reviewed_at',
     ];
 
     protected $casts = [
         'file_size' => 'integer',
+        'reviewed_at' => 'datetime',
     ];
 
     public function statusLabel(): string

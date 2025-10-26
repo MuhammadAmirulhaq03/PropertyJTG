@@ -13,40 +13,40 @@
             </div>
 
             <p class="text-sm mb-4">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed eiusmod tempor 
-                incididunt ut labore et dolore magna aliqua.
+                {{ __('Solusi manajemen properti dan layanan pelanggan Jaya Tibar Group. Hubungi kami untuk informasi listing, jadwal kunjungan, maupun dukungan dokumen.') }}
             </p>
 
             <div class="flex space-x-4 text-xl">
-                <a href="#" class="hover:text-gray-200 transition">
-                    <i class="fab fa-facebook-f"></i>
-                </a>
-                <a href="#" class="hover:text-gray-200 transition">
-                    <i class="fab fa-x-twitter"></i>
-                </a>
-                <a href="#" class="hover:text-gray-200 transition">
+                <a href="https://www.instagram.com/districtland.jtgtibar?igsh=N2F4MThjYmJ5Njdm" target="_blank" rel="noopener" class="hover:text-gray-200 transition" aria-label="Instagram">
                     <i class="fab fa-instagram"></i>
+                    <span class="sr-only">Instagram</span>
                 </a>
             </div>
         </div>
 
         <!-- Middle Section -->
         <div>
-            <h3 class="text-lg font-semibold mb-3">Company</h3>
+            <h3 class="text-lg font-semibold mb-3">{{ __('Company') }}</h3>
             <ul class="space-y-2 text-sm">
-                <li><a href="#" class="hover:underline">FAQs</a></li>
-                <li><a href="#" class="hover:underline">Services</a></li>
-                <li><a href="#" class="hover:underline">About Us</a></li>
+                <li>
+                    <a href="{{ route('homepage') }}#faq" class="hover:underline">{{ __('FAQs') }}</a>
+                </li>
+                <li>
+                    <a href="{{ route('gallery.index') }}" class="hover:underline">{{ __('Services') }}</a>
+                </li>
+                <li>
+                    <a href="{{ route('homepage') }}#about" class="hover:underline">{{ __('About Us') }}</a>
+                </li>
             </ul>
         </div>
 
         <!-- Right Section -->
         <div>
-            <h3 class="text-lg font-semibold mb-3">Contact</h3>
+            <h3 class="text-lg font-semibold mb-3">{{ __('Contact') }}</h3>
             <ul class="space-y-2 text-sm">
-                <li>0812-3456-7891</li>
-                <li>example@gmail.com</li>
-                <li>Pekanbaru, Lorem ipsum dolor sit amet, consectetur adipisci elit</li>
+                <li>+62 813-7217-2607</li>
+                <li>intan.nabilah3898@student.unri.ac.id</li>
+                <li>Jl. Dona-dona, RT 24, RW 4 Karya Indah, Kec. Tapung, Kabupaten Kampar, Riau</li>
             </ul>
         </div>
     </div>
