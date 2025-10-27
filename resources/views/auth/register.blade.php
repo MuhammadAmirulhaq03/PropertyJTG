@@ -62,7 +62,7 @@
                     <div class="absolute inset-0 bg-[#DB4437]/30"></div>
                 </div>
                 <div class="relative z-10 flex h-full flex-col justify-end p-10 pr-12 text-white">
-                    <h2 class="text-4xl font-extrabold leading-tight drop-shadow-sm sm:text-5xl">
+                    <h2 class="text-3xl font-extrabold leading-tight drop-shadow-sm sm:text-4xl">
                         {{ __('Bangun,') }} {{ __('Kolaborasi,') }}
                         <span class="block text-[#FDE3DF]">{{ __('Wujudkan!') }}</span>
                     </h2>
