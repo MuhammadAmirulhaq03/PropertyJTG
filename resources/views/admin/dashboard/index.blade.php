@@ -67,7 +67,7 @@
                 </a>
                 @can('manage-properties')
                 <a href="{{ route('admin.properties.index') }}"
-                    class="inline-flex items-center gap-2 rounded-full bg-[#2563EB] px-5 py-2.5 text-sm font-semibold text-white transition hover:-translate-y-0.5">
+                    class="inline-flex items-center gap-2 rounded-full bg-[#B45309] px-5 py-2.5 text-sm font-semibold text-white transition hover:-translate-y-0.5">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v12m6-6H6" />
                     </svg>
