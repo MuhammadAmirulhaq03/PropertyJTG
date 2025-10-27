@@ -16,8 +16,14 @@
                     Kenali rancangan rumah District 1 secara lengkap—mulai dari spesifikasi teknis, tata letak ruang, hingga akses menuju fasilitas di sekitar kawasan.
                 </p>
                 <div class="flex flex-wrap gap-3">
-                    <a href="{{ asset('assets/brochures/Jaya Tibar Group Newest Cluster.pdf') }}" class="inline-flex items-center gap-2 rounded-full bg-[#DB4437] px-5 py-3 text-sm font-semibold text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-[#c63c31]" download target="_blank" rel="noopener">
-                        Download Brochure
+                    <a href="{{ asset('assets/brochures/Brosur regency District 1 Type 36_compressed.pdf') }}" class="inline-flex items-center gap-2 rounded-full bg-[#DB4437] px-5 py-3 text-sm font-semibold text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-[#c63c31]" download target="_blank" rel="noopener">
+                        Download Type 36
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4" />
+                        </svg>
+                    </a>
+                    <a href="{{ asset('assets/brochures/Brosur regency district 1 Type 38_compressed.pdf') }}" class="inline-flex items-center gap-2 rounded-full bg-white px-5 py-3 text-sm font-semibold text-[#DB4437] shadow ring-1 ring-[#DB4437]/30 transition hover:bg-[#FFF2E9]" download target="_blank" rel="noopener">
+                        Download Type 38
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4" />
                         </svg>
@@ -147,9 +153,14 @@
                 <a href="{{ route('gallery.index') }}" class="inline-flex items-center gap-2 rounded-full bg-[#DB4437] px-6 py-3 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:bg-[#c63c31]">
                     Lihat Listing Terbaru
                 </a>
-                <a href="{{ asset('assets/brochures/latest-property.pdf') }}" class="inline-flex items-center gap-2 rounded-full border border-[#DB4437]/40 px-6 py-3 text-sm font-semibold text-[#DB4437] transition hover:border-[#DB4437]" download>
-                    Unduh Brochure
-                </a>
+                <div class="flex flex-wrap gap-3">
+                    <a href="{{ asset('assets/brochures/Brosur regency District 1 Type 36_compressed.pdf') }}" class="inline-flex items-center gap-2 rounded-full border border-[#DB4437]/40 px-6 py-3 text-sm font-semibold text-[#DB4437] transition hover:border-[#DB4437]" download target="_blank" rel="noopener">
+                        Unduh Brosur Type 36
+                    </a>
+                    <a href="{{ asset('assets/brochures/Brosur regency district 1 Type 38_compressed.pdf') }}" class="inline-flex items-center gap-2 rounded-full border border-[#DB4437]/40 px-6 py-3 text-sm font-semibold text-[#DB4437] transition hover:border-[#DB4437]" download target="_blank" rel="noopener">
+                        Unduh Brosur Type 38
+                    </a>
+                </div>
             </div>
         </div>
     </section>

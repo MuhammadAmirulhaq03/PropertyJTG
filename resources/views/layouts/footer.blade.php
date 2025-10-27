@@ -44,8 +44,9 @@
         <div>
             <h3 class="text-lg font-semibold mb-3">{{ __('Contact') }}</h3>
             <ul class="space-y-2 text-sm">
-                <li>+62 813-7217-2607</li>
-                <li>intan.nabilah3898@student.unri.ac.id</li>
+                <li><strong>{{ __('Email') }}:</strong> jtg.tibar@gmail.com</li>
+                <li><strong>{{ __('Contact Developer PT') }}:</strong> 0895401550972 (Admin)</li>
+                <li><strong>{{ __('Contact Konstruksi & Konsultan') }}:</strong> 087821752151</li>
                 <li>Jl. Dona-dona, RT 24, RW 4 Karya Indah, Kec. Tapung, Kabupaten Kampar, Riau</li>
             </ul>
         </div>

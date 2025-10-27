@@ -29,7 +29,20 @@ class DokumenVerificationController extends Controller
             'status' => $request->string('status')->toString(),
             'document_type' => $request->string('document_type')->toString(),
             'search' => trim((string) $request->input('search', '')),
+            'requirement' => $request->string('requirement')->toString(),
         ];
+
+        // Compute allowed document types by requirement filter (required/optional)
+        $allowedTypes = null;
+        if (in_array($filters['requirement'], ['required', 'optional'], true)) {
+            $wantRequired = $filters['requirement'] === 'required';
+            $allowedTypes = collect($requirements)
+                ->filter(fn ($meta) => (bool) ($meta['required'] ?? false) === $wantRequired)
+                ->keys()
+                ->all();
+            // Optionally narrow the document type options list to match the requirement filter
+            $documentTypes = collect($documentTypes)->only($allowedTypes)->all();
+        }
 
         $userIds = null;
         if ($filters['search'] !== '') {
@@ -48,11 +61,18 @@ class DokumenVerificationController extends Controller
             ->get()
             ->groupBy('user_id')
             ->filter(fn (Collection $docs) => $docs->first()?->user !== null)
-            ->map(function (Collection $docs) use ($filters) {
+            ->map(function (Collection $docs) use ($filters, $allowedTypes) {
                 $user = $docs->first()->user;
 
                 if ($filters['document_type'] !== '' && $docs->where('document_type', $filters['document_type'])->isEmpty()) {
                     return null;
+                }
+
+                if (is_array($allowedTypes) && ! empty($allowedTypes)) {
+                    // Keep only customers who have at least one doc of the allowed requirement types
+                    if ($docs->whereIn('document_type', $allowedTypes)->isEmpty()) {
+                        return null;
+                    }
                 }
 
                 $overall = $this->resolveCustomerStatus($docs);

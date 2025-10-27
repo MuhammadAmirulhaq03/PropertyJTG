@@ -231,8 +231,8 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7" />
                         </svg>
                     </a>
-                    <a href="{{ asset('assets/brochures/Jaya Tibar Group Newest Cluster.pdf') }}" download target="_blank" rel="noopener" class="inline-flex items-center gap-2 rounded-full border border-[#DB4437]/40 px-6 py-3 text-sm font-semibold text-[#DB4437] transition hover:border-[#DB4437]">
-                        Download Brochure (PDF)
+                    <a href="#brochure-showcase" class="inline-flex items-center gap-2 rounded-full border border-[#DB4437]/40 px-6 py-3 text-sm font-semibold text-[#DB4437] transition hover:border-[#DB4437]">
+                        Download Brochures
                     </a>
                 </div>
             </div>
@@ -398,28 +398,32 @@
                         </div>
                     </div>
                     <div class="flex flex-wrap items-center gap-4">
-                        <a 
-                            href="{{ asset('assets/brochures/Jaya Tibar Group Newest Cluster.pdf') }}" 
-                            class="inline-flex items-center gap-3 bg-[#DB4437] text-white px-6 py-3 rounded-full font-semibold shadow-lg hover:bg-[#c63c31] transition-all duration-300"
-                            download
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4" />
-                            </svg>
-                            Download Our Newest Flyer
-                        </a>
-                        <a 
-                            href="{{ asset('assets/brochures/Jaya Tibar Group Newest Cluster.pdf') }}" 
-                            class="inline-flex items-center gap-2 text-[#DB4437] font-medium hover:text-[#c63c31] transition-all duration-300"
-                            target="_blank"
-                        >
-                            Pratinjau secara online
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M14 3h7m0 0v7m0-7L10 14M5 5h3m-3 0v14h14v-3" />
-                            </svg>
-                        </a>
+                        <div class="flex flex-wrap items-center gap-3">
+                            <a 
+                                href="{{ asset('assets/brochures/Brosur regency District 1 Type 36_compressed.pdf') }}" 
+                                class="inline-flex items-center gap-3 bg-[#DB4437] text-white px-6 py-3 rounded-full font-semibold shadow-lg hover:bg-[#c63c31] transition-all duration-300"
+                                download
+                                target="_blank" rel="noopener"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4" />
+                                </svg>
+                                {{ __('Download Type 36 (PDF)') }}
+                            </a>
+                            <a 
+                                href="{{ asset('assets/brochures/Brosur regency district 1 Type 38_compressed.pdf') }}" 
+                                class="inline-flex items-center gap-3 bg-white text-[#DB4437] px-6 py-3 rounded-full font-semibold shadow-lg ring-1 ring-[#DB4437]/30 hover:bg-[#FFF2E9] transition-all duration-300"
+                                download
+                                target="_blank" rel="noopener"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4" />
+                                </svg>
+                                {{ __('Download Type 38 (PDF)') }}
+                            </a>
+                        </div>
                     </div>
-                    <p class="text-xs text-gray-500">{{ __('Brochure file:') }} <code class="font-mono bg-white/70 px-2 py-1 rounded">public/assets/brochures/Jaya Tibar Group Newest Cluster.pdf</code></p>
+                    
                 </div>
 
                 <div class="brochure-media relative px-6 sm:px-16 pb-14 mt-8">
