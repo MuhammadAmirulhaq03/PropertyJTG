@@ -66,11 +66,6 @@
                         {{ __('Bangun,') }} {{ __('Kolaborasi,') }}
                         <span class="block text-[#FDE3DF]">{{ __('Wujudkan!') }}</span>
                     </h2>
-                    <div class="mt-6 flex items-center gap-8 text-sm font-semibold">
-                        <span>Property</span>
-                        <span class="text-white/80">Konsultan</span>
-                        <span>Kontraktor</span>
-                    </div>
                 </div>
             </div>
         </div>
