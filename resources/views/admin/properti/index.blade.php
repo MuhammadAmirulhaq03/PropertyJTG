@@ -226,10 +226,10 @@
                             </svg>
                             {{ __('Kelola') }}
                         </a>
-                        <form method="POST" action="{{ route('admin.properties.destroy', $property) }}" onsubmit="return confirm('{{ __('Hapus properti ini beserta semua media?') }}');">
+                        <form id="delete-property-{{ $property->id }}" method="POST" action="{{ route('admin.properties.destroy', $property) }}">
                             @csrf
                             @method('DELETE')
-                            <button type="submit"
+                            <button type="button" data-confirm-form="delete-property-{{ $property->id }}" data-confirm-title="{{ __('Hapus properti ini?') }}" data-confirm-message="{{ __('Seluruh media terkait akan ikut terhapus. Tindakan ini tidak dapat dibatalkan.') }}"
                                     class="inline-flex items-center gap-2 rounded-full border border-red-200 px-4 py-2 text-xs font-semibold text-red-600 transition hover:border-red-300 hover:text-red-700">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
@@ -300,6 +300,28 @@
         </section>
     </div>
 </x-admin.layouts.app>
+
+<!-- Confirm Delete Property Modal (blue theme) -->
+<div id="confirm-delete-property-modal" class="fixed inset-0 z-50 hidden" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm"></div>
+    <div class="fixed inset-0 flex min-h-full items-end sm:items-center justify-center p-4 sm:p-6">
+        <div id="confirm-property-panel" class="relative w-full max-w-md transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95 ring-1 ring-[#2563EB]/20">
+            <div class="px-6 pt-6">
+                <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#2563EB]/10">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-[#2563EB]" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 16h-1v-4h-1m1-4h.01M12 21a9 9 0 110-18 9 9 0 010 18z" />
+                    </svg>
+                </div>
+                <h3 id="confirm-property-title" class="mt-4 text-lg font-semibold text-gray-900">{{ __('Hapus properti?') }}</h3>
+                <p id="confirm-property-message" class="mt-2 text-sm leading-relaxed text-gray-600">{{ __('Proses ini akan menghapus properti beserta semua media yang terkait. Lanjutkan?') }}</p>
+            </div>
+            <div class="mt-6 flex items-center justify-end gap-3 border-t border-gray-100 px-6 py-4 bg-gray-50">
+                <button type="button" id="confirm-property-cancel" class="inline-flex justify-center rounded-full border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300">{{ __('Batal') }}</button>
+                <button type="button" id="confirm-property-submit" class="inline-flex justify-center rounded-full bg-[#2563EB] px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-[#1D4ED8] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#2563EB]">{{ __('Hapus') }}</button>
+            </div>
+        </div>
+    </div>
+    </div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
@@ -392,4 +414,62 @@
         updateState();
     });
 </script>
+<script>
+    // Blue confirmation modal for deleting property rows
+    (function () {
+        const modal = document.getElementById('confirm-delete-property-modal');
+        const panel = document.getElementById('confirm-property-panel');
+        const title = document.getElementById('confirm-property-title');
+        const message = document.getElementById('confirm-property-message');
+        const btnCancel = document.getElementById('confirm-property-cancel');
+        const btnSubmit = document.getElementById('confirm-property-submit');
+        let targetFormId = null;
 
+        function openModal(opts) {
+            targetFormId = opts.formId;
+            if (opts.title) title.textContent = opts.title;
+            if (opts.message) message.textContent = opts.message;
+            modal.classList.remove('hidden');
+            modal.setAttribute('aria-hidden', 'false');
+            requestAnimationFrame(() => {
+                panel.classList.remove('opacity-0', 'translate-y-4', 'sm:scale-95');
+            });
+            btnSubmit.focus();
+        }
+
+        function closeModal() {
+            panel.classList.add('opacity-0', 'translate-y-4', 'sm:scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.setAttribute('aria-hidden', 'true');
+                targetFormId = null;
+            }, 150);
+        }
+
+        document.addEventListener('click', function (e) {
+            const trigger = e.target.closest('[data-confirm-form]');
+            if (trigger) {
+                e.preventDefault();
+                openModal({
+                    formId: trigger.getAttribute('data-confirm-form'),
+                    title: trigger.getAttribute('data-confirm-title') || title.textContent,
+                    message: trigger.getAttribute('data-confirm-message') || message.textContent,
+                });
+            }
+        });
+
+        btnCancel.addEventListener('click', closeModal);
+        modal.addEventListener('click', function (e) {
+            if (e.target === modal) closeModal();
+        });
+        btnSubmit.addEventListener('click', function () {
+            if (!targetFormId) return closeModal();
+            const form = document.getElementById(targetFormId);
+            if (form) form.submit();
+            closeModal();
+        });
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeModal();
+        });
+    })();
+</script>
