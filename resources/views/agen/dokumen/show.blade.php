@@ -56,6 +56,11 @@
                                 <h3 class="text-lg font-semibold text-gray-900">
                                     {{ $requirement['label'] ?? Str::headline(str_replace('_', ' ', $document->document_type)) }}
                                 </h3>
+                                @if(isset($requirements[$document->document_type]['required']))
+                                    <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-semibold {{ $requirements[$document->document_type]['required'] ? 'bg-[#DB4437]/10 text-[#DB4437]' : 'bg-gray-100 text-gray-600' }}">
+                                        {{ $requirements[$document->document_type]['required'] ? __('Wajib') : __('Opsional') }}
+                                    </span>
+                                @endif
                                 <span
                                     class="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold {{ $document->statusBadgeClass() }}">
                                     {{ $document->statusLabel() }}

@@ -43,21 +43,21 @@ class DokumenControllerValidationTest extends TestCase
 
         // MIME invalid (PNG is not allowed, only PDF or JPEG)
         $respMime = $this->actingAs($user)->post(route('documents.store'), [
-            'document_type' => 'income_proof',
+            'document_type' => 'ktp_suami_istri',
             'document' => UploadedFile::fake()->create('image.png', 200, 'image/png'),
         ]);
         $respMime->assertStatus(302)->assertSessionHasErrors('document');
 
         // Size too big (> 5120KB)
         $respSize = $this->actingAs($user)->post(route('documents.store'), [
-            'document_type' => 'income_proof',
+            'document_type' => 'ktp_suami_istri',
             'document' => UploadedFile::fake()->create('big.pdf', 6000, 'application/pdf'),
         ]);
         $respSize->assertStatus(302)->assertSessionHasErrors('document');
 
         // Valid payload passes validation and redirects with status
         $respOk = $this->actingAs($user)->post(route('documents.store'), [
-            'document_type' => 'income_proof',
+            'document_type' => 'ktp_suami_istri',
             'document' => UploadedFile::fake()->create('ok.jpg', 500, 'image/jpeg'),
         ]);
         $respOk->assertRedirect(route('documents.index'));

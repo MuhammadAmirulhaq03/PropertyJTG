@@ -134,15 +134,21 @@
                                 @endphp
                                 <div class="rounded-3xl border border-[#FFDCC4] bg-[#FFFBF8] shadow-sm hover:shadow-md transition overflow-hidden {{ $hasUpload ? 'uploaded-card' : '' }}">
                                     <div class="p-6 flex flex-col h-full">
-                                        <div class="flex items-start justify-between gap-3">
+                                        <div class="flex flex-wrap items-start justify-between gap-3">
                                             <div>
-                                                <h2 class="text-lg font-semibold text-gray-900">{{ $requirement['label'] }}</h2>
+                                                <div class="flex items-center gap-2">
+                                                    <h2 class="text-lg font-semibold text-gray-900">{{ $requirement['label'] }}</h2>
+                                                    @php $isRequired = (bool) ($requirement['required'] ?? false); @endphp
+                                                    <span class="inline-flex items-center rounded-full px-2.5 py-0.5 text-[11px] font-semibold {{ $isRequired ? 'bg-[#DB4437]/10 text-[#DB4437]' : 'bg-gray-100 text-gray-600' }}">
+                                                        {{ $isRequired ? __('Wajib') : __('Opsional') }}
+                                                    </span>
+                                                </div>
                                                 <p class="text-xs text-gray-500 mt-1 leading-relaxed">
                                                     {{ $requirement['description'] }}
                                                 </p>
                                             </div>
-                                            <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold {{ $hasUpload ? 'bg-emerald-50 text-emerald-600 border border-emerald-200' : 'bg-gray-100 text-gray-500 border border-gray-200' }}">
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs leading-tight font-semibold whitespace-nowrap shrink-0 {{ $hasUpload ? 'bg-emerald-50 text-emerald-600 border border-emerald-200' : 'bg-gray-100 text-gray-500 border border-gray-200' }}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
                                                     @if ($hasUpload)
                                                         <path fill-rule="evenodd" d="M16.704 4.29a1 1 0 010 1.42l-7.003 7a1 1 0 01-1.414 0l-2.99-2.99a1 1 0 111.414-1.42l2.283 2.284 6.296-6.296a1 1 0 011.414 0z" clip-rule="evenodd" />
                                                     @else
@@ -151,7 +157,7 @@
                                                 </svg>
                                                 @if ($hasUpload)
                                                     <span>{{ __('Terkirim') }}</span>
-                                                    <span class="text-[10px] font-medium text-emerald-500">
+                                                    <span class="text-[10px] font-medium text-emerald-500 hidden sm:inline">
                                                         • {{ $upload->updated_at->diffForHumans() }}
                                                     </span>
                                                 @else
@@ -179,12 +185,21 @@
                                                     <span class="inline-flex items-center gap-2 text-xs font-semibold {{ $upload->statusBadgeClass() }} rounded-full px-3 py-1">
                                                         {{ $upload->statusLabel() }}
                                                     </span>
-                                                    @if ($upload->review_notes)
-                                                        <p class="text-xs text-gray-500 mt-1">
-                                                            {{ $upload->review_notes }}
-                                                        </p>
-                                                    @endif
                                                 </div>
+
+                                                @if ($upload->review_notes)
+                                                    @php
+                                                        $noteBorder = 'border-slate-200';
+                                                        $noteBg = 'bg-slate-50';
+                                                        $noteText = 'text-slate-700';
+                                                        if ($upload->status === 'needs_revision') { $noteBorder = 'border-amber-200'; $noteBg = 'bg-amber-50'; $noteText = 'text-amber-800'; }
+                                                        if ($upload->status === 'rejected') { $noteBorder = 'border-red-200'; $noteBg = 'bg-red-50'; $noteText = 'text-red-800'; }
+                                                    @endphp
+                                                    <div class="mt-3 rounded-2xl border {{ $noteBorder }} {{ $noteBg }} px-4 py-3 text-xs {{ $noteText }}">
+                                                        <p class="font-semibold">{{ __('Catatan dari agen') }}</p>
+                                                        <p class="mt-1 leading-relaxed">{{ $upload->review_notes }}</p>
+                                                    </div>
+                                                @endif
                                             </div>
                                         @else
                                             <p class="mt-4 text-sm text-gray-500 italic">Belum ada dokumen. Silakan unggah untuk melanjutkan.</p>

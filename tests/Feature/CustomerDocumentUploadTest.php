@@ -22,7 +22,7 @@ class CustomerDocumentUploadTest extends TestCase
         $file = UploadedFile::fake()->image('slip.jpg')->size(500);
 
         $response = $this->actingAs($user)->post(route('documents.store'), [
-            'document_type' => 'income_proof',
+            'document_type' => 'slip_gaji_3_bulan',
             'document' => $file,
         ]);
 
@@ -31,17 +31,17 @@ class CustomerDocumentUploadTest extends TestCase
 
         $this->assertDatabaseHas('document_uploads', [
             'user_id' => $user->id,
-            'document_type' => 'income_proof',
+            'document_type' => 'slip_gaji_3_bulan',
             'status' => DocumentUpload::STATUS_SUBMITTED,
             'original_name' => 'slip.jpg',
         ]);
 
         $doc = DocumentUpload::where('user_id', $user->id)
-            ->where('document_type', 'income_proof')
+            ->where('document_type', 'slip_gaji_3_bulan')
             ->first();
 
         $this->assertNotNull($doc);
-        $this->assertTrue(str_starts_with($doc->file_path, "documents/{$user->id}/income_proof/"));
+        $this->assertTrue(str_starts_with($doc->file_path, "documents/{$user->id}/slip_gaji_3_bulan/"));
 
         // Ensure the stored file exists on the fake disk
         $this->assertTrue(Storage::disk('local')->exists($doc->file_path));
@@ -53,7 +53,7 @@ class CustomerDocumentUploadTest extends TestCase
         Storage::fake('local');
 
         $user = User::factory()->create(['role' => 'customer']);
-        $docType = 'income_proof';
+        $docType = 'slip_gaji_3_bulan';
 
         // Seed existing row + file
         $oldPath = "documents/{$user->id}/{$docType}/old-file.jpg";

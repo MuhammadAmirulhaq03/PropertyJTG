@@ -38,7 +38,7 @@
 
             <section class="rounded-3xl bg-white shadow-sm border border-[#FFE7D6] p-6 space-y-6">
                 <form method="GET" action="{{ route('agent.documents.index') }}"
-                    class="grid gap-4 md:grid-cols-4 md:items-end">
+                    class="grid gap-4 md:grid-cols-5 md:items-end">
                     <div class="space-y-1">
                         <label class="text-xs font-semibold uppercase tracking-wider text-gray-500">
                             {{ __('Customer status') }}
@@ -65,6 +65,17 @@
                             @endforeach
                         </select>
                     </div>
+                    <div class="space-y-1">
+                        <label class="text-xs font-semibold uppercase tracking-wider text-gray-500">
+                            {{ __('Requirement') }}
+                        </label>
+                        <select name="requirement"
+                            class="w-full rounded-2xl border-gray-200 text-sm focus:border-[#DB4437] focus:ring-[#DB4437]">
+                            <option value="">{{ __('All') }}</option>
+                            <option value="required" @selected(($filters['requirement'] ?? '') === 'required')>{{ __('Required') }}</option>
+                            <option value="optional" @selected(($filters['requirement'] ?? '') === 'optional')>{{ __('Optional') }}</option>
+                        </select>
+                    </div>
                     <div class="space-y-1 md:col-span-2">
                         <label class="text-xs font-semibold uppercase tracking-wider text-gray-500">
                             {{ __('Search customers') }}
@@ -83,7 +94,7 @@
                                 class="flex-1 border-0 text-sm focus:ring-0">
                         </div>
                     </div>
-                    <div class="md:col-span-4 flex flex-wrap items-center gap-3">
+                    <div class="md:col-span-5 flex flex-wrap items-center gap-3">
                         <button type="submit"
                             class="inline-flex items-center gap-2 rounded-full bg-[#DB4437] px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-[#c63c31]">
                             {{ __('Apply filters') }}
@@ -169,4 +180,3 @@
         </div>
     </div>
 </x-app-layout>
-
