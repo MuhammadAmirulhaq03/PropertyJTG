@@ -24,6 +24,7 @@ use App\Http\Controllers\Pelanggan\KprCalculatorController;
 use App\Http\Controllers\Pelanggan\PropertyGalleryController;
 use App\Http\Controllers\Pelanggan\ProfileController as PelangganProfileController;
 use App\Http\Controllers\Pelanggan\VisitScheduleBookingController;
+use App\Http\Controllers\HeartbeatController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -42,6 +43,12 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [PelangganProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [PelangganProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+// Lightweight heartbeat to keep last_seen_at fresh while a tab is open
+Route::post('/heartbeat', HeartbeatController::class)
+    ->name('heartbeat')
+    ->middleware('auth')
+    ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
 
 Route::middleware('auth')->group(function () {
     Route::get('/documents', [DokumenController::class, 'index'])->name('documents.index');
@@ -156,7 +163,6 @@ Route::prefix('agent')
     });
 
 require __DIR__.'/auth.php';
-
 
 
 

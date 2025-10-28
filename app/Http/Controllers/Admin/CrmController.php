@@ -36,6 +36,7 @@ class CrmController extends Controller
                 'users.phone',
                 'users.alamat',
                 'users.status',
+                'users.last_seen_at',
                 'session_activity.last_activity',
             ])
             ->where('users.role', 'customer');
@@ -59,9 +60,9 @@ class CrmController extends Controller
         $onlineThreshold = now()->subMinutes(5);
 
         $customers = $rawCustomers->map(function ($customer) use ($onlineThreshold) {
-            $lastActivity = $customer->last_activity
-                ? Carbon::createFromTimestamp($customer->last_activity)
-                : null;
+            $lastActivity = $customer->last_seen_at
+                ? Carbon::parse($customer->last_seen_at)
+                : ($customer->last_activity ? Carbon::createFromTimestamp($customer->last_activity) : null);
 
             $isOnline = $lastActivity && $lastActivity->greaterThan($onlineThreshold);
 

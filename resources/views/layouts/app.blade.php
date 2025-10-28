@@ -36,5 +36,28 @@
             </main>
             @include('layouts.footer')
         </div>
+        @auth
+        <script>
+            (function () {
+                const url = "{{ route('heartbeat') }}";
+                function ping() {
+                    try {
+                        if (navigator.sendBeacon) {
+                            navigator.sendBeacon(url, new Blob([], { type: 'application/octet-stream' }));
+                        } else {
+                            fetch(url, { method: 'POST', headers: { 'X-Requested-With': 'XMLHttpRequest' }, body: '' });
+                        }
+                    } catch (_) { /* noop */ }
+                }
+                // Initial ping on load and when tab becomes visible
+                ping();
+                document.addEventListener('visibilitychange', function(){ if (!document.hidden) ping(); });
+                // Periodic ping every 60s
+                setInterval(ping, 60000);
+                // Optional: attempt to ping on unload
+                window.addEventListener('beforeunload', ping);
+            })();
+        </script>
+        @endauth
     </body>
 </html>
