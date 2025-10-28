@@ -174,10 +174,10 @@
                                     <p class="text-xs text-gray-500">{{ $feedback->created_at?->format('H:i') }}</p>
                                 </td>
                                 <td class="px-4 py-4 text-right">
-                                    <form method="POST" action="{{ route('admin.feedback.destroy', $feedback) }}" onsubmit="return confirm('{{ __('Hapus feedback ini?') }}');" class="inline-flex">
+                                    <form id="delete-feedback-{{ $feedback->id }}" method="POST" action="{{ route('admin.feedback.destroy', $feedback) }}" class="inline-flex">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="inline-flex items-center gap-2 rounded-full border border-red-200 bg-white px-4 py-1 text-xs font-semibold text-red-600 transition hover:border-red-300 hover:bg-red-50 hover:text-red-700">
+                                        <button type="button" data-confirm-form="delete-feedback-{{ $feedback->id }}" data-confirm-title="{{ __('Hapus feedback?') }}" data-confirm-message="{{ __('Tindakan ini akan menghapus feedback pelanggan secara permanen.') }}" class="inline-flex items-center gap-2 rounded-full border border-red-200 bg-white px-4 py-1 text-xs font-semibold text-red-600 transition hover:border-red-300 hover:bg-red-50 hover:text-red-700">
                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
                                             </svg>
@@ -200,4 +200,85 @@
             {{ $feedbackItems->links() }}
         </section>
     </div>
+
+    <!-- Confirm Delete Feedback Modal (red theme) -->
+    <div id="confirm-delete-feedback-modal" class="fixed inset-0 z-50 hidden" aria-hidden="true" role="dialog" aria-modal="true">
+        <div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm"></div>
+        <div class="fixed inset-0 flex min-h-full items-end sm:items-center justify-center p-4 sm:p-6">
+            <div id="confirm-feedback-panel" class="relative w-full max-w-md transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95 ring-1 ring-red-200">
+                <div class="px-6 pt-6">
+                    <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-red-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-600" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v4m0 4h.01M4.93 4.93a10 10 0 1114.14 14.14A10 10 0 014.93 4.93z" />
+                        </svg>
+                    </div>
+                    <h3 id="confirm-feedback-title" class="mt-4 text-lg font-semibold text-gray-900">{{ __('Hapus data?') }}</h3>
+                    <p id="confirm-feedback-message" class="mt-2 text-sm leading-relaxed text-gray-600">{{ __('Tindakan ini tidak dapat dibatalkan.') }}</p>
+                </div>
+                <div class="mt-6 flex items-center justify-end gap-3 border-t border-gray-100 px-6 py-4 bg-gray-50">
+                    <button type="button" id="confirm-feedback-cancel" class="inline-flex justify-center rounded-full border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300">{{ __('Batal') }}</button>
+                    <button type="button" id="confirm-feedback-submit" class="inline-flex justify-center rounded-full bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-600">{{ __('Hapus') }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function () {
+            const modal = document.getElementById('confirm-delete-feedback-modal');
+            const panel = document.getElementById('confirm-feedback-panel');
+            const title = document.getElementById('confirm-feedback-title');
+            const message = document.getElementById('confirm-feedback-message');
+            const btnCancel = document.getElementById('confirm-feedback-cancel');
+            const btnSubmit = document.getElementById('confirm-feedback-submit');
+            let targetFormId = null;
+
+            function openModal(opts) {
+                targetFormId = opts.formId;
+                if (opts.title) title.textContent = opts.title;
+                if (opts.message) message.textContent = opts.message;
+                modal.classList.remove('hidden');
+                modal.setAttribute('aria-hidden', 'false');
+                requestAnimationFrame(() => {
+                    panel.classList.remove('opacity-0', 'translate-y-4', 'sm:scale-95');
+                });
+                btnSubmit.focus();
+            }
+
+            function closeModal() {
+                panel.classList.add('opacity-0', 'translate-y-4', 'sm:scale-95');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    modal.setAttribute('aria-hidden', 'true');
+                    targetFormId = null;
+                }, 150);
+            }
+
+            document.addEventListener('click', function (e) {
+                const trigger = e.target.closest('[data-confirm-form]');
+                if (trigger) {
+                    e.preventDefault();
+                    openModal({
+                        formId: trigger.getAttribute('data-confirm-form'),
+                        title: trigger.getAttribute('data-confirm-title') || title.textContent,
+                        message: trigger.getAttribute('data-confirm-message') || message.textContent,
+                    });
+                }
+            });
+
+            btnCancel.addEventListener('click', closeModal);
+            modal.addEventListener('click', function (e) {
+                if (e.target === modal) closeModal();
+            });
+            btnSubmit.addEventListener('click', function () {
+                if (!targetFormId) return closeModal();
+                const form = document.getElementById(targetFormId);
+                if (form) form.submit();
+                closeModal();
+            });
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeModal();
+            });
+        })();
+    </script>
 </x-admin.layouts.app>
