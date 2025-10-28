@@ -47,6 +47,13 @@
             @endif
         </div>
 
+        <!-- Address -->
+        <div>
+            <x-input-label for="alamat" :value="__('Alamat')" />
+            <textarea id="alamat" name="alamat" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#DB4437] focus:ring-[#DB4437]">{{ old('alamat', $user->alamat) }}</textarea>
+            <x-input-error class="mt-2" :messages="$errors->get('alamat')" />
+        </div>
+
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
 
