@@ -13,9 +13,10 @@ class Customer extends Model
         'user_id',
     ];
 
-        public function user()
+    public function user()
     {
-        return $this->belongsTo(User::class, 'id');
+        // Link back to the owning user via user_id
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function feedback()

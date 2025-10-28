@@ -123,12 +123,14 @@ class User extends Authenticatable
 
     public function agen()
     {
-        return $this->hasOne(Agen::class, 'id');
+        // Correct foreign key mapping: agents table references users via user_id
+        return $this->hasOne(Agen::class, 'user_id');
     }
 
     public function customer()
     {
-        return $this->hasOne(Customer::class, 'id');
+        // Correct foreign key mapping: customers table references users via user_id
+        return $this->hasOne(Customer::class, 'user_id');
     }
 
     public function searchHistories(): HasMany
