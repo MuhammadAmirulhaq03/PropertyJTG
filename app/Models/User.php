@@ -113,6 +113,8 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            // Track real-time presence; ensure Carbon instance
+            'last_seen_at' => 'datetime',
         ];
     }
 
