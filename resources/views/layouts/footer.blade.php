@@ -5,7 +5,7 @@
         <!-- Left Section -->
         <div>
             <div class="flex items-center space-x-3 mb-3">
-                <img src="{{ asset('assets/jtg.png') }}" alt="Logo" class="h-10 w-10">
+                <img src="{{ asset('assets/jtg.png') }}" alt="Logo" class="block h-12 w-12 p-0.5 rounded-lg ring-2 ring-white ring-offset-0 shadow-sm">
                 <div>
                     <h2 class="text-lg font-bold">JAYA TIBAR GROUP</h2>
                     <p class="text-sm">Real Estate Management Platform</p>

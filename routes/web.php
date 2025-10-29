@@ -142,6 +142,7 @@ Route::prefix('admin')
         Route::get('/staff/agents', [StaffController::class, 'index'])->name('staff.agents.index');
         Route::post('/staff/agents', [StaffController::class, 'storeAgent'])->name('staff.agents.store');
         Route::post('/staff/agents/{user}/reset-password', [StaffController::class, 'resetPassword'])->name('staff.agents.reset');
+        Route::delete('/staff/agents/{user}', [StaffController::class, 'destroy'])->name('staff.agents.destroy');
     });
 
 Route::prefix('agent')
@@ -162,6 +163,12 @@ Route::prefix('agent')
         Route::patch('/documents/{documentUpload}', [AgenDokumenVerificationController::class, 'update'])
             ->name('documents.update')
             ->middleware('can:manage-documents');
+        Route::post('/documents/{documentUpload}/claim', [AgenDokumenVerificationController::class, 'claim'])
+            ->name('documents.claim')
+            ->middleware('can:manage-documents');
+        Route::post('/documents/{documentUpload}/release', [AgenDokumenVerificationController::class, 'release'])
+            ->name('documents.release')
+            ->middleware('can:manage-documents');
 
         Route::get('/profile', [AgenProfileController::class, 'index'])
             ->name('profile.index')
@@ -169,5 +176,3 @@ Route::prefix('agent')
     });
 
 require __DIR__.'/auth.php';
-
-

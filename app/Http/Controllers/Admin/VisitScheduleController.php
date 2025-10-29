@@ -171,6 +171,12 @@ class VisitScheduleController extends Controller
 
     private function ensureTimeslotIsValid(int $agentId, Carbon $startAt, Carbon $endAt, ?int $ignoreId = null): void
     {
+        if ($startAt->lessThan(now())) {
+            throw ValidationException::withMessages([
+                'start_time' => __('Waktu mulai tidak boleh di masa lalu. Pilih waktu yang masih akan datang.'),
+            ]);
+        }
+
         if ($endAt->lessThanOrEqualTo($startAt)) {
             throw ValidationException::withMessages([
                 'end_time' => __('Waktu selesai harus lebih besar dari waktu mulai.'),
@@ -231,7 +237,6 @@ class VisitScheduleController extends Controller
             ->get(['id', 'name', 'email', 'status']);
     }
 }
-
 
 
 

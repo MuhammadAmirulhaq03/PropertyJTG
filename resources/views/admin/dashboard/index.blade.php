@@ -1,4 +1,4 @@
-﻿@php
+@php
     $timeRange = $filters['range'] ?? '30';
     $propertyType = $filters['type'] ?? 'all';
     $location = $filters['location'] ?? 'all';
@@ -20,7 +20,7 @@
                     {{ __('Monitor property KPIs, identify lead trends, and keep stakeholders informed with the latest activity across the portfolio.') }}
                 </p>
             </div>
-            <div class="flex flex-wrap items-center justify-end gap-2">
+            <div class="hidden">
                 <a href="{{ route('admin.crm.index') }}"
                     class="inline-flex items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-semibold transition hover:-translate-y-0.5"
                     style="background-color: {{ $accentSoft }}; color: {{ $accent }}; border-color: {{ $accent }}20;">
@@ -49,6 +49,14 @@
                     {{ __('Kelola Jadwal Kunjungan') }}
                 </a>
                 @endcan
+                <a href="{{ route('admin.staff.agents.index') }}"
+                    class="inline-flex items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-semibold transition hover:-translate-y-0.5"
+                    style="background-color: {{ $accentSoft }}; color: {{ $accent }}; border-color: {{ $accent }}20;">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 14a4 4 0 10-8 0m8 0v1a4 4 0 01-4 4v0a4 4 0 01-4-4v-1m8 0a4 4 0 10-8 0M12 6a4 4 0 110 8 4 4 0 010-8z" />
+                    </svg>
+                    {{ __('Staff ? Agents') }}
+                </a>
                 <a href="{{ route('admin.requests.consultants.index') }}"
                     class="inline-flex items-center gap-2 rounded-full border px-5 py-2.5 text-sm font-semibold transition hover:-translate-y-0.5"
                     style="background-color: {{ $accentSoft }}; color: {{ $accent }}; border-color: {{ $accent }}20;">
@@ -172,8 +180,8 @@
         <section class="grid gap-10 xl:grid-cols-12 items-start">
             <article class="rounded-[34px] border border-[#E2E8F0] bg-white p-8 shadow-sm xl:col-span-8">
                 <div class="flex items-center justify-between">
-                    <h3 class="text-lg font-semibold text-gray-900">{{ __('Views & leads trend') }}</h3>
-                    <span class="text-xs text-gray-400">{{ __('Dummy visualisation') }}</span>
+                    <h3 class="text-lg font-semibold text-gray-900">{{ __('Favorites & visits trend') }}</h3>
+                    <span class="text-xs text-gray-400">{{ __('Live data') }}</span>
                 </div>
 
                 <div class="mt-8 h-72">
@@ -223,11 +231,11 @@
                         <ul class="space-y-2 text-sm text-gray-600">
                             <li class="flex items-center gap-2">
                                 <span class="inline-block h-2 w-2 rounded-full" style="background: {{ $accent }}"></span>
-                                {{ __('Views') }}: {{ number_format(end($trend['views'])) }}
+                                {{ __('Favorites') }}: {{ number_format(end($trend['views'])) }}
                             </li>
                             <li class="flex items-center gap-2">
                                 <span class="inline-block h-2 w-2 rounded-full bg-[#D97706]"></span>
-                                {{ __('Leads') }}: {{ number_format(end($trend['leads'])) }}
+                                {{ __('Visits') }}: {{ number_format(end($trend['leads'])) }}
                             </li>
                         </ul>
                     </div>
@@ -236,8 +244,8 @@
 
             <article class="rounded-[34px] border border-[#E2E8F0] bg-white p-6 shadow-sm xl:col-span-4">
                 <div class="flex items-center justify-between">
-                    <h3 class="text-lg font-semibold text-gray-900">{{ __('Lead sources breakdown') }}</h3>
-                    <span class="text-xs text-gray-400">{{ __('Dummy percentages') }}</span>
+                    <h3 class="text-lg font-semibold text-gray-900">{{ __('Favorites by type') }}</h3>
+                    <span class="text-xs text-gray-400">{{ __('Live data') }}</span>
                 </div>
                 <div class="mt-6 space-y-5">
                     @foreach ($leadSources['labels'] as $index => $label)
@@ -266,8 +274,8 @@
         <section class="grid gap-10 xl:grid-cols-12">
             <article class="rounded-[28px] border border-[#E2E8F0] bg-white p-6 shadow-sm xl:col-span-4">
                 <div class="flex items-center justify-between">
-                    <h3 class="text-lg font-semibold text-gray-900">{{ __('Leads by channel') }}</h3>
-                    <span class="text-xs text-gray-400">{{ __('Dummy data') }}</span>
+                    <h3 class="text-lg font-semibold text-gray-900">{{ __('Document status breakdown') }}</h3>
+                    <span class="text-xs text-gray-400">{{ __('Live data') }}</span>
                 </div>
                 <div class="mt-6 space-y-4">
                     @foreach ($leadsByChannel as $channel)
@@ -310,6 +318,48 @@
                 {{ __('Need more admin tools? Reserve this area for upcoming modules like financial summaries, staff performance, or campaign insights.') }}
             </article>
         </section>
+
+        @if (!empty($recentActivities))
+        <section class="mt-10 grid gap-10 xl:grid-cols-12">
+            <article class="rounded-[28px] border border-[#E2E8F0] bg-white p-6 shadow-sm xl:col-span-6">
+                <div class="flex items-center justify-between">
+                    <h3 class="text-lg font-semibold text-gray-900">{{ __('Recent activities') }}</h3>
+                    <span class="text-xs text-gray-400">{{ __('Live data') }}</span>
+                </div>
+                <ul class="mt-4 divide-y divide-gray-100">
+                    @foreach (($recentActivities ?? []) as $activity)
+                        <li class="py-3 flex items-start gap-3">
+                            <span class="mt-1 inline-flex h-6 w-6 items-center justify-center rounded-full" style="background-color: {{ $accentSoft }}; color: {{ $accent }};">
+                                @switch($activity['type'])
+                                    @case('visit_booked')
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2Z" /></svg>
+                                        @break
+                                    @case('document_reviewed')
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-8 4h8m-9 4h10a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2Z" /></svg>
+                                        @break
+                                    @case('listing_updated')
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0h6" /></svg>
+                                        @break
+                                    @case('user_registered')
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M18 9a6 6 0 11-12 0 6 6 0 0112 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19a6 6 0 00-12 0" /></svg>
+                                        @break
+                                    @case('favorite')
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 6 4 4 6.5 4c1.74 0 3.41 1.01 4.22 2.53C11.09 5.01 12.76 4 14.5 4 17 4 19 6 19 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                                        @break
+                                    @default
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v6l4 2" /></svg>
+                                @endswitch
+                            </span>
+                            <div class="flex-1">
+                                <p class="text-sm font-semibold text-gray-900">{{ $activity['title'] }}</p>
+                                <p class="text-xs text-gray-500">{{ $activity['description'] }}</p>
+                            </div>
+                            <span class="text-[11px] text-gray-400 whitespace-nowrap">{{ optional($activity['time'])->diffForHumans() }}</span>
+                        </li>
+                    @endforeach
+                </ul>
+            </article>
+        </section>
+        @endif
     </div>
 </x-admin.layouts.app>
-

@@ -13,6 +13,7 @@ use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Password as PasswordRule;
 use Illuminate\View\View;
+use Throwable;
 
 class StaffController extends Controller
 {
@@ -81,5 +82,22 @@ class StaffController extends Controller
 
         return back()->with('success', __('Kata sandi sementara telah diset. Agen harus menggantinya saat login.'));
     }
-}
 
+    public function destroy(Request $request, User $user): RedirectResponse
+    {
+        abort_unless($user->role === 'agen', 404);
+
+        try {
+            DB::transaction(function () use ($user) {
+                // Terminate any active sessions for this user
+                DB::table('sessions')->where('user_id', $user->id)->delete();
+                // Deleting the user will cascade to agens and related FKs that are set to cascade
+                $user->delete();
+            });
+        } catch (Throwable $e) {
+            return back()->with('error', __('Tidak dapat menghapus agen karena terkait data lain.'))->with('error_detail', $e->getMessage());
+        }
+
+        return back()->with('success', __('Agen berhasil dihapus.'));
+    }
+}

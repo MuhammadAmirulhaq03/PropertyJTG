@@ -14,9 +14,10 @@ class VisitScheduleBookingController extends Controller
     {
         $user = $request->user();
 
+        // Only show future slots. Some older data may lack end_at, so rely on start_at.
         $availableSlots = VisitSchedule::with('agent')
             ->available()
-            ->where('end_at', '>=', now())
+            ->where('start_at', '>=', now())
             ->orderBy('start_at')
             ->get();
 

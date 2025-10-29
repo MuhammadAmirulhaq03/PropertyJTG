@@ -4,11 +4,13 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -116,6 +118,24 @@ class User extends Authenticatable
             // Track real-time presence; ensure Carbon instance
             'last_seen_at' => 'datetime',
         ];
+    }
+
+    /**
+     * Display name with role-based prefix for agents.
+     */
+    protected function displayName(): Attribute
+    {
+        return Attribute::get(function () {
+            $name = $this->attributes['name'] ?? '';
+            if ($this->roleSlug() === 'agen') {
+                $lower = \Illuminate\Support\Str::lower($name);
+                if (\Illuminate\Support\Str::startsWith($lower, 'agent ')) {
+                    return $name;
+                }
+                return 'Agent ' . $name;
+            }
+            return $name;
+        });
     }
 
     public function admin()

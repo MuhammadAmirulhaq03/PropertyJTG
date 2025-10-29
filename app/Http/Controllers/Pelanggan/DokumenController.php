@@ -22,6 +22,7 @@ class DokumenController extends Controller
 
         $existingUploads = DocumentUpload::query()
             ->where('user_id', $user->id)
+            ->with('reviewer')
             ->get()
             ->keyBy('document_type');
 

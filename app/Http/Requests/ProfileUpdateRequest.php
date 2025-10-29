@@ -25,6 +25,8 @@ class ProfileUpdateRequest extends FormRequest
                 'max:255',
                 Rule::unique(User::class)->ignore($this->user()->id),
             ],
+            // Optional phone number for scheduling coordination
+            'phone' => ['nullable', 'string', 'max:30'],
             // Optional address used in Admin CRM view
             'alamat' => ['nullable', 'string', 'max:255'],
         ];

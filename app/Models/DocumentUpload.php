@@ -70,4 +70,9 @@ class DocumentUpload extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function reviewer(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'reviewed_by');
+    }
 }

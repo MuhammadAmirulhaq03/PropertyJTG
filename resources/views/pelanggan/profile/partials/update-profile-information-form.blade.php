@@ -47,6 +47,14 @@
             @endif
         </div>
 
+        <!-- Phone -->
+        <div>
+            <x-input-label for="phone" :value="__('Phone Number')" />
+            <x-text-input id="phone" name="phone" type="tel" class="mt-1 block w-full" :value="old('phone', $user->phone)" autocomplete="tel" placeholder="+62 812-3456-7890" />
+            <x-input-error class="mt-2" :messages="$errors->get('phone')" />
+            <p class="mt-1 text-xs text-gray-500">{{ __('Add your phone number so the assigned agent can reach you for scheduled visits.') }}</p>
+        </div>
+
         <!-- Address -->
         <div>
             <x-input-label for="alamat" :value="__('Alamat')" />

@@ -5,7 +5,7 @@
             <div class="flex items-center space-x-3">
                 <a href="/" class="flex items-center space-x-3">
                 <img src="{{ asset('assets/jtg.png') }}" 
-                    class="block h-12 w-auto p-1 rounded " 
+                    class="block h-14 w-auto p-0.5 rounded-lg ring-2 ring-white ring-offset-0 shadow-sm" 
                     alt="Logo">
                     <div class="leading-tight">
                         <div class="text-lg font-bold tracking-wide">JAYA TIBAR GROUP</div>
@@ -66,11 +66,12 @@
                         </a>
                     @endif
 
-                    <!-- Dropdown User -->
+                    <!-- Dropdown User (hidden for admin; admin uses floating rail) -->
+                    @if (! auth()->user()->hasRole('admin'))
                     <x-dropdown align="right" width="48">
                         <x-slot name="trigger">
                             <button class="inline-flex items-center px-3 py-2 text-sm leading-4 font-medium rounded-md bg-white text-[#DB4437] hover:bg-gray-100 focus:outline-none transition">
-                                <div>{{ Auth::user()->name }}</div>
+                                <div>{{ Auth::user()->display_name }}</div>
                                 <svg class="ml-2 h-4 w-4 text-[#DB4437]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                                 </svg>
@@ -125,9 +126,9 @@
                             </form>
                         </x-slot>
                     </x-dropdown>
+                    @endif
                 @else
                     <a href="{{ route('login') }}" class="bg-white text-[#DB4437] px-4 py-2 rounded-md text-sm font-semibold hover:bg-gray-100 transition">Login</a>
-                    <a href="{{ route('register') }}" class="border border-white px-4 py-2 rounded-md text-sm font-semibold hover:bg-white hover:text-[#DB4437] transition">Register</a>
                 @endauth
             </div>
 
@@ -157,7 +158,7 @@
 
         <div class="border-t border-white/30 px-4 py-3">
             @auth
-                <div class="font-semibold">{{ Auth::user()->name }}</div>
+                <div class="font-semibold">{{ Auth::user()->display_name }}</div>
                 <div class="text-sm text-white/80 mb-3">{{ Auth::user()->email }}</div>
                 @if (auth()->user()->hasRole('customer'))
                     <x-responsive-nav-link :href="route('dashboard')" class="flex items-center gap-2">
@@ -235,9 +236,8 @@
                     </x-responsive-nav-link>
                 </form>
             @else
-                <div class="flex flex-col space-y-2">
+                <div class="flex">
                     <a href="{{ route('login') }}" class="bg-white text-[#DB4437] text-center px-4 py-2 rounded-md font-semibold hover:bg-gray-100 transition">Login</a>
-                    <a href="{{ route('register') }}" class="border border-white text-center px-4 py-2 rounded-md font-semibold hover:bg-white hover:text-[#DB4437] transition">Register</a>
                 </div>
             @endauth
         </div>

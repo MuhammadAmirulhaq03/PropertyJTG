@@ -59,7 +59,7 @@
                             <select id="agent_id" name="agent_id" required class="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 text-sm focus:border-[#2563EB] focus:ring-[#2563EB]">
                                 <option value="">{{ __('Pilih agen') }}</option>
                                 @foreach ($agents as $agent)
-                                    <option value="{{ $agent->id }}" @selected(old('agent_id') == $agent->id)>{{ $agent->name }} - {{ $agent->email }}</option>
+                                    <option value="{{ $agent->id }}" @selected(old('agent_id') == $agent->id)>{{ $agent->display_name }} - {{ $agent->email }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -128,7 +128,7 @@
                             <select name="agent_id" id="filter-agent" class="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 text-sm focus:border-[#2563EB] focus:ring-[#2563EB]">
                                 <option value="">{{ __('Semua agen') }}</option>
                                 @foreach ($agents as $agent)
-                                    <option value="{{ $agent->id }}" @selected($filters['agent'] == $agent->id)>{{ $agent->name }}</option>
+                                    <option value="{{ $agent->id }}" @selected($filters['agent'] == $agent->id)>{{ $agent->display_name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -161,7 +161,7 @@
                                     <tr class="align-top transition hover:bg-gray-50">
                                         <td class="px-4 py-4">
                                             <div class="flex flex-col gap-1">
-                                                <span class="font-semibold text-gray-900">{{ $schedule->agent?->name ?? __('Tidak diketahui') }}</span>
+                                                <span class="font-semibold text-gray-900">{{ $schedule->agent?->display_name ?? __('Tidak diketahui') }}</span>
                                                 <span class="text-xs text-gray-500">{{ $schedule->agent?->email ?? '—' }}</span>
                                             </div>
                                             @if ($schedule->customer)
@@ -246,10 +246,10 @@
                                                         {{ __('Tidak dapat dihapus') }}
                                                     </span>
                                                 @else
-                                                    <form method="POST" action="{{ route('admin.visit-schedules.destroy', $schedule) }}" onsubmit="return confirm('{{ __('Hapus jadwal ini?') }}');">
+                                                    <form id="delete-schedule-{{ $schedule->id }}" method="POST" action="{{ route('admin.visit-schedules.destroy', $schedule) }}">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <button type="submit" class="inline-flex items-center gap-2 rounded-full border border-red-200 bg-white px-4 py-1 text-xs font-semibold text-red-600 transition hover:border-red-300 hover:bg-red-50 hover:text-red-700">
+                                                        <button type="button" data-confirm-form="delete-schedule-{{ $schedule->id }}" data-confirm-title="{{ __('Hapus Jadwal?') }}" data-confirm-message="{{ __('Tindakan ini akan menghapus jadwal kunjungan secara permanen.') }}" class="inline-flex items-center gap-2 rounded-full border border-red-200 bg-white px-4 py-1 text-xs font-semibold text-red-600 transition hover:border-red-300 hover:bg-red-50 hover:text-red-700">
                                                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
                                                             </svg>
@@ -273,6 +273,97 @@
                 </article>
             </div>
         </section>
+        <!-- Shared red confirm modal for schedule deletion -->
+        <div id="confirm-schedule-modal" class="fixed inset-0 z-50 hidden" aria-hidden="true" role="dialog" aria-modal="true">
+            <div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm"></div>
+            <div class="fixed inset-0 flex min-h-full items-end sm:items-center justify-center p-4 sm:p-6">
+                <div id="confirm-schedule-panel" class="relative w-full max-w-md transform overflow-hidden rounded-2xl bg-white text-left shadow-2xl transition-all opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95 ring-1 ring-red-200">
+                    <div class="px-6 pt-6">
+                        <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-red-100">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-600" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v4m0 4h.01M4.93 4.93a10 10 0 1114.14 14.14A10 10 0 014.93 4.93z" />
+                            </svg>
+                        </div>
+                        <h3 id="confirm-schedule-title" class="mt-4 text-lg font-semibold text-gray-900">{{ __('Konfirmasi') }}</h3>
+                        <p id="confirm-schedule-message" class="mt-2 text-sm leading-relaxed text-gray-600">{{ __('Tindakan ini akan menghapus jadwal.') }}</p>
+                    </div>
+                    <div class="mt-6 flex items-center justify-end gap-3 border-t border-gray-100 px-6 py-4 bg-gray-50">
+                        <button type="button" id="confirm-schedule-cancel" class="inline-flex justify-center rounded-full border border-gray-300 px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300">{{ __('Batal') }}</button>
+                        <button type="button" id="confirm-schedule-submit" class="inline-flex justify-center rounded-full bg-red-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-600">{{ __('Hapus') }}</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            (function () {
+                const modal = document.getElementById('confirm-schedule-modal');
+                const panel = document.getElementById('confirm-schedule-panel');
+                const title = document.getElementById('confirm-schedule-title');
+                const message = document.getElementById('confirm-schedule-message');
+                const btnCancel = document.getElementById('confirm-schedule-cancel');
+                const btnSubmit = document.getElementById('confirm-schedule-submit');
+                let targetFormId = null;
+
+                function openModal(opts) {
+                    targetFormId = opts.formId;
+                    if (opts.title) title.textContent = opts.title;
+                    if (opts.message) message.textContent = opts.message;
+                    modal.classList.remove('hidden');
+                    modal.setAttribute('aria-hidden', 'false');
+                    requestAnimationFrame(() => { panel.classList.remove('opacity-0', 'translate-y-4', 'sm:scale-95'); });
+                    btnSubmit.focus();
+                }
+                function closeModal() {
+                    panel.classList.add('opacity-0', 'translate-y-4', 'sm:scale-95');
+                    setTimeout(() => { modal.classList.add('hidden'); modal.setAttribute('aria-hidden', 'true'); targetFormId = null; }, 150);
+                }
+                document.addEventListener('click', function (e) {
+                    const trigger = e.target.closest('[data-confirm-form]');
+                    if (trigger) {
+                        e.preventDefault();
+                        openModal({
+                            formId: trigger.getAttribute('data-confirm-form'),
+                            title: trigger.getAttribute('data-confirm-title') || title.textContent,
+                            message: trigger.getAttribute('data-confirm-message') || message.textContent,
+                        });
+                    }
+                });
+                btnCancel.addEventListener('click', closeModal);
+                modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); });
+                btnSubmit.addEventListener('click', function () {
+                    if (!targetFormId) return closeModal();
+                    const form = document.getElementById(targetFormId);
+                    if (form) form.submit();
+                    closeModal();
+                });
+                document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !modal.classList.contains('hidden')) closeModal(); });
+            })();
+        </script>
+        <script>
+            (function(){
+                const dateEl = document.getElementById('date');
+                const startEl = document.getElementById('start_time');
+                const endEl = document.getElementById('end_time');
+                if(!dateEl || !startEl || !endEl) return;
+                function pad(n){ return n.toString().padStart(2,'0'); }
+                function updateMins(){
+                    try {
+                        const today = new Date();
+                        const sel = new Date(dateEl.value + 'T00:00:00');
+                        if (isNaN(sel.getTime())) return;
+                        if (sel.toDateString() === today.toDateString()) {
+                            const minStr = pad(today.getHours()) + ':' + pad(today.getMinutes());
+                            startEl.min = minStr;
+                            endEl.min = minStr;
+                        } else {
+                            startEl.removeAttribute('min');
+                            endEl.removeAttribute('min');
+                        }
+                    } catch(_) {}
+                }
+                updateMins();
+                dateEl.addEventListener('change', updateMins);
+            })();
+        </script>
     </div>
 </x-admin.customer.layout>
-

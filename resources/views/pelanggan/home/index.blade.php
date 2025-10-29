@@ -282,6 +282,7 @@
         </div>
     </section>
 
+    @if(false)
     <!-- Why Choose Us Section -->
     <section class="bg-gradient-to-br from-[#FFF2E9] via-[#FFE7D6]/50 to-[#FFF2E9] py-20 px-4 sm:px-6 md:px-10 relative overflow-hidden">
         <!-- Animated Background Elements -->
@@ -368,6 +369,8 @@
             </div>
         </div>
     </section>
+    @endif
+    @include('pelanggan.home.partials.about-slider')
     <!-- Brochure Section -->
     <section id="brochure-showcase" class="relative py-20 bg-gradient-to-b from-[#FFF2E9] via-[#FFF7F1] to-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-10">

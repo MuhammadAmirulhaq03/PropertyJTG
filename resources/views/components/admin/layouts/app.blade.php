@@ -8,5 +8,11 @@
             {{ $slot }}
         </div>
     </div>
-</x-app-layout>
 
+    {{-- Floating right admin rail for quick navigation across admin pages --}}
+    @auth
+        @if (auth()->user()->hasRole(['admin']))
+            <x-admin.rail />
+        @endif
+    @endauth
+</x-app-layout>

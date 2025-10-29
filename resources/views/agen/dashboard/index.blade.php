@@ -166,6 +166,11 @@
                                     <div>
                                         <p class="text-sm font-semibold text-gray-900">{{ __('Visit with') }} {{ optional($schedule->customer)->name ?? __('Customer') }}</p>
                                         <p class="text-xs text-gray-500">{{ $schedule->location ?? __('No location specified') }}</p>
+                                        @php($phone = optional($schedule->customer)->phone)
+                                        <p class="mt-1 text-xs font-medium {{ $phone ? 'text-gray-700' : 'text-gray-400' }}">
+                                            {{ __('Phone') }}:
+                                            <span>{{ $phone ?: __('Not provided') }}</span>
+                                        </p>
                                     </div>
                                 </div>
                             @empty

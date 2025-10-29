@@ -37,7 +37,10 @@
                             <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-[#DB4437] shadow-sm focus:ring-[#DB4437]" name="remember">
                             <span class="ms-2">{{ __('Remember my staff session') }}</span>
                         </label>
-                        <a href="{{ route('login') }}" class="hover:text-gray-900">{{ __('Back to customer login') }}</a>
+                        <div class="flex items-center gap-4">
+                            <a href="{{ route('password.request') }}" class="hover:text-gray-900">{{ __('Forgot Password?') }}</a>
+                            <a href="{{ route('login') }}" class="hover:text-gray-900">{{ __('Back to customer login') }}</a>
+                        </div>
                     </div>
 
                     <div class="mt-6">
