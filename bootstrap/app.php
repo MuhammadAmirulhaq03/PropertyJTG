@@ -17,6 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         // Update last_seen_at for authenticated users (throttled inside middleware)
         $middleware->appendToGroup('web', \App\Http\Middleware\UpdateLastSeen::class);
+        $middleware->appendToGroup('web', \App\Http\Middleware\MustChangePassword::class);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

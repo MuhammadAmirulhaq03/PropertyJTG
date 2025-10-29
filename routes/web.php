@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\ConsultantRequestController;
 use App\Http\Controllers\Admin\ContractorRequestController;
 use App\Http\Controllers\Admin\PropertiController;
 use App\Http\Controllers\Admin\VisitScheduleController;
+use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\Agen\DashboardController as AgenDashboardController;
 use App\Http\Controllers\Agen\DokumenVerificationController as AgenDokumenVerificationController;
 use App\Http\Controllers\Agen\ProfileController as AgenProfileController;
@@ -136,6 +137,11 @@ Route::prefix('admin')
         Route::get('/profile', [AdminProfileController::class, 'index'])
             ->name('profile.index')
             ->middleware('can:view-dashboard');
+
+        // Staff management (Agen only, created by admin)
+        Route::get('/staff/agents', [StaffController::class, 'index'])->name('staff.agents.index');
+        Route::post('/staff/agents', [StaffController::class, 'storeAgent'])->name('staff.agents.store');
+        Route::post('/staff/agents/{user}/reset-password', [StaffController::class, 'resetPassword'])->name('staff.agents.reset');
     });
 
 Route::prefix('agent')
@@ -163,6 +169,5 @@ Route::prefix('agent')
     });
 
 require __DIR__.'/auth.php';
-
 
 
