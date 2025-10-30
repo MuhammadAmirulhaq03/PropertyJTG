@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Pelanggan;
 
 use App\Http\Controllers\Controller;
 use App\Models\Feedback;
+use App\Models\Customer;
 use App\Models\Properti;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -42,7 +43,10 @@ class FeedbackController extends Controller
         $user = $request->user();
         $property = Properti::findOrFail($validated['properti_id']);
 
-        $customerId = optional($user->customer)->id ?? $user?->id;
+        // Ensure we always reference a valid customers.id (FK). Create a minimal
+        // Customer record for this user if it doesn't exist yet.
+        $customerId = optional($user->customer)->id
+            ?? Customer::firstOrCreate(['user_id' => $user->id])->id;
 
         Feedback::create([
             'properti_id' => $property->id,

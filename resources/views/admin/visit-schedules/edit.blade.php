@@ -21,7 +21,7 @@
                     <label for="agent_id" class="text-xs font-semibold uppercase tracking-widest text-gray-500">{{ __('Pilih agen') }}</label>
                     <select id="agent_id" name="agent_id" required class="mt-1 w-full rounded-2xl border-gray-200 bg-gray-50 text-sm focus:border-[#2563EB] focus:ring-[#2563EB] {{ $schedule->isBooked() ? 'cursor-not-allowed opacity-70' : '' }}" {{ $schedule->isBooked() ? 'disabled' : '' }}>
                         @foreach ($agents as $agent)
-                            <option value="{{ $agent->id }}" @selected(old('agent_id', $schedule->agent_id) == $agent->id)>{{ $agent->name }} — {{ $agent->email }}</option>
+                            <option value="{{ $agent->id }}" @selected(old('agent_id', $schedule->agent_id) == $agent->id)>{{ $agent->display_name }} — {{ $agent->email }}</option>
                         @endforeach
                     </select>
                     @if($schedule->isBooked())
@@ -95,3 +95,30 @@
         </div>
     </div>
 </x-admin.customer.layout>
+
+<script>
+(function(){
+    const dateEl = document.getElementById('date');
+    const startEl = document.getElementById('start_time');
+    const endEl = document.getElementById('end_time');
+    if(!dateEl || !startEl || !endEl) return;
+    function pad(n){ return n.toString().padStart(2,'0'); }
+    function updateMins(){
+        try {
+            const today = new Date();
+            const sel = new Date(dateEl.value + 'T00:00:00');
+            if (isNaN(sel.getTime())) return;
+            if (sel.toDateString() === today.toDateString()) {
+                const minStr = pad(today.getHours()) + ':' + pad(today.getMinutes());
+                startEl.min = minStr;
+                endEl.min = minStr;
+            } else {
+                startEl.removeAttribute('min');
+                endEl.removeAttribute('min');
+            }
+        } catch(_) {}
+    }
+    updateMins();
+    dateEl.addEventListener('change', updateMins);
+})();
+</script>

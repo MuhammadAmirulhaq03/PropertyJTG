@@ -7,6 +7,7 @@ use App\Models\Properti;
 use App\Models\SearchHistory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 
@@ -21,8 +22,32 @@ class HomeController extends Controller
             ->limit(6)
             ->get();
 
+        // Load 3–4 about images from public/assets/about safely (case-insensitive extensions)
+        $aboutDir = public_path('assets/about');
+        $aboutImages = collect(File::exists($aboutDir) ? File::files($aboutDir) : [])
+            ->filter(function ($file) {
+                $ext = strtolower($file->getExtension());
+                return in_array($ext, ['jpg','jpeg','png','webp'], true);
+            })
+            ->sortBy(fn($file) => strtolower($file->getFilename()))
+            ->take(4)
+            ->map(function ($file) {
+                return asset('assets/about/' . $file->getFilename());
+            })
+            ->values();
+
+        if ($aboutImages->isEmpty()) {
+            $aboutImages = collect([
+                asset('assets/asset jtg1.jpg'),
+                asset('assets/asset jtg 2.jpg'),
+                asset('assets/house jtg1.jpg'),
+            ]);
+        }
+
         return view('pelanggan.home.index', [
             'featuredProperties' => $featuredProperties,
+            'aboutSlides' => $aboutImages,
+            'aboutText' => 'PT. Jaya Tibar Group is a company that operates in the fields of building and infrastructure development, construction, and consultancy. We have a strong commitment to quality, timeliness, and client satisfaction. Built on a foundation of professionalism and integrity, we provide comprehensive solutions in the planning, design, and execution of construction projects for both the public and private sectors.',
         ]);
     }
 

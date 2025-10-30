@@ -100,6 +100,14 @@
                 </aside>
 
                 <div class="flex-1">
+                    @php
+                        $assignedReviewer = optional(collect($uploads ?? [])->values()->firstWhere(fn($u) => !empty($u->reviewed_by))?->reviewer);
+                    @endphp
+                    @if ($assignedReviewer)
+                        <div class="mb-4 rounded-3xl border border-blue-200 bg-blue-50 px-5 py-4 text-sm text-blue-800">
+                            {{ __('Your documents are being reviewed by') }}: <span class="font-semibold">{{ $assignedReviewer->display_name ?? $assignedReviewer->name }}</span>
+                        </div>
+                    @endif
                     <div class="bg-white rounded-3xl shadow-lg border border-[#FFE7D6] p-6 sm:p-8">
                         <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
                             <div>

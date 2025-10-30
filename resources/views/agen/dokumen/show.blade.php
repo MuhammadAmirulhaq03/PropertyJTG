@@ -94,7 +94,35 @@
                                     {{ __('Download file') }}
                                 </a>
                             </div>
+                            @if ($document->reviewer)
+                                <div class="mt-3 rounded-2xl border border-blue-200 bg-blue-50 px-4 py-2 text-xs text-blue-800">
+                                    {{ __('This document is being reviewed by') }}: <span class="font-semibold">{{ $document->reviewer->display_name ?? $document->reviewer->name }}</span>
+                                </div>
+                            @endif
                         </div>
+                    </div>
+
+                    <div class="mt-4">
+                        @if (! $document->reviewer)
+                            <form method="POST" action="{{ route('agent.documents.claim', $document) }}">
+                                @csrf
+                                <button class="inline-flex items-center gap-2 rounded-full border border-emerald-200 bg-white px-4 py-1 text-xs font-semibold text-emerald-700 transition hover:border-emerald-300 hover:bg-emerald-50">
+                                    {{ __('Start review') }}
+                                </button>
+                            </form>
+                        @elseif ($document->reviewed_by === auth()->id())
+                            <div class="flex items-center gap-2">
+                                <span class="inline-flex items-center gap-2 rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700">{{ __('You are reviewing this') }}</span>
+                                <form method="POST" action="{{ route('agent.documents.release', $document) }}">
+                                    @csrf
+                                    <button class="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-3 py-1 text-xs font-semibold text-gray-600 transition hover:border-gray-300 hover:bg-gray-50">
+                                        {{ __('Release') }}
+                                    </button>
+                                </form>
+                            </div>
+                        @else
+                            <span class="inline-flex items-center gap-2 rounded-full bg-gray-100 px-3 py-1 text-xs font-semibold text-gray-600">{{ __('View-only: claimed by') }} {{ $document->reviewer->display_name ?? $document->reviewer->name }}</span>
+                        @endif
                     </div>
 
                     <form method="POST" action="{{ route('agent.documents.update', $document) }}"

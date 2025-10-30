@@ -64,7 +64,7 @@
                                     <div class="space-y-2">
                                         <span class="inline-flex items-center gap-2 rounded-full bg-[#DB4437]/10 px-3 py-1 text-xs font-semibold text-[#DB4437]">
                                             <span class="h-2 w-2 rounded-full bg-[#DB4437]"></span>
-                                            {{ __('Agen') }} &middot; {{ $slot->agent->name }}
+                                            {{ __('Agen') }} &middot; {{ $slot->agent->display_name }}
                                         </span>
                                         <p class="text-lg font-semibold text-gray-900">{{ $slot->start_at->translatedFormat('l, d F Y') }}</p>
                                         <p class="text-sm text-gray-600">{{ $slot->start_at->format('H:i') }} - {{ $slot->end_at->format('H:i') }} WIB</p>
@@ -100,7 +100,7 @@
                             @forelse ($myBookings as $booking)
                                 <div class="border border-[#FFE7D6] rounded-2xl p-5 sm:p-6 shadow-sm flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                                     <div class="space-y-1">
-                                        <p class="text-sm font-semibold text-[#DB4437]">{{ $booking->agent->name }}</p>
+                                        <p class="text-sm font-semibold text-[#DB4437]">{{ $booking->agent->display_name }}</p>
                                         <p class="text-sm text-gray-600">{{ $booking->start_at->translatedFormat('l, d F Y') }} · {{ $booking->start_at->format('H:i') }} - {{ $booking->end_at->format('H:i') }} WIB</p>
                                         <p class="text-xs text-gray-500">{{ __('Lokasi') }}: {{ $booking->location ?? __('Belum ditentukan') }}</p>
                                         @if ($booking->notes)

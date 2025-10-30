@@ -120,7 +120,7 @@
                                 <span class="block text-sm font-semibold text-gray-700">Nilai pengalaman Anda</span>
                                 <div class="flex items-center gap-3">
                                     @for ($i = 1; $i <= 5; $i++)
-                                        <label class="flex flex-col items-center justify-center w-12 h-12 rounded-2xl border text-sm font-semibold cursor-pointer transition {{ old('rating') == $i ? 'bg-[#DB4437] text-white border-[#DB4437]' : 'border-[#F4D3C5] hover:border-[#DB4437]' }}">
+                                        <label class="rating-option flex flex-col items-center justify-center w-12 h-12 rounded-2xl border text-sm font-semibold cursor-pointer transition transform {{ old('rating') == $i ? 'bg-[#DB4437] text-white border-[#DB4437] ring-2 ring-[#DB4437] ring-offset-2 ring-offset-white shadow-sm scale-105' : 'border-[#F4D3C5] hover:border-[#DB4437]' }}">
                                             <input type="radio" name="rating" value="{{ $i }}" class="sr-only" {{ old('rating') == $i ? 'checked' : '' }} required>
                                             {{ $i }}
                                         </label>
@@ -141,7 +141,7 @@
                                     $icons = [1 => '😞', 2 => '😐', 3 => '😊'];
                                 @endphp
                                 @foreach ($moods as $value => $label)
-                                    <label class="flex flex-col items-center gap-2 cursor-pointer">
+                                    <label class="mood-option flex flex-col items-center gap-2 cursor-pointer rounded-2xl px-3 py-2 transition {{ old('mood') == $value ? 'bg-[#DB4437]/10 ring-2 ring-[#DB4437] ring-offset-2 ring-offset-white' : 'hover:bg-[#FFF2E9]' }}">
                                         <span class="text-3xl">{{ $icons[$value] }}</span>
                                         <input type="radio" name="mood" value="{{ $value }}" class="hidden" {{ old('mood') == $value ? 'checked' : '' }}>
                                         <span class="text-xs font-medium text-gray-600">{{ $label }}</span>
@@ -182,6 +182,52 @@
                             </button>
                         </div>
                     </form>
+
+                    <script>
+                        (function () {
+                            // Rating selection visual state
+                            const ratingOptions = Array.from(document.querySelectorAll('.rating-option'));
+                            const ratingInputs = Array.from(document.querySelectorAll('input[name="rating"]'));
+                            function setRatingVisual(val) {
+                                ratingOptions.forEach((label, idx) => {
+                                    const selected = (idx + 1) === Number(val);
+                                    label.classList.toggle('bg-\[\#DB4437\]', selected);
+                                    label.classList.toggle('text-white', selected);
+                                    label.classList.toggle('border-\[\#DB4437\]', selected);
+                                    label.classList.toggle('ring-2', selected);
+                                    label.classList.toggle('ring-\[\#DB4437\]', selected);
+                                    label.classList.toggle('ring-offset-2', selected);
+                                    label.classList.toggle('ring-offset-white', selected);
+                                    label.classList.toggle('shadow-sm', selected);
+                                    label.classList.toggle('scale-105', selected);
+                                });
+                            }
+                            ratingInputs.forEach((input) => {
+                                input.addEventListener('change', () => setRatingVisual(input.value));
+                            });
+                            const checkedRating = document.querySelector('input[name="rating"]:checked');
+                            if (checkedRating) setRatingVisual(checkedRating.value);
+
+                            // Mood selection visual state
+                            const moodOptions = Array.from(document.querySelectorAll('.mood-option'));
+                            const moodInputs = Array.from(document.querySelectorAll('input[name="mood"]'));
+                            function setMoodVisual(val) {
+                                moodOptions.forEach((label, idx) => {
+                                    const selected = (idx + 1) === Number(val);
+                                    label.classList.toggle('bg-\[\#DB4437\]/10', selected);
+                                    label.classList.toggle('ring-2', selected);
+                                    label.classList.toggle('ring-\[\#DB4437\]', selected);
+                                    label.classList.toggle('ring-offset-2', selected);
+                                    label.classList.toggle('ring-offset-white', selected);
+                                });
+                            }
+                            moodInputs.forEach((input) => {
+                                input.addEventListener('change', () => setMoodVisual(input.value));
+                            });
+                            const checkedMood = document.querySelector('input[name="mood"]:checked');
+                            if (checkedMood) setMoodVisual(checkedMood.value);
+                        })();
+                    </script>
                 </div>
             </div>
         </div>

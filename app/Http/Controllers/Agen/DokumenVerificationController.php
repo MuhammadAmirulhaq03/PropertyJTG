@@ -179,6 +179,7 @@ class DokumenVerificationController extends Controller
     {
         $documents = DocumentUpload::query()
             ->where('user_id', $user->id)
+            ->with(['reviewer'])
             ->orderBy('document_type')
             ->orderByDesc('updated_at')
             ->get();
@@ -198,6 +199,38 @@ class DokumenVerificationController extends Controller
             'statusLabels' => DocumentUpload::statusLabels(),
             'filters' => $filters,
         ]);
+    }
+
+    public function claim(Request $request, DocumentUpload $documentUpload): RedirectResponse
+    {
+        // Atomic first-claim wins
+        $updated = DocumentUpload::where('id', $documentUpload->id)
+            ->whereNull('reviewed_by')
+            ->update([
+                'reviewed_by' => $request->user()->id,
+                'reviewed_at' => now(),
+            ]);
+
+        if (! $updated) {
+            $documentUpload->refresh();
+            $name = optional($documentUpload->reviewer)->name ?: __('another agent');
+            return back()->withErrors(__('Dokumen ini sudah diambil oleh :name.', ['name' => $name]));
+        }
+
+        return back()->with('status', __('Anda mulai meninjau dokumen ini.'));
+    }
+
+    public function release(Request $request, DocumentUpload $documentUpload): RedirectResponse
+    {
+        if ($documentUpload->reviewed_by !== $request->user()->id) {
+            return back()->withErrors(__('Anda bukan peninjau dokumen ini.'));
+        }
+
+        $documentUpload->forceFill([
+            'reviewed_by' => null,
+        ])->save();
+
+        return back()->with('status', __('Peninjauan dilepas.'));
     }
 
     private function resolveCustomerStatus(Collection $documents): array

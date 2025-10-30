@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\ConsultantRequestController;
 use App\Http\Controllers\Admin\ContractorRequestController;
 use App\Http\Controllers\Admin\PropertiController;
 use App\Http\Controllers\Admin\VisitScheduleController;
+use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\Agen\DashboardController as AgenDashboardController;
 use App\Http\Controllers\Agen\DokumenVerificationController as AgenDokumenVerificationController;
 use App\Http\Controllers\Agen\ProfileController as AgenProfileController;
@@ -24,6 +25,7 @@ use App\Http\Controllers\Pelanggan\KprCalculatorController;
 use App\Http\Controllers\Pelanggan\PropertyGalleryController;
 use App\Http\Controllers\Pelanggan\ProfileController as PelangganProfileController;
 use App\Http\Controllers\Pelanggan\VisitScheduleBookingController;
+use App\Http\Controllers\HeartbeatController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -42,6 +44,12 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [PelangganProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [PelangganProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+// Lightweight heartbeat to keep last_seen_at fresh while a tab is open
+Route::post('/heartbeat', HeartbeatController::class)
+    ->name('heartbeat')
+    ->middleware('auth')
+    ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
 
 Route::middleware('auth')->group(function () {
     Route::get('/documents', [DokumenController::class, 'index'])->name('documents.index');
@@ -129,6 +137,12 @@ Route::prefix('admin')
         Route::get('/profile', [AdminProfileController::class, 'index'])
             ->name('profile.index')
             ->middleware('can:view-dashboard');
+
+        // Staff management (Agen only, created by admin)
+        Route::get('/staff/agents', [StaffController::class, 'index'])->name('staff.agents.index');
+        Route::post('/staff/agents', [StaffController::class, 'storeAgent'])->name('staff.agents.store');
+        Route::post('/staff/agents/{user}/reset-password', [StaffController::class, 'resetPassword'])->name('staff.agents.reset');
+        Route::delete('/staff/agents/{user}', [StaffController::class, 'destroy'])->name('staff.agents.destroy');
     });
 
 Route::prefix('agent')
@@ -149,6 +163,12 @@ Route::prefix('agent')
         Route::patch('/documents/{documentUpload}', [AgenDokumenVerificationController::class, 'update'])
             ->name('documents.update')
             ->middleware('can:manage-documents');
+        Route::post('/documents/{documentUpload}/claim', [AgenDokumenVerificationController::class, 'claim'])
+            ->name('documents.claim')
+            ->middleware('can:manage-documents');
+        Route::post('/documents/{documentUpload}/release', [AgenDokumenVerificationController::class, 'release'])
+            ->name('documents.release')
+            ->middleware('can:manage-documents');
 
         Route::get('/profile', [AgenProfileController::class, 'index'])
             ->name('profile.index')
@@ -156,7 +176,3 @@ Route::prefix('agent')
     });
 
 require __DIR__.'/auth.php';
-
-
-
-

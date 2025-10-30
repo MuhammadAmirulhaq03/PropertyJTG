@@ -5,7 +5,7 @@
                 {{ __('Customer Dashboard') }}
             </p>
             <h2 class="text-2xl font-bold text-gray-900">
-                {{ __('Welcome back, :name!', ['name' => Auth::user()?->name ?? __('Guest')]) }}
+                {{ __('Welcome back, :name!', ['name' => Auth::user()?->display_name ?? __('Guest')]) }}
             </h2>
             <p class="text-sm text-gray-500 max-w-3xl">
                 {{ __('Review your saved properties, upcoming visits, and document progress right here. Explore new listings whenever you are ready.') }}
@@ -69,7 +69,7 @@
                                 <div class="rounded-2xl border border-gray-100 bg-gray-50 p-4">
                                     <p class="text-sm font-semibold text-gray-900">{{ optional($visit->start_at)->translatedFormat('l, d M Y') }} — {{ optional($visit->start_at)->format('H:i') }}–{{ optional($visit->end_at)->format('H:i') }}</p>
                                     <p class="text-xs text-gray-500">
-                                        {{ __('With') }} {{ optional($visit->agent)->name ?? __('Agent') }}
+                                        {{ __('With') }} {{ optional($visit->agent)->display_name ?? __('Agent') }}
                                         @if($visit->location)
                                             | {{ $visit->location }}
                                         @endif

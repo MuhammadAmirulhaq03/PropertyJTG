@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Services\Admin\DashboardMetricsService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
@@ -17,7 +18,16 @@ class DashboardAdminController extends Controller
             'location' => $request->input('location', 'all'),
         ];
 
-        $kpis = $this->generateKpis($filters);
+        // Use real metrics for KPI cards; fall back to placeholders on error
+        try {
+            /** @var DashboardMetricsService $metricsService */
+            $metricsService = app(DashboardMetricsService::class);
+            $realMetrics = $metricsService->metrics($filters['range']);
+            $kpis = $this->mapKpisFromMetrics($realMetrics);
+        } catch (\Throwable $e) {
+            // Keep existing placeholder behaviour if metrics are not available
+            $kpis = $this->generateKpis($filters);
+        }
         $leadsByChannel = $this->generateLeadsByChannel($filters);
         $topListings = $this->generateTopListings($filters);
         $trendRaw = $this->generateTrendData($filters);
@@ -31,6 +41,9 @@ class DashboardAdminController extends Controller
         ];
         $leadSources = $this->generateLeadSources($filters);
 
+        // Lightweight recent activities using real data where available
+        $recentActivities = $this->buildRecentActivities((int) $filters['range']);
+
         return view('admin.dashboard.index', [
             'filters' => $filters,
             'kpis' => $kpis,
@@ -41,6 +54,7 @@ class DashboardAdminController extends Controller
                 'paths' => $trendPaths,
             ]),
             'leadSources' => $leadSources,
+            'recentActivities' => $recentActivities,
         ]);
     }
 
@@ -80,57 +94,104 @@ class DashboardAdminController extends Controller
         ];
     }
 
+    /**
+     * Map real metrics to the 4 KPI cards expected by the view.
+     *
+     * @param array{
+     *   active_listings:int,
+     *   updated_listings:int,
+     *   upcoming_visits:int,
+     *   new_enquiries:int,
+     *   pending_documents:int,
+     *   claimed_documents:int,
+     *   unclaimed_documents:int,
+     *   new_customers:int,
+     *   active_users:int,
+     *   avg_rating:float|null
+     * } $m
+     * @return array<int, array{label:string,value:string,trend:int,icon:string}>
+     */
+    private function mapKpisFromMetrics(array $m): array
+    {
+        return [
+            [
+                'label' => __('Active listings'),
+                'value' => number_format($m['active_listings']) . '  •  +' . number_format($m['updated_listings']),
+                'trend' => 0,
+                'icon' => $this->icon('view'),
+            ],
+            [
+                'label' => __('Upcoming visits'),
+                'value' => number_format($m['upcoming_visits']) . '  •  +' . number_format($m['new_enquiries']),
+                'trend' => 0,
+                'icon' => $this->icon('leads'),
+            ],
+            [
+                'label' => __('Documents (pending/claimed)'),
+                'value' => number_format($m['pending_documents']) . ' / ' . number_format($m['claimed_documents']),
+                'trend' => 0,
+                'icon' => $this->icon('engagement'),
+            ],
+            [
+                'label' => __('Customers (new/active)') . ($m['avg_rating'] !== null ? ' • ' . __('Avg rating') : ''),
+                'value' => number_format($m['new_customers']) . ' / ' . number_format($m['active_users']) . ($m['avg_rating'] !== null ? ' • ' . number_format($m['avg_rating'], 1) : ''),
+                'trend' => 0,
+                'icon' => $this->icon('conversion'),
+            ],
+        ];
+    }
+
     private function generateLeadsByChannel(array $filters): array
     {
-        $channels = [
-            ['label' => __('Website'), 'value' => 1420],
-            ['label' => __('Instagram'), 'value' => 980],
-            ['label' => __('Marketplace'), 'value' => 720],
-            ['label' => __('Referral'), 'value' => 510],
+        // Real breakdown: document statuses
+        $statuses = [
+            'Submitted' => \App\Models\DocumentUpload::STATUS_SUBMITTED,
+            'Needs Revision' => \App\Models\DocumentUpload::STATUS_REVISION,
+            'Approved' => \App\Models\DocumentUpload::STATUS_APPROVED,
+            'Rejected' => \App\Models\DocumentUpload::STATUS_REJECTED,
         ];
 
-        $modifier = $this->rangeMultiplier($filters['range']);
-        if ($filters['type'] !== 'all') {
-            $modifier *= 0.9;
+        $rows = [];
+        $total = 0;
+        foreach ($statuses as $label => $status) {
+            $count = \App\Models\DocumentUpload::query()->where('status', $status)->count();
+            $rows[] = ['label' => __($label), 'value' => $count];
+            $total += $count;
         }
 
-        $max = max(array_column($channels, 'value'));
-
-        return collect($channels)->map(function ($channel) use ($modifier, $max) {
-            $value = (int) ($channel['value'] * $modifier);
+        $total = $total ?: 1;
+        return array_map(function ($row) use ($total) {
             return [
-                'label' => $channel['label'],
-                'value' => $value,
-                'percentage' => (int) (($value / ($max ?: 1)) * 100),
+                'label' => $row['label'],
+                'value' => $row['value'],
+                'percentage' => (int) round(($row['value'] / $total) * 100),
             ];
-        })->all();
+        }, $rows);
     }
 
     private function generateTopListings(array $filters): array
     {
-        $listings = [
-            ['name' => 'Serenity Lakeside Villa', 'location' => 'Pondok Indah', 'type' => 'Villa', 'views' => 12340, 'leads' => 210],
-            ['name' => 'Urban Heights Apartment', 'location' => 'Sudirman', 'type' => 'Apartment', 'views' => 9875, 'leads' => 185],
-            ['name' => 'Central Business Loft', 'location' => 'Kuningan', 'type' => 'Commercial', 'views' => 8560, 'leads' => 142],
-            ['name' => 'Greenwood Family House', 'location' => 'BSD City', 'type' => 'House', 'views' => 7320, 'leads' => 118],
-        ];
+        $query = \App\Models\Properti::query()->withCount('favoritedBy')->orderByDesc('favorited_by_count');
 
-        $typeFilter = Str::headline($filters['type'] ?? '');
+        if (($filters['type'] ?? 'all') !== 'all') {
+            $typeFilter = Str::lower(Str::headline($filters['type']));
+            $query->where(function ($q) use ($typeFilter) {
+                $q->whereRaw('lower(tipe) = ?', [$typeFilter])
+                  ->orWhereRaw('lower(tipe_properti) = ?', [$typeFilter]);
+            });
+        }
 
-        return collect($listings)
-            ->filter(function ($listing) use ($filters, $typeFilter) {
-                if ($filters['type'] !== 'all' && Str::lower($listing['type']) !== Str::lower($typeFilter)) {
-                    return false;
-                }
+        $rows = $query->take(8)->get();
 
-                if ($filters['location'] !== 'all' && !Str::contains(Str::slug($listing['location']), $filters['location'])) {
-                    return false;
-                }
-
-                return true;
-            })
-            ->values()
-            ->all();
+        return $rows->map(function ($p) {
+            return [
+                'name' => $p->nama,
+                'location' => (string) $p->lokasi,
+                'type' => (string) ($p->tipe ?: $p->tipe_properti ?: __('Property')),
+                'views' => (int) $p->favorited_by_count,
+                'leads' => 0,
+            ];
+        })->all();
     }
 
     private function rangeMultiplier(string $range): float
@@ -162,8 +223,9 @@ class DashboardAdminController extends Controller
 
     private function generateTrendData(array $filters): array
     {
-        $range = (int) $filters['range'];
-        $points = match ($range) {
+        // Real trend: Favorites and Visits over the range, split into buckets
+        $days = (int) $filters['range'] ?: 30;
+        $segments = match ($days) {
             7 => 7,
             30 => 10,
             90 => 12,
@@ -171,50 +233,73 @@ class DashboardAdminController extends Controller
             default => 10,
         };
 
-        $labels = collect(range(1, $points))->map(fn ($index) => __('Week') . ' ' . $index)->all();
+        $to = now();
+        $from = now()->subDays($days);
 
-        $baseViews = 8000 * $this->rangeMultiplier($filters['range']);
-        $baseLeads = 300 * $this->rangeMultiplier($filters['range']);
+        $buckets = $this->segmentTimeRange($from, $to, $segments);
+        $labels = [];
+        $favoritesCounts = [];
+        $visitCounts = [];
 
-        $views = collect(range(1, $points))->map(function ($point) use ($baseViews) {
-            return (int) ($baseViews * (0.6 + ($point / 12)) + random_int(-900, 900));
-        })->all();
+        foreach ($buckets as [$start, $end]) {
+            $labels[] = $start->format('d M') . '–' . $end->format('d M');
 
-        $leads = collect(range(1, $points))->map(function ($point) use ($baseLeads) {
-            return (int) ($baseLeads * (0.5 + ($point / 10)) + random_int(-60, 60));
-        })->all();
+            $fav = \App\Models\PropertyFavorite::query()
+                ->whereBetween('created_at', [$start, $end])
+                ->count();
+            $favoritesCounts[] = $fav;
+
+            $vis = \App\Models\VisitSchedule::query()
+                ->where('status', 'booked')
+                ->whereBetween('booked_at', [$start, $end])
+                ->count();
+            $visitCounts[] = $vis;
+        }
 
         return [
             'labels' => $labels,
-            'views' => $views,
-            'leads' => $leads,
+            'views' => $favoritesCounts,
+            'leads' => $visitCounts,
         ];
     }
 
     private function generateLeadSources(array $filters): array
     {
-        $channels = ['Website', 'Social', 'Marketplace', 'Referral'];
-        $baseValues = [45, 25, 18, 12];
+        $rows = \App\Models\PropertyFavorite::query()
+            ->join('propertis', 'property_favorites.properti_id', '=', 'propertis.id')
+            ->selectRaw("COALESCE(propertis.tipe, propertis.tipe_properti, 'Other') as tipe, COUNT(*) as cnt")
+            ->groupByRaw("COALESCE(propertis.tipe, propertis.tipe_properti, 'Other')")
+            ->orderByDesc('cnt')
+            ->get();
 
-        if ($filters['type'] !== 'all') {
-            $baseValues = array_map(fn ($value) => (int) ($value * 0.95), $baseValues);
-        }
-
-        if ($filters['location'] !== 'all') {
-            $baseValues[1] += 5;
-            $baseValues[2] -= 3;
-        }
-
-        $total = array_sum($baseValues) ?: 1;
+        $labels = $rows->pluck('tipe')->map(fn($t) => (string) $t)->all();
+        $values = $rows->pluck('cnt')->map(fn($v) => (int) $v)->all();
+        $total = array_sum($values) ?: 1;
+        $percentages = array_map(fn($v) => round(($v / $total) * 100, 1), $values);
 
         return [
-            'labels' => $channels,
-            'values' => $baseValues,
-            'percentages' => array_map(
-                fn ($value) => round(($value / $total) * 100, 1),
-                $baseValues
-            ),
+            'labels' => $labels,
+            'values' => $values,
+            'percentages' => $percentages,
         ];
+    }
+
+    /**
+     * Split a time range into N contiguous buckets.
+     * @return array<int, array{0:\Carbon\CarbonInterface,1:\Carbon\CarbonInterface}>
+     */
+    private function segmentTimeRange($from, $to, int $segments): array
+    {
+        $totalSeconds = max(1, $to->diffInSeconds($from));
+        $step = (int) floor($totalSeconds / $segments);
+        $buckets = [];
+        $cursor = $from->copy();
+        for ($i = 0; $i < $segments; $i++) {
+            $end = $i === $segments - 1 ? $to->copy() : $cursor->copy()->addSeconds($step);
+            $buckets[] = [$cursor->copy(), $end->copy()];
+            $cursor = $end;
+        }
+        return $buckets;
     }
 
     /**
@@ -284,5 +369,124 @@ class DashboardAdminController extends Controller
             'area' => $area,
             'points' => $points,
         ];
+    }
+
+    /**
+     * Build a small recent activities feed across key entities.
+     *
+     * @return array<int, array{type:string,time:\DateTimeInterface|null,title:string,description:string}>
+     */
+    private function buildRecentActivities(int $rangeDays = 30): array
+    {
+        try {
+            $from = now()->subDays(max(1, $rangeDays));
+
+            $visits = \App\Models\VisitSchedule::query()
+                ->where('status', 'booked')
+                ->where('booked_at', '>=', $from)
+                ->orderByDesc('booked_at')
+                ->take(5)
+                ->get()
+                ->map(function ($s) {
+                    return [
+                        'type' => 'visit_booked',
+                        'time' => $s->booked_at ?? $s->updated_at,
+                        'title' => __('New visit booked'),
+                        'description' => optional($s->start_at)->translatedFormat('d M Y H:i') . ' • ' . ($s->location ?: __('No location')),
+                    ];
+                });
+
+            $docReviews = \App\Models\DocumentUpload::query()
+                ->whereNotNull('reviewed_by')
+                ->whereNotNull('reviewed_at')
+                ->where('reviewed_at', '>=', $from)
+                ->orderByDesc('reviewed_at')
+                ->take(5)
+                ->get()
+                ->map(function ($d) {
+                    return [
+                        'type' => 'document_reviewed',
+                        'time' => $d->reviewed_at ?? $d->updated_at,
+                        'title' => __('Document reviewed'),
+                        'description' => str_replace('_', ' ', (string) $d->document_type) . ' • ' . $d->statusLabel(),
+                    ];
+                });
+
+            $listingUpdates = \App\Models\Properti::query()
+                ->where('status', 'published')
+                ->where('updated_at', '>=', $from)
+                ->orderByDesc('updated_at')
+                ->take(5)
+                ->get()
+                ->map(function ($p) {
+                    return [
+                        'type' => 'listing_updated',
+                        'time' => $p->updated_at,
+                        'title' => __('Listing updated'),
+                        'description' => $p->nama . ' • ' . ($p->lokasi ?: __('Unknown location')),
+                    ];
+                });
+
+            $feedbacks = \App\Models\Feedback::query()
+                ->where('created_at', '>=', $from)
+                ->orderByDesc('created_at')
+                ->take(5)
+                ->get()
+                ->map(function ($f) {
+                    return [
+                        'type' => 'feedback',
+                        'time' => $f->created_at,
+                        'title' => __('New feedback'),
+                        'description' => __('Rating') . ': ' . (int) $f->rating,
+                    ];
+                });
+
+            // New customer registrations within range
+            $registrations = \App\Models\User::query()
+                ->where('role', 'customer')
+                ->where('created_at', '>=', $from)
+                ->orderByDesc('created_at')
+                ->take(5)
+                ->get()
+                ->map(function ($u) {
+                    return [
+                        'type' => 'user_registered',
+                        'time' => $u->created_at,
+                        'title' => __('New registration'),
+                        'description' => ($u->name ?: $u->email) . ' • ' . \Illuminate\Support\Str::headline((string) $u->role),
+                    ];
+                });
+
+            // Property favorites within range
+            $favorites = \App\Models\PropertyFavorite::query()
+                ->with(['user', 'property'])
+                ->where('created_at', '>=', $from)
+                ->orderByDesc('created_at')
+                ->take(5)
+                ->get()
+                ->map(function ($fav) {
+                    $userName = optional($fav->user)->name ?: __('Customer');
+                    $propName = optional($fav->property)->nama ?: __('Property');
+                    return [
+                        'type' => 'favorite',
+                        'time' => $fav->created_at,
+                        'title' => __('Property favorited'),
+                        'description' => $userName . ' → ' . $propName,
+                    ];
+                });
+
+            return $docReviews
+                ->merge($visits)
+                ->merge($listingUpdates)
+                ->merge($feedbacks)
+                ->merge($registrations)
+                ->merge($favorites)
+                ->sortByDesc('time')
+                ->take(8)
+                ->values()
+                ->all();
+        } catch (\Throwable $e) {
+            return [];
+        }
     }
 }
