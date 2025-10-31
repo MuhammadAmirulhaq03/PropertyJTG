@@ -105,6 +105,7 @@
                             <th class="px-4 py-2 text-left font-medium text-gray-600">Nama</th>
                             <th class="px-4 py-2 text-left font-medium text-gray-600">Email</th>
                             <th class="px-4 py-2 text-left font-medium text-gray-600">Telepon</th>
+                            <th class="px-4 py-2 text-left font-medium text-gray-600">Kehadiran</th>
                             <th class="px-4 py-2 text-left font-medium text-gray-600">Status</th>
                             <th class="px-4 py-2 text-left font-medium text-gray-600">Terakhir Aktif</th>
                             <th class="px-4 py-2 text-left font-medium text-gray-600">Aksi</th>
@@ -116,6 +117,22 @@
                                 <td class="px-4 py-2 font-semibold text-gray-900">{{ $agent->display_name }}</td>
                                 <td class="px-4 py-2 text-gray-700">{{ $agent->email }}</td>
                                 <td class="px-4 py-2 text-gray-700">{{ $agent->phone ?: '-' }}</td>
+                                <td class="px-4 py-2">
+                                    @php
+                                        $isOnline = $agent->last_seen_at && $agent->last_seen_at->gte(now()->subMinutes(5));
+                                    @endphp
+                                    @if($isOnline)
+                                        <span class="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2.5 py-0.5 text-xs font-semibold text-emerald-700">
+                                            <span class="inline-block h-1.5 w-1.5 rounded-full bg-emerald-600"></span>
+                                            {{ __('Online') }}
+                                        </span>
+                                    @else
+                                        <span class="inline-flex items-center gap-1 rounded-full bg-gray-200 px-2.5 py-0.5 text-xs font-semibold text-gray-700">
+                                            <span class="inline-block h-1.5 w-1.5 rounded-full bg-gray-500"></span>
+                                            {{ __('Offline') }}
+                                        </span>
+                                    @endif
+                                </td>
                                 <td class="px-4 py-2">
                                     @php $pending = (bool) ($agent->must_change_password ?? false); @endphp
                                     @if ($pending)
