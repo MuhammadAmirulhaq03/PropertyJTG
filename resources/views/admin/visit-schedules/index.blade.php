@@ -56,7 +56,7 @@
                         @csrf
                         <div>
                             <label for="agent_id" class="text-xs font-semibold uppercase tracking-widest text-gray-500">{{ __('Pilih agen') }}</label>
-                            <select id="agent_id" name="agent_id" required class="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 text-sm focus:border-[#2563EB] focus:ring-[#2563EB]">
+                            <select id="agent_id" name="agent_id" required class="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 text-sm focus:border-[#DB4437] focus:ring-[#DB4437]">
                                 <option value="">{{ __('Pilih agen') }}</option>
                                 @foreach ($agents as $agent)
                                     <option value="{{ $agent->id }}" @selected(old('agent_id') == $agent->id)>{{ $agent->display_name }} - {{ $agent->email }}</option>
@@ -67,28 +67,28 @@
                         <div class="grid gap-4 sm:grid-cols-2">
                             <div>
                                 <label for="date" class="text-xs font-semibold uppercase tracking-widest text-gray-500">{{ __('Tanggal') }}</label>
-                                <input type="date" id="date" name="date" value="{{ old('date', now()->toDateString()) }}" min="{{ now()->toDateString() }}" required class="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 text-sm focus:border-[#2563EB] focus:ring-[#2563EB]">
+                                <input type="date" id="date" name="date" value="{{ old('date', now()->toDateString()) }}" min="{{ now()->toDateString() }}" required class="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 text-sm focus:border-[#DB4437] focus:ring-[#DB4437]">
                             </div>
                             <div>
                                 <label for="location" class="text-xs font-semibold uppercase tracking-widest text-gray-500">{{ __('Lokasi') }}</label>
-                                <input type="text" id="location" name="location" value="{{ old('location') }}" placeholder="{{ __('cth. Kantor pusat / On-site') }}" class="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 text-sm focus:border-[#2563EB] focus:ring-[#2563EB]">
+                                <input type="text" id="location" name="location" value="{{ old('location') }}" placeholder="{{ __('cth. Kantor pusat / On-site') }}" class="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 text-sm focus:border-[#DB4437] focus:ring-[#DB4437]">
                             </div>
                         </div>
 
                         <div class="grid gap-4 sm:grid-cols-2">
                             <div>
                                 <label for="start_time" class="text-xs font-semibold uppercase tracking-widest text-gray-500">{{ __('Waktu Mulai') }}</label>
-                                <input type="time" id="start_time" name="start_time" value="{{ old('start_time') }}" required class="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 text-sm focus:border-[#2563EB] focus:ring-[#2563EB]">
+                                <input type="time" id="start_time" name="start_time" value="{{ old('start_time') }}" required class="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 text-sm focus:border-[#DB4437] focus:ring-[#DB4437]">
                             </div>
                             <div>
                                 <label for="end_time" class="text-xs font-semibold uppercase tracking-widest text-gray-500">{{ __('Waktu Selesai') }}</label>
-                                <input type="time" id="end_time" name="end_time" value="{{ old('end_time') }}" required class="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 text-sm focus:border-[#2563EB] focus:ring-[#2563EB]">
+                                <input type="time" id="end_time" name="end_time" value="{{ old('end_time') }}" required class="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 text-sm focus:border-[#DB4437] focus:ring-[#DB4437]">
                             </div>
                         </div>
 
                         <div>
                             <label for="notes" class="text-xs font-semibold uppercase tracking-widest text-gray-500">{{ __('Catatan') }}</label>
-                            <textarea id="notes" name="notes" rows="3" class="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 text-sm focus:border-[#2563EB] focus:ring-[#2563EB]" placeholder="{{ __('Keterangan tambahan untuk agen atau pelanggan.') }}">{{ old('notes') }}</textarea>
+                            <textarea id="notes" name="notes" rows="3" class="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 text-sm focus:border-[#DB4437] focus:ring-[#DB4437]" placeholder="{{ __('Keterangan tambahan untuk agen atau pelanggan.') }}">{{ old('notes') }}</textarea>
                         </div>
 
                         <button type="submit" class="w-full inline-flex items-center justify-center gap-2 rounded-full bg-[#2563EB] px-5 py-2 text-sm font-semibold text-white transition hover:-translate-y-0.5">
@@ -112,11 +112,11 @@
                         <input type="hidden" name="tab" value="visit-schedules">
                         <div>
                             <label for="filter-date" class="text-xs font-semibold uppercase tracking-widest text-gray-500">{{ __('Tanggal') }}</label>
-                            <input type="date" name="date" id="filter-date" value="{{ $filters['date'] }}" class="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 text-sm focus:border-[#2563EB] focus:ring-[#2563EB]">
+                            <input type="date" name="date" id="filter-date" value="{{ $filters['date'] }}" class="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 text-sm focus:border-[#DB4437] focus:ring-[#DB4437]">
                         </div>
                         <div>
                             <label for="filter-status" class="text-xs font-semibold uppercase tracking-widest text-gray-500">{{ __('Status') }}</label>
-                            <select name="status" id="filter-status" class="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 text-sm focus:border-[#2563EB] focus:ring-[#2563EB]">
+                            <select name="status" id="filter-status" class="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 text-sm focus:border-[#DB4437] focus:ring-[#DB4437]">
                                 <option value="all" @selected($filters['status'] === 'all')>{{ __('Semua status') }}</option>
                                 <option value="available" @selected($filters['status'] === 'available')>{{ __('Tersedia') }}</option>
                                 <option value="booked" @selected($filters['status'] === 'booked')>{{ __('Dibooking') }}</option>
@@ -125,7 +125,7 @@
                         </div>
                         <div>
                             <label for="filter-agent" class="text-xs font-semibold uppercase tracking-widest text-gray-500">{{ __('Agen') }}</label>
-                            <select name="agent_id" id="filter-agent" class="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 text-sm focus:border-[#2563EB] focus:ring-[#2563EB]">
+                            <select name="agent_id" id="filter-agent" class="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 text-sm focus:border-[#DB4437] focus:ring-[#DB4437]">
                                 <option value="">{{ __('Semua agen') }}</option>
                                 @foreach ($agents as $agent)
                                     <option value="{{ $agent->id }}" @selected($filters['agent'] == $agent->id)>{{ $agent->display_name }}</option>
@@ -136,7 +136,7 @@
                             <a href="{{ route('admin.visit-schedules.index', ['tab' => 'visit-schedules']) }}" class="inline-flex items-center justify-center gap-2 rounded-full border border-gray-200 px-5 py-2 text-sm font-semibold text-gray-600 transition hover:border-gray-300 hover:text-gray-900">
                                 {{ __('Reset') }}
                             </a>
-                            <button type="submit" class="inline-flex items-center justify-center gap-2 rounded-full bg-[#2563EB] px-5 py-2 text-sm font-semibold text-white transition hover:-translate-y-0.5">
+                            <button type="submit" class="inline-flex items-center justify-center gap-2 rounded-full bg-[#DB4437] px-5 py-2 text-sm font-semibold text-white transition hover:-translate-y-0.5">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 4.5h18M6 4.5v4.875a2.25 2.25 0 0 0 .659 1.591L9.75 14.25v5.25l4.5-1.5v-3.75l3.091-3.284A2.25 2.25 0 0 0 18 9.375V4.5" />
                                 </svg>
@@ -147,7 +147,7 @@
 
                 <div class="mt-8 overflow-x-auto rounded-2xl border border-gray-100">
                     <table class="min-w-[800px] divide-y divide-gray-100 text-sm">
-                        <thead class="bg-gray-50 text-xs font-semibold uppercase tracking-widest text-gray-500">
+                        <thead class="sticky top-0 z-10 bg-white/95 backdrop-blur text-xs font-semibold uppercase tracking-widest text-gray-500">
                                 <tr>
                                     <th scope="col" class="px-4 py-3 text-left">{{ __('Agen') }}</th>
                                     <th scope="col" class="px-4 py-3 text-left">{{ __('Waktu') }}</th>
@@ -158,7 +158,7 @@
                             </thead>
                             <tbody class="divide-y divide-gray-100 bg-white">
                                 @forelse ($schedules as $schedule)
-                                    <tr class="align-top transition hover:bg-gray-50">
+                                    <tr class="align-top odd:bg-gray-50/40 transition hover:bg-gray-50">
                                         <td class="px-4 py-4">
                                             <div class="flex flex-col gap-1">
                                                 <span class="font-semibold text-gray-900">{{ $schedule->agent?->display_name ?? __('Tidak diketahui') }}</span>

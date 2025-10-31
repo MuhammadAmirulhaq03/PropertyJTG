@@ -1,6 +1,6 @@
 ﻿<x-admin.customer.layout selected-tab="visit-schedules">
     <div class="max-w-3xl space-y-8">
-        <a href="{{ route('admin.visit-schedules.index', ['tab' => 'visit-schedules']) }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#2563EB] hover:text-[#1E3A8A]">
+        <a href="{{ route('admin.visit-schedules.index', ['tab' => 'visit-schedules']) }}" class="inline-flex items-center gap-2 text-sm font-semibold text-[#DB4437] hover:text-[#b43428]">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7" />
             </svg>
@@ -19,7 +19,7 @@
 
                 <div>
                     <label for="agent_id" class="text-xs font-semibold uppercase tracking-widest text-gray-500">{{ __('Pilih agen') }}</label>
-                    <select id="agent_id" name="agent_id" required class="mt-1 w-full rounded-2xl border-gray-200 bg-gray-50 text-sm focus:border-[#2563EB] focus:ring-[#2563EB] {{ $schedule->isBooked() ? 'cursor-not-allowed opacity-70' : '' }}" {{ $schedule->isBooked() ? 'disabled' : '' }}>
+                    <select id="agent_id" name="agent_id" required class="mt-1 w-full rounded-2xl border-gray-200 bg-gray-50 text-sm focus:border-[#DB4437] focus:ring-[#DB4437] {{ $schedule->isBooked() ? 'cursor-not-allowed opacity-70' : '' }}" {{ $schedule->isBooked() ? 'disabled' : '' }}>
                         @foreach ($agents as $agent)
                             <option value="{{ $agent->id }}" @selected(old('agent_id', $schedule->agent_id) == $agent->id)>{{ $agent->display_name }} — {{ $agent->email }}</option>
                         @endforeach
@@ -33,28 +33,28 @@
                 <div class="grid gap-4 sm:grid-cols-2">
                     <div>
                         <label for="date" class="text-xs font-semibold uppercase tracking-widest text-gray-500">{{ __('Tanggal') }}</label>
-                        <input type="date" id="date" name="date" value="{{ old('date', $schedule->start_at->toDateString()) }}" min="{{ now()->toDateString() }}" required class="mt-1 w-full rounded-2xl border-gray-200 bg-gray-50 text-sm focus:border-[#2563EB] focus:ring-[#2563EB] {{ $schedule->isBooked() ? 'cursor-not-allowed opacity-70' : '' }}" {{ $schedule->isBooked() ? 'disabled' : '' }}>
+                        <input type="date" id="date" name="date" value="{{ old('date', $schedule->start_at->toDateString()) }}" min="{{ now()->toDateString() }}" required class="mt-1 w-full rounded-2xl border-gray-200 bg-gray-50 text-sm focus:border-[#DB4437] focus:ring-[#DB4437] {{ $schedule->isBooked() ? 'cursor-not-allowed opacity-70' : '' }}" {{ $schedule->isBooked() ? 'disabled' : '' }}>
                         @if($schedule->isBooked())
                             <input type="hidden" name="date" value="{{ $schedule->start_at->toDateString() }}">
                         @endif
                     </div>
                     <div>
                         <label for="location" class="text-xs font-semibold uppercase tracking-widest text-gray-500">{{ __('Lokasi') }}</label>
-                        <input type="text" id="location" name="location" value="{{ old('location', $schedule->location) }}" class="mt-1 w-full rounded-2xl border-gray-200 bg-gray-50 text-sm focus:border-[#2563EB] focus:ring-[#2563EB]">
+                        <input type="text" id="location" name="location" value="{{ old('location', $schedule->location) }}" class="mt-1 w-full rounded-2xl border-gray-200 bg-gray-50 text-sm focus:border-[#DB4437] focus:ring-[#DB4437]">
                     </div>
                 </div>
 
                 <div class="grid gap-4 sm:grid-cols-2">
                     <div>
                         <label for="start_time" class="text-xs font-semibold uppercase tracking-widest text-gray-500">{{ __('Waktu Mulai') }}</label>
-                        <input type="time" id="start_time" name="start_time" value="{{ old('start_time', $schedule->start_at->format('H:i')) }}" required class="mt-1 w-full rounded-2xl border-gray-200 bg-gray-50 text-sm focus:border-[#2563EB] focus:ring-[#2563EB] {{ $schedule->isBooked() ? 'cursor-not-allowed opacity-70' : '' }}" {{ $schedule->isBooked() ? 'disabled' : '' }}>
+                        <input type="time" id="start_time" name="start_time" value="{{ old('start_time', $schedule->start_at->format('H:i')) }}" required class="mt-1 w-full rounded-2xl border-gray-200 bg-gray-50 text-sm focus:border-[#DB4437] focus:ring-[#DB4437] {{ $schedule->isBooked() ? 'cursor-not-allowed opacity-70' : '' }}" {{ $schedule->isBooked() ? 'disabled' : '' }}>
                         @if($schedule->isBooked())
                             <input type="hidden" name="start_time" value="{{ $schedule->start_at->format('H:i') }}">
                         @endif
                     </div>
                     <div>
                         <label for="end_time" class="text-xs font-semibold uppercase tracking-widest text-gray-500">{{ __('Waktu Selesai') }}</label>
-                        <input type="time" id="end_time" name="end_time" value="{{ old('end_time', $schedule->end_at->format('H:i')) }}" required class="mt-1 w-full rounded-2xl border-gray-200 bg-gray-50 text-sm focus:border-[#2563EB] focus:ring-[#2563EB] {{ $schedule->isBooked() ? 'cursor-not-allowed opacity-70' : '' }}" {{ $schedule->isBooked() ? 'disabled' : '' }}>
+                        <input type="time" id="end_time" name="end_time" value="{{ old('end_time', $schedule->end_at->format('H:i')) }}" required class="mt-1 w-full rounded-2xl border-gray-200 bg-gray-50 text-sm focus:border-[#DB4437] focus:ring-[#DB4437] {{ $schedule->isBooked() ? 'cursor-not-allowed opacity-70' : '' }}" {{ $schedule->isBooked() ? 'disabled' : '' }}>
                         @if($schedule->isBooked())
                             <input type="hidden" name="end_time" value="{{ $schedule->end_at->format('H:i') }}">
                         @endif
@@ -63,13 +63,13 @@
 
                 <div>
                     <label for="notes" class="text-xs font-semibold uppercase tracking-widest text-gray-500">{{ __('Catatan') }}</label>
-                    <textarea id="notes" name="notes" rows="3" class="mt-1 w-full rounded-2xl border-gray-200 bg-gray-50 text-sm focus:border-[#2563EB] focus:ring-[#2563EB]">{{ old('notes', $schedule->notes) }}</textarea>
+                    <textarea id="notes" name="notes" rows="3" class="mt-1 w-full rounded-2xl border-gray-200 bg-gray-50 text-sm focus:border-[#DB4437] focus:ring-[#DB4437]">{{ old('notes', $schedule->notes) }}</textarea>
                 </div>
 
                 @if(! $schedule->isBooked())
                     <div>
                         <label for="status" class="text-xs font-semibold uppercase tracking-widest text-gray-500">{{ __('Status Jadwal') }}</label>
-                        <select id="status" name="status" class="mt-1 w-full rounded-2xl border-gray-200 bg-gray-50 text-sm focus:border-[#2563EB] focus:ring-[#2563EB]">
+                        <select id="status" name="status" class="mt-1 w-full rounded-2xl border-gray-200 bg-gray-50 text-sm focus:border-[#DB4437] focus:ring-[#DB4437]">
                             <option value="available" @selected(old('status', $schedule->status) === 'available')>{{ __('Tersedia') }}</option>
                             <option value="closed" @selected(old('status', $schedule->status) === 'closed')>{{ __('Ditutup') }}</option>
                         </select>
@@ -78,7 +78,7 @@
 
                 <div class="flex items-center justify-between gap-4">
                     <p class="text-xs text-gray-500">{{ __('Jeda minimal 25 menit antar jadwal agen dan maksimal 3 agen per slot waktu.') }}</p>
-                    <button type="submit" class="inline-flex items-center gap-2 rounded-full bg-[#2563EB] px-5 py-2 text-sm font-semibold text-white transition hover:-translate-y-0.5">
+                    <button type="submit" class="inline-flex items-center gap-2 rounded-full bg-[#DB4437] px-5 py-2 text-sm font-semibold text-white transition hover:-translate-y-0.5">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 12h14" />
                         </svg>
