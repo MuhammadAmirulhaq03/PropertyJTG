@@ -19,27 +19,52 @@
         <section class="space-y-8">
             <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-5">
                 <div class="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
-                    <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">{{ __('Total Jadwal') }}</p>
+                    <div class="flex items-center justify-between">
+                        <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">{{ __('Total Jadwal') }}</p>
+                        <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-slate-100 text-slate-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 6h18M3 12h18M3 18h18" /></svg>
+                        </span>
+                    </div>
                     <p class="mt-2 text-2xl font-bold text-gray-900">{{ $stats['total'] }}</p>
                     <p class="text-xs text-gray-500">{{ __('Seluruh jadwal yang tercatat.') }}</p>
                 </div>
                 <div class="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
-                    <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">{{ __('Jadwal Mendatang') }}</p>
+                    <div class="flex items-center justify-between">
+                        <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">{{ __('Jadwal Mendatang') }}</p>
+                        <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2Z" /></svg>
+                        </span>
+                    </div>
                     <p class="mt-2 text-2xl font-bold text-gray-900">{{ $stats['upcoming'] }}</p>
                     <p class="text-xs text-gray-500">{{ __('Slot aktif yang belum dimulai.') }}</p>
                 </div>
                 <div class="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
-                    <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">{{ __('Slot Tersedia') }}</p>
+                    <div class="flex items-center justify-between">
+                        <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">{{ __('Slot Tersedia') }}</p>
+                        <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7" /></svg>
+                        </span>
+                    </div>
                     <p class="mt-2 text-2xl font-bold text-emerald-600">{{ $stats['available'] }}</p>
                     <p class="text-xs text-gray-500">{{ __('Siap dibagikan kepada pelanggan.') }}</p>
                 </div>
                 <div class="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
-                    <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">{{ __('Slot Dibooking') }}</p>
+                    <div class="flex items-center justify-between">
+                        <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">{{ __('Slot Dibooking') }}</p>
+                        <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-rose-50 text-rose-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 11c0-1.657-1.343-3-3-3S6 9.343 6 11s1.343 3 3 3 3-1.343 3-3z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21v-2a4 4 0 00-4-4H9a4 4 0 00-4 4v2" /></svg>
+                        </span>
+                    </div>
                     <p class="mt-2 text-2xl font-bold text-[#DB4437]">{{ $stats['booked'] }}</p>
                     <p class="text-xs text-gray-500">{{ __('Sedang menunggu kunjungan pelanggan.') }}</p>
                 </div>
                 <div class="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
-                    <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">{{ __('Slot Ditutup') }}</p>
+                    <div class="flex items-center justify-between">
+                        <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">{{ __('Slot Ditutup') }}</p>
+                        <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-gray-100 text-gray-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 8h1a2 2 0 012 2v8a2 2 0 01-2 2H6a2 2 0 01-2-2v-8a2 2 0 012-2h1" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 12V6a2 2 0 114 0v6" /></svg>
+                        </span>
+                    </div>
                     <p class="mt-2 text-2xl font-bold text-gray-900">{{ $stats['closed'] }}</p>
                     <p class="text-xs text-gray-500">{{ __('Sementara tidak tersedia untuk booking.') }}</p>
                 </div>
@@ -103,7 +128,10 @@
             <article class="order-1 rounded-3xl border border-gray-200 bg-white p-8 shadow-sm xl:order-2">
                     <header class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
                         <div>
-                            <h2 class="text-lg font-semibold text-gray-900">{{ __('Daftar Jadwal Kunjungan') }}</h2>
+                            <h2 class="text-xl font-semibold text-gray-900 flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#DB4437]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2Z" /></svg>
+                                {{ __('Daftar Jadwal Kunjungan') }}
+                            </h2>
                             <p class="text-xs text-gray-500">{{ __('Aturan: jeda 25 menit antar jadwal agen, maks 3 agen per slot, dan jadwal yang sudah dibooking tidak dapat diubah jamnya.') }}</p>
                         </div>
                     </header>
@@ -146,7 +174,7 @@
                     </form>
 
                 <div class="mt-8 overflow-x-auto rounded-2xl border border-gray-100">
-                    <table class="min-w-[800px] divide-y divide-gray-100 text-sm">
+                    <table class="min-w-[800px] divide-y divide-gray-100 text-[15px]">
                         <thead class="sticky top-0 z-10 bg-white/95 backdrop-blur text-xs font-semibold uppercase tracking-widest text-gray-500">
                                 <tr>
                                     <th scope="col" class="px-4 py-3 text-left">{{ __('Agen') }}</th>
