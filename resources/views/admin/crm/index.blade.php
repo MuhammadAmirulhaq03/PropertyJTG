@@ -8,7 +8,10 @@
     <div class="space-y-10">
         <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
-                <h2 class="text-xl font-semibold text-gray-900">{{ __('Customer Relationship Workspace') }}</h2>
+                <h2 class="text-xl font-semibold text-gray-900 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-[#0F766E]" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 14a4 4 0 10-8 0m8 0v1a4 4 0 01-4 4v0a4 4 0 01-4-4v-1m8 0a4 4 0 10-8 0M12 6a4 4 0 110 8 4 4 0 010-8z" /></svg>
+                    {{ __('Customer Relationship Workspace') }}
+                </h2>
                 <p class="text-sm text-gray-500 max-w-xl">{{ __('Pantau status pelanggan dan tindak lanjuti mereka dengan cepat melalui pengingat jadwal maupun dokumen.') }}</p>
             </div>
             <div class="flex flex-col gap-2 sm:flex-row">
@@ -33,22 +36,42 @@
 
         <section class="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
             <article class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
-                <p class="text-xs font-semibold uppercase tracking-[0.3em] text-gray-400">{{ __('Total Pelanggan') }}</p>
+                <div class="flex items-center justify-between">
+                    <p class="text-xs font-semibold uppercase tracking-[0.3em] text-gray-400">{{ __('Total Pelanggan') }}</p>
+                    <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl" style="background-color: {{ $accentSoft }}; color: {{ $accent }};">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 14a4 4 0 10-8 0m8 0v1a4 4 0 01-4 4v0a4 4 0 01-4-4v-1m8 0a4 4 0 10-8 0M12 6a4 4 0 110 8 4 4 0 010-8z" /></svg>
+                    </span>
+                </div>
                 <p class="mt-3 text-3xl font-bold text-gray-900">{{ number_format($stats['total']) }}</p>
                 <p class="mt-1 text-xs text-gray-500">{{ __('Semua akun pelanggan terdaftar') }}</p>
             </article>
             <article class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
-                <p class="text-xs font-semibold uppercase tracking-[0.3em] text-gray-400">{{ __('Sedang Online') }}</p>
+                <div class="flex items-center justify-between">
+                    <p class="text-xs font-semibold uppercase tracking-[0.3em] text-gray-400">{{ __('Sedang Online') }}</p>
+                    <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="currentColor" viewBox="0 0 20 20"><circle cx="10" cy="10" r="3" /></svg>
+                    </span>
+                </div>
                 <p class="mt-3 text-3xl font-bold" style="color: {{ $accent }};">{{ number_format($stats['online']) }}</p>
                 <p class="mt-1 text-xs text-gray-500">{{ __('Login dalam 5 menit terakhir') }}</p>
             </article>
             <article class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
-                <p class="text-xs font-semibold uppercase tracking-[0.3em] text-gray-400">{{ __('Status Aktif') }}</p>
+                <div class="flex items-center justify-between">
+                    <p class="text-xs font-semibold uppercase tracking-[0.3em] text-gray-400">{{ __('Status Aktif') }}</p>
+                    <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7" /></svg>
+                    </span>
+                </div>
                 <p class="mt-3 text-3xl font-bold text-gray-900">{{ number_format($stats['aktif']) }}</p>
                 <p class="mt-1 text-xs text-gray-500">{{ __('Akun pelanggan aktif') }}</p>
             </article>
             <article class="rounded-3xl border border-gray-200 bg-white p-6 shadow-sm">
-                <p class="text-xs font-semibold uppercase tracking-[0.3em] text-gray-400">{{ __('Status Nonaktif') }}</p>
+                <div class="flex items-center justify-between">
+                    <p class="text-xs font-semibold uppercase tracking-[0.3em] text-gray-400">{{ __('Status Nonaktif') }}</p>
+                    <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-gray-100 text-gray-600">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M18 6L6 18M6 6l12 12" /></svg>
+                    </span>
+                </div>
                 <p class="mt-3 text-3xl font-bold text-gray-900">{{ number_format($stats['nonaktif']) }}</p>
                 <p class="mt-1 text-xs text-gray-500">{{ __('Perlu ditindaklanjuti atau verifikasi') }}</p>
             </article>
