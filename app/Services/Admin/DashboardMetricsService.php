@@ -30,17 +30,32 @@ class DashboardMetricsService
      *   avg_rating:float|null
      * }
      */
-    public function metrics(string|int $rangeDays): array
+    public function metrics(string|int $rangeDays, string $type = 'all', string $location = 'all'): array
     {
         $days = (int) $rangeDays ?: 30;
-        $cacheKey = "admin:metrics:v1:{$days}";
+        $cacheKey = "admin:metrics:v2:{$days}:" . md5($type.'|'.$location);
 
-        return Cache::remember($cacheKey, now()->addMinutes(5), function () use ($days) {
+        $type = strtolower($type ?: 'all');
+        $location = strtolower($location ?: 'all');
+
+        return Cache::remember($cacheKey, now()->addMinutes(5), function () use ($days, $type, $location) {
             $from = Carbon::now()->subDays($days);
             $to = Carbon::now();
 
-            $activeListings = Properti::query()->where('status', 'published')->count();
-            $updatedListings = Properti::query()->where('status', 'published')->where('updated_at', '>=', $from)->count();
+            $propBase = Properti::query()->where('status', 'published');
+            if ($type !== 'all') {
+                $typeFilter = strtolower(str_replace('_', ' ', $type));
+                $propBase->where(function ($q) use ($typeFilter) {
+                    $q->whereRaw('lower(tipe) = ?', [$typeFilter])
+                      ->orWhereRaw('lower(tipe_properti) = ?', [$typeFilter]);
+                });
+            }
+            if ($location !== 'all') {
+                $like = str_replace('-', ' ', $location);
+                $propBase->whereRaw('lower(lokasi) like ?', ['%'.$like.'%']);
+            }
+            $activeListings = (clone $propBase)->count();
+            $updatedListings = (clone $propBase)->where('updated_at', '>=', $from)->count();
 
             $upcomingVisits = VisitSchedule::query()->where('status', 'booked')->where('start_at', '>=', $to)->count();
             $newEnquiries = VisitSchedule::query()->where('status', 'booked')->whereBetween('booked_at', [$from, $to])->count();
@@ -73,4 +88,3 @@ class DashboardMetricsService
         });
     }
 }
-

@@ -22,7 +22,7 @@ class DashboardAdminController extends Controller
         try {
             /** @var DashboardMetricsService $metricsService */
             $metricsService = app(DashboardMetricsService::class);
-            $realMetrics = $metricsService->metrics($filters['range']);
+            $realMetrics = $metricsService->metrics($filters['range'], $filters['type'], $filters['location']);
             $kpis = $this->mapKpisFromMetrics($realMetrics);
         } catch (\Throwable $e) {
             // Keep existing placeholder behaviour if metrics are not available
@@ -224,7 +224,7 @@ class DashboardAdminController extends Controller
     private function generateTrendData(array $filters): array
     {
         // Real trend: Favorites and Visits over the range, split into buckets
-        $days = (int) $filters['range'] ?: 30;
+        $days = (int) ($filters['range'] ?? 30) ?: 30;
         $segments = match ($days) {
             7 => 7,
             30 => 10,
@@ -241,14 +241,30 @@ class DashboardAdminController extends Controller
         $favoritesCounts = [];
         $visitCounts = [];
 
+        $typeFilter = strtolower((string) ($filters['type'] ?? 'all'));
+        $locationFilter = strtolower((string) ($filters['location'] ?? 'all'));
+        $locationLike = $locationFilter !== 'all' ? str_replace('-', ' ', $locationFilter) : null;
+
         foreach ($buckets as [$start, $end]) {
             $labels[] = $start->format('d M') . '–' . $end->format('d M');
 
-            $fav = \App\Models\PropertyFavorite::query()
-                ->whereBetween('created_at', [$start, $end])
-                ->count();
-            $favoritesCounts[] = $fav;
+            $favQuery = \App\Models\PropertyFavorite::query()
+                ->join('propertis', 'property_favorites.properti_id', '=', 'propertis.id')
+                ->whereBetween('property_favorites.created_at', [$start, $end]);
 
+            if ($typeFilter !== 'all') {
+                $typeNorm = strtolower(\Illuminate\Support\Str::headline($typeFilter));
+                $favQuery->where(function ($q) use ($typeNorm) {
+                    $q->whereRaw('lower(propertis.tipe) = ?', [$typeNorm])
+                      ->orWhereRaw('lower(propertis.tipe_properti) = ?', [$typeNorm]);
+                });
+            }
+            if ($locationLike) {
+                $favQuery->whereRaw('lower(propertis.lokasi) like ?', ['%' . $locationLike . '%']);
+            }
+            $favoritesCounts[] = $favQuery->count();
+
+            // Visits kept global; optionally filter by location if you later normalise VisitSchedule.location
             $vis = \App\Models\VisitSchedule::query()
                 ->where('status', 'booked')
                 ->whereBetween('booked_at', [$start, $end])
@@ -265,8 +281,20 @@ class DashboardAdminController extends Controller
 
     private function generateLeadSources(array $filters): array
     {
-        $rows = \App\Models\PropertyFavorite::query()
-            ->join('propertis', 'property_favorites.properti_id', '=', 'propertis.id')
+        $favBase = \App\Models\PropertyFavorite::query()
+            ->join('propertis', 'property_favorites.properti_id', '=', 'propertis.id');
+        if (($filters['location'] ?? 'all') !== 'all') {
+            $like = str_replace('-', ' ', strtolower($filters['location']));
+            $favBase->whereRaw('lower(propertis.lokasi) like ?', ['%'.$like.'%']);
+        }
+        if (($filters['type'] ?? 'all') !== 'all') {
+            $typeFilter = Str::lower(Str::headline($filters['type']));
+            $favBase->where(function ($q) use ($typeFilter) {
+                $q->whereRaw('lower(propertis.tipe) = ?', [$typeFilter])
+                  ->orWhereRaw('lower(propertis.tipe_properti) = ?', [$typeFilter]);
+            });
+        }
+        $rows = $favBase
             ->selectRaw("COALESCE(propertis.tipe, propertis.tipe_properti, 'Other') as tipe, COUNT(*) as cnt")
             ->groupByRaw("COALESCE(propertis.tipe, propertis.tipe_properti, 'Other')")
             ->orderByDesc('cnt')
