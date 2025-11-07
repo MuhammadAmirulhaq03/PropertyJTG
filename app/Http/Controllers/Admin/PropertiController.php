@@ -346,7 +346,6 @@ class PropertiController extends Controller
         return [
             __('Gunakan orientasi landscape 4:3 atau 16:9 untuk foto utama.'),
             __('Resolusi minimal 1600px di sisi terpanjang, format JPG/PNG/WEBP.'),
-            __('Video direkomendasikan maksimal 60 detik, format MP4 atau WEBM.'),
             __('Pastikan pencahayaan cukup dan hindari watermark berlebihan.'),
             __('Isi caption untuk menjelaskan ruangan, fasilitas, atau sudut pengambilan gambar.'),
         ];
