@@ -181,6 +181,65 @@
                         </div>
                     </div>
 
+                    <!-- Document Permission Requests -->
+                    <div class="rounded-3xl bg-white p-6 shadow-lg shadow-gray-200/40">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-lg font-semibold text-gray-900">{{ __('Permintaan Izin Dokumen') }}</h3>
+                            <a href="{{ route('agent.document-requests.index') }}" class="text-xs font-semibold text-[#DB4437] hover:underline">{{ __('Lihat semua') }}</a>
+                        </div>
+                        <div class="mt-6 space-y-4">
+                            @forelse (($pendingDocRequests ?? collect()) as $req)
+                                <div x-data="{ open: false }" class="rounded-2xl border border-gray-100 bg-gray-50/80 p-4 transition hover:border-[#DB4437]/30 hover:bg-white">
+                                    <div class="flex items-start justify-between gap-4">
+                                        <div>
+                                            <p class="text-sm font-semibold text-gray-900">{{ optional($req->user)->name ?? __('Pelanggan') }}</p>
+                                            <p class="mt-1 text-xs text-gray-600 line-clamp-2">{{ $req->note ?: __('Tanpa catatan') }}</p>
+                                            <p class="mt-1 text-[11px] text-gray-500">{{ optional($req->requested_at)->diffForHumans() }}</p>
+                                        </div>
+                                        <button @click="open = true" class="inline-flex items-center gap-2 rounded-full bg-[#DB4437] px-3 py-1.5 text-xs font-semibold text-white hover:bg-[#c63c31]">
+                                            {{ __('Lihat') }}
+                                        </button>
+                                    </div>
+
+                                    <!-- Modal -->
+                                    <div x-show="open" x-transition.opacity class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" style="display:none;">
+                                        <div @click.away="open = false" class="w-full max-w-lg rounded-3xl bg-white p-6 shadow-xl">
+                                            <div class="flex items-start justify-between">
+                                                <h4 class="text-lg font-bold text-gray-900">{{ __('Permintaan Izin Dokumen') }}</h4>
+                                                <button class="text-gray-400 hover:text-gray-600" @click="open = false">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                                                </button>
+                                            </div>
+                                            <div class="mt-4 space-y-2 text-sm text-gray-700">
+                                                <p><span class="font-semibold">{{ __('Pelanggan') }}:</span> {{ optional($req->user)->name }}</p>
+                                                <p><span class="font-semibold">{{ __('Catatan') }}:</span> {{ $req->note ?: __('(Tidak ada)') }}</p>
+                                                <p class="text-xs text-gray-500">{{ __('Diminta') }}: {{ optional($req->requested_at)->translatedFormat('d M Y H:i') }}</p>
+                                            </div>
+                                            <div class="mt-6 flex items-center justify-end gap-2">
+                                                <form method="POST" action="{{ route('agent.document-requests.reject', $req) }}">
+                                                    @csrf
+                                                    <button type="submit" class="inline-flex items-center gap-2 rounded-full bg-red-600 px-4 py-2 text-xs font-semibold text-white hover:bg-red-700">
+                                                        {{ __('Tolak') }}
+                                                    </button>
+                                                </form>
+                                                <form method="POST" action="{{ route('agent.document-requests.approve', $req) }}">
+                                                    @csrf
+                                                    <button type="submit" class="inline-flex items-center gap-2 rounded-full bg-emerald-600 px-4 py-2 text-xs font-semibold text-white hover:bg-emerald-700">
+                                                        {{ __('Setujui') }}
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @empty
+                                <div class="rounded-2xl border border-dashed border-gray-300 bg-gray-50 p-6 text-center text-sm text-gray-500">
+                                    {{ __('Tidak ada permintaan') }}
+                                </div>
+                            @endforelse
+                        </div>
+                    </div>
+
                     <!-- Support Card -->
                     <div class="rounded-3xl border border-gray-100 bg-white p-6 shadow-md shadow-gray-200/30">
                         <h3 class="text-lg font-semibold text-gray-900">{{ __('Need Assistance?') }}</h3>

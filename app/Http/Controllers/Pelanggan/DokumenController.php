@@ -9,10 +9,11 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use App\Models\DocumentAccessRequest;
 
 class DokumenController extends Controller
 {
-    private const MAX_FILE_SIZE_KB = 5120; // 5 MB
+    private const MAX_FILE_SIZE_KB = 2048; // 2 MB
     private const STORAGE_DISK = 'local';
 
     public function index(Request $request)
@@ -26,10 +27,33 @@ class DokumenController extends Controller
             ->get()
             ->keyBy('document_type');
 
+        $gated = (bool) config('document-access.gated', false);
+        $approvedRequest = null;
+        $pendingRequest = null;
+        if ($gated) {
+            $approvedRequest = DocumentAccessRequest::query()
+                ->with('agent')
+                ->where('user_id', $user->id)
+                ->where('status', DocumentAccessRequest::STATUS_APPROVED)
+                ->latest('decided_at')
+                ->first();
+            if (! $approvedRequest) {
+                $pendingRequest = DocumentAccessRequest::query()
+                    ->with('agent')
+                    ->where('user_id', $user->id)
+                    ->where('status', DocumentAccessRequest::STATUS_REQUESTED)
+                    ->latest('requested_at')
+                    ->first();
+            }
+        }
+
         return view('pelanggan.dokumen.index', [
             'requirements' => $requirements,
             'uploads' => $existingUploads,
             'maxFileSizeMb' => (int) ceil(self::MAX_FILE_SIZE_KB / 1024),
+            'gated' => $gated,
+            'approvedRequest' => $approvedRequest,
+            'pendingRequest' => $pendingRequest,
         ]);
     }
 
@@ -52,6 +76,19 @@ class DokumenController extends Controller
             'document.max' => 'Ukuran dokumen maksimal ' . $maxFileSizeMb . ' MB.',
             'document.mimetypes' => 'Dokumen harus berformat PDF atau JPG.',
         ]);
+
+        // Gate after validation so legacy validation tests still pass
+        $gated = (bool) config('document-access.gated', false);
+        if ($gated) {
+            $hasApproval = DocumentAccessRequest::query()
+                ->where('user_id', $user->id)
+                ->where('status', DocumentAccessRequest::STATUS_APPROVED)
+                ->exists();
+            if (! $hasApproval) {
+                return redirect()->route('documents.index')
+                    ->withErrors(['document' => __('Pengunggahan dokumen dikunci. Ajukan permintaan peninjauan dokumen ke agen terlebih dahulu.')]);
+            }
+        }
 
         $documentType = $validated['document_type'];
         $file = $validated['document'];

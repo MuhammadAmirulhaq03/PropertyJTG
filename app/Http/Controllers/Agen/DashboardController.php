@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Agen;
 
 use App\Http\Controllers\Controller;
+use App\Models\DocumentAccessRequest;
 use App\Models\VisitSchedule;
 use App\Models\DocumentUpload;
 use App\Models\Properti;
@@ -110,6 +111,18 @@ class DashboardController extends Controller
             ];
         }
 
+        // Pending document access requests assigned to this agent
+        $pendingRequests = collect();
+        if ($user) {
+            $pendingRequests = DocumentAccessRequest::query()
+                ->with(['user'])
+                ->where('agent_id', $user->id)
+                ->where('status', DocumentAccessRequest::STATUS_REQUESTED)
+                ->orderByDesc('requested_at')
+                ->take(8)
+                ->get();
+        }
+
         return view('agen.dashboard.index', [
             'showAdminExtras' => false,
             'role' => $user?->roleSlug() ?? 'agen',
@@ -117,6 +130,7 @@ class DashboardController extends Controller
             'agentBookedCount' => $bookedCount,
             'recentActivities' => $recentActivities,
             'agentStats' => $agentStats ?? [],
+            'pendingDocRequests' => $pendingRequests,
         ]);
     }
 }

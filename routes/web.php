@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\StaffController;
 use App\Http\Controllers\Agen\DashboardController as AgenDashboardController;
 use App\Http\Controllers\Agen\DokumenVerificationController as AgenDokumenVerificationController;
 use App\Http\Controllers\Agen\ProfileController as AgenProfileController;
+use App\Http\Controllers\Agen\DocumentAccessRequestController as AgenDocumentAccessRequestController;
 use App\Http\Controllers\ConsultantController;
 use App\Http\Controllers\ContractorController;
 use App\Http\Controllers\DashboardController;
@@ -25,6 +26,7 @@ use App\Http\Controllers\Pelanggan\KprCalculatorController;
 use App\Http\Controllers\Pelanggan\PropertyGalleryController;
 use App\Http\Controllers\Pelanggan\ProfileController as PelangganProfileController;
 use App\Http\Controllers\Pelanggan\VisitScheduleBookingController;
+use App\Http\Controllers\Pelanggan\DocumentAccessRequestController as PelangganDocumentAccessRequestController;
 use App\Http\Controllers\HeartbeatController;
 use Illuminate\Support\Facades\Route;
 
@@ -74,6 +76,12 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/kpr/calculator', [KprCalculatorController::class, 'show'])->name('pelanggan.kpr.show');
         Route::post('/kpr/calculator', [KprCalculatorController::class, 'calculate'])->name('pelanggan.kpr.calculate');
+
+        // Document access request (gated upload flow)
+        Route::get('/documents/request', [PelangganDocumentAccessRequestController::class, 'create'])
+            ->name('documents.request.create');
+        Route::post('/documents/request', [PelangganDocumentAccessRequestController::class, 'store'])
+            ->name('documents.request.store');
 
         Route::get('/favorites', [FavoriteController::class, 'index'])->name('pelanggan.favorit.index');
         Route::post('/favorites/{property}', [FavoriteController::class, 'store'])->name('pelanggan.favorites.store');
@@ -173,6 +181,17 @@ Route::prefix('agent')
         Route::get('/profile', [AgenProfileController::class, 'index'])
             ->name('profile.index')
             ->middleware('can:view-dashboard');
+
+        // Document access requests management for agents
+        Route::get('/document-requests', [AgenDocumentAccessRequestController::class, 'index'])
+            ->name('document-requests.index')
+            ->middleware('can:manage-documents');
+        Route::post('/document-requests/{docRequest}/approve', [AgenDocumentAccessRequestController::class, 'approve'])
+            ->name('document-requests.approve')
+            ->middleware('can:manage-documents');
+        Route::post('/document-requests/{docRequest}/reject', [AgenDocumentAccessRequestController::class, 'reject'])
+            ->name('document-requests.reject')
+            ->middleware('can:manage-documents');
     });
 
 require __DIR__.'/auth.php';

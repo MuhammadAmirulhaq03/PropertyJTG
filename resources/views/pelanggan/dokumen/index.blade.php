@@ -1,4 +1,20 @@
 <x-app-layout>
+    @if (session('already_sent'))
+        <div x-data="{ open: true }" x-show="open" x-transition.opacity class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4" style="display:none;">
+            <div @click.away="open = false" class="w-full max-w-md rounded-3xl bg-white p-6 shadow-xl">
+                <div class="flex items-start justify-between">
+                    <h4 class="text-lg font-bold text-gray-900">{{ __('Permintaan Sudah Dikirim') }}</h4>
+                    <button class="text-gray-400 hover:text-gray-600" @click="open = false">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                </div>
+                <p class="mt-3 text-sm text-gray-700">{{ session('already_sent') }}</p>
+                <div class="mt-6 flex items-center justify-end">
+                    <button class="inline-flex items-center gap-2 rounded-full bg-[#DB4437] px-4 py-2 text-xs font-semibold text-white hover:bg-[#c63c31]" @click="open = false">{{ __('Tutup') }}</button>
+                </div>
+            </div>
+        </div>
+    @endif
     <style>
         @keyframes document-upload-sweep {
             0% {
@@ -133,6 +149,34 @@
                             </div>
                         @endif
 
+                        @if (!empty($gated) && empty($approvedRequest))
+                            <div class="mt-8">
+                                <div class="rounded-3xl border border-red-200 bg-red-50 px-6 py-6 sm:px-8 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                                    <div class="shrink-0 inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-[#DB4437] text-white">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 11V8a4 4 0 118 0v3m-9 0h10a2 2 0 012 2v5a2 2 0 01-2 2H7a2 2 0 01-2-2v-5a2 2 0 012-2z" />
+                                        </svg>
+                                    </div>
+                                    <div class="flex-1">
+                                        <h3 class="text-lg font-semibold text-[#DB4437]">Pengunggahan Dokumen Terkunci</h3>
+                                        <p class="mt-1 text-sm text-red-800">Ajukan permintaan peninjauan dokumen ke agen terlebih dahulu untuk membuka fitur unggah.</p>
+                                        @if (!empty($pendingRequest))
+                                            <p class="mt-2 text-sm text-red-800">
+                                                Menunggu persetujuan oleh: <span class="font-semibold">{{ optional($pendingRequest->agent)->display_name ?? optional($pendingRequest->agent)->name }}</span>
+                                            </p>
+                                        @endif
+                                        <div class="mt-4">
+                                            <a href="{{ route('documents.request.create') }}" class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#DB4437] text-white text-sm font-semibold hover:bg-[#c63c31] transition">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                                                </svg>
+                                                Ajukan Permintaan Peninjauan Dokumen
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
                         <div class="mt-8 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
                             @foreach ($requirements as $key => $requirement)
                                 @php
@@ -213,10 +257,11 @@
                                             <p class="mt-4 text-sm text-gray-500 italic">Belum ada dokumen. Silakan unggah untuk melanjutkan.</p>
                                         @endif
 
+                                        @php $locked = !empty($gated) && empty($approvedRequest); @endphp
                                         <form class="mt-6" method="POST" action="{{ route('documents.store') }}" enctype="multipart/form-data">
                                             @csrf
                                             <input type="hidden" name="document_type" value="{{ $key }}">
-                                            <label class="flex flex-col items-center justify-center gap-3 border-2 border-dashed {{ $isErrored ? 'border-red-300 bg-red-50' : 'border-[#DB4437]/30 bg-white' }} rounded-2xl px-4 py-6 cursor-pointer hover:border-[#DB4437] transition">
+                                            <label class="flex flex-col items-center justify-center gap-3 border-2 border-dashed {{ $isErrored ? 'border-red-300 bg-red-50' : 'border-[#DB4437]/30 bg-white' }} rounded-2xl px-4 py-6 {{ $locked ? 'cursor-not-allowed opacity-70' : 'cursor-pointer hover:border-[#DB4437]' }} transition">
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-[#DB4437]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 16V4m0 12l3.5-3.5M12 16l-3.5-3.5M6 20h12a2 2 0 002-2v-5a2 2 0 00-2-2h-3M6 20a2 2 0 01-2-2v-5a2 2 0 012-2h3m0-4a3 3 0 116 0" />
                                                 </svg>
@@ -227,6 +272,7 @@
                                                     type="file" 
                                                     name="document" 
                                                     accept=".pdf,image/jpeg"
+                                                    @if($locked) disabled @endif
                                                     onchange="this.closest('form').querySelector('button[type=submit]').disabled = false;"
                                                 >
                                             </label>
@@ -238,7 +284,7 @@
                                                 <button 
                                                     type="submit" 
                                                     class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#DB4437] text-white text-sm font-semibold hover:bg-[#c63c31] transition disabled:opacity-50"
-                                                    disabled
+                                                    @if($locked) disabled @else disabled @endif
                                                 >
                                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2M7 10l5 5m0 0l5-5m-5 5V4" />
@@ -246,6 +292,9 @@
                                                     Upload
                                                 </button>
                                             </div>
+                                            @if($locked)
+                                                <p class="mt-2 text-xs text-red-700">Pengunggahan dikunci. <a href="{{ route('documents.request.create') }}" class="underline font-semibold">Ajukan permintaan peninjauan</a> untuk membuka.</p>
+                                            @endif
                                         </form>
                                     </div>
                                 </div>

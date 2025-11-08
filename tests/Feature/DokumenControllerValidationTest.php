@@ -12,6 +12,13 @@ class DokumenControllerValidationTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        // Keep legacy validation semantics independent of the gated feature
+        config(['document-access.gated' => false]);
+    }
+
     private function actingCustomer(): User
     {
         return User::factory()->create(['role' => 'customer']);
