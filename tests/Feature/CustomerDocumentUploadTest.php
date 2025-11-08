@@ -13,6 +13,13 @@ class CustomerDocumentUploadTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        // Disable gating for uploads in these tests; gating has its own dedicated tests
+        config(['document-access.gated' => false]);
+    }
+
     public function test_customer_can_upload_document_successfully(): void
     {
         Storage::fake('local');
