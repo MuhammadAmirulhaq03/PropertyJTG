@@ -170,4 +170,10 @@ class User extends Authenticatable
         return $this->belongsToMany(Properti::class, 'property_favorites', 'user_id', 'properti_id')
             ->withTimestamps();
     }
+
+        public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new \App\Notifications\ResetPassword($token));
+    }
+
 }
