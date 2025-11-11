@@ -1,8 +1,20 @@
 <?php
 
 use App\Models\User;
-use Illuminate\Auth\Notifications\ResetPassword;
+use App\Notifications\ResetPassword;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\Password;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+
+uses(RefreshDatabase::class);
+
+beforeEach(function () {
+    // Ensure broker points to users and disable throttle in tests to avoid accidental blocking
+    config([
+        'auth.defaults.passwords' => 'users',
+        'auth.passwords.users.throttle' => 0,
+    ]);
+});
 
 test('reset password link screen can be rendered', function () {
     $response = $this->get('/forgot-password');
