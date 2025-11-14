@@ -1,21 +1,21 @@
-﻿<nav x-data="{ open: false }" class="bg-[#DB4437] text-white font-['Roboto'] shadow">
+﻿<nav x-data="{ open: false }" class="fixed inset-x-0 top-0 z-40 bg-[#DB4437] text-white font-['Roboto'] shadow">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-16">
+        <div class="grid grid-cols-[auto,1fr,auto] items-center h-14 md:h-16">
             <!-- Logo + Nama Brand -->
             <div class="flex items-center space-x-3">
                 <a href="/" class="flex items-center space-x-3">
                 <img src="{{ asset('assets/jtg.png') }}" 
-                    class="block h-14 w-auto p-0.5 rounded-lg ring-2 ring-white ring-offset-0 shadow-sm" 
+                    class="block h-9 md:h-10 w-auto p-0.5 rounded-lg ring ring-white ring-offset-0" 
                     alt="Logo">
-                    <div class="leading-tight">
-                        <div class="text-lg font-bold tracking-wide">JAYA TIBAR GROUP</div>
-                        <div class="text-xs text-gray-100">Real Estate Management Platform</div>
+                    <div class="leading-none">
+                        <div class="text-base md:text-lg font-bold tracking-wide">JAYA TIBAR GROUP</div>
+                        <div class="text-[11px] md:text-xs text-gray-100 mt-0.5">Real Estate Management Platform</div>
                     </div>
                 </a>
             </div>
 
-            <!-- Navigation Links -->
-            <div class="hidden md:flex space-x-8 text-sm font-medium">
+            <!-- Navigation Links (slightly left of geometric center) -->
+            <div class="hidden md:flex h-full items-center justify-center -ml-4 lg:-ml-8 space-x-8 text-sm font-semibold">
                 <a href="/" class="hover:text-gray-100 {{ request()->is('/') ? 'underline font-semibold' : '' }}">Home Page</a>
                 <a href="{{ route('house-view') }}" class="hover:text-gray-100 {{ request()->routeIs('house-view') ? 'underline font-semibold' : '' }}">House View</a>
                 <a href="{{ route('gallery.index') }}" class="hover:text-gray-100 {{ request()->routeIs('gallery.*') ? 'underline font-semibold' : '' }}">{{ __('Galeri Properti') }}</a>
@@ -29,12 +29,12 @@
             </div>
 
             <!-- Right Side -->
-            <div class="hidden md:flex items-center space-x-4">
+            <div class="hidden md:flex h-full items-center space-x-4">
                 @auth
                     @if (auth()->user()->hasRole('customer'))
                         <a
                             href="{{ route('dashboard') }}"
-                            class="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-white/15 px-4 py-2 text-sm font-semibold tracking-wide text-white transition hover:scale-105 hover:shadow-lg"
+                            class="group relative inline-flex h-9 items-center gap-2 overflow-hidden rounded-full bg-white/15 px-4 text-sm font-semibold tracking-wide text-white transition hover:scale-105 hover:shadow-lg"
                         >
                             <span class="absolute inset-0 bg-gradient-to-r from-white/30 to-transparent opacity-0 transition group-hover:opacity-100"></span>
                             <svg xmlns="http://www.w3.org/2000/svg" class="relative h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -45,7 +45,7 @@
                     @elseif (auth()->user()->hasRole('admin'))
                         <a
                             href="{{ route('admin.dashboard') }}"
-                            class="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-white/15 px-4 py-2 text-sm font-semibold tracking-wide text-white transition hover:scale-105 hover:shadow-lg"
+                            class="group relative inline-flex h-9 items-center gap-2 overflow-hidden rounded-full bg-white/15 px-4 text-sm font-semibold tracking-wide text-white transition hover:scale-105 hover:shadow-lg"
                         >
                             <span class="absolute inset-0 bg-gradient-to-r from-white/30 to-transparent opacity-0 transition group-hover:opacity-100"></span>
                             <svg xmlns="http://www.w3.org/2000/svg" class="relative h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -56,7 +56,7 @@
                     @elseif (auth()->user()->hasRole('agen'))
                         <a
                             href="{{ route('agent.dashboard') }}"
-                            class="group relative inline-flex items-center gap-2 overflow-hidden rounded-full bg-white/15 px-4 py-2 text-sm font-semibold tracking-wide text-white transition hover:scale-105 hover:shadow-lg"
+                            class="group relative inline-flex h-9 items-center gap-2 overflow-hidden rounded-full bg-white/15 px-4 text-sm font-semibold tracking-wide text-white transition hover:scale-105 hover:shadow-lg"
                         >
                             <span class="absolute inset-0 bg-gradient-to-r from-white/30 to-transparent opacity-0 transition group-hover:opacity-100"></span>
                             <svg xmlns="http://www.w3.org/2000/svg" class="relative h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -236,8 +236,8 @@
                     </x-responsive-nav-link>
                 </form>
             @else
-                <div class="flex">
-                    <a href="{{ route('login') }}" class="bg-white text-[#DB4437] text-center px-4 py-2 rounded-md font-semibold hover:bg-gray-100 transition">Login</a>
+                <div class="flex h-full items-center">
+                    <a href="{{ route('login') }}" class="inline-flex h-9 items-center rounded-md bg-white px-4 text-sm font-semibold text-[#DB4437] hover:bg-gray-100 transition">Login</a>
                 </div>
             @endauth
         </div>
