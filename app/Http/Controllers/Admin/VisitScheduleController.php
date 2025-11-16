@@ -45,6 +45,7 @@ class VisitScheduleController extends Controller
             'available' => VisitSchedule::where('status', 'available')->whereNull('customer_id')->count(),
             'booked' => VisitSchedule::where('status', 'booked')->count(),
             'closed' => VisitSchedule::where('status', 'closed')->count(),
+            'completed' => VisitSchedule::where('status', 'completed')->count(),
         ];
 
         return view('admin.visit-schedules.index', [
@@ -237,7 +238,5 @@ class VisitScheduleController extends Controller
             ->get(['id', 'name', 'email', 'status']);
     }
 }
-
-
 
 
