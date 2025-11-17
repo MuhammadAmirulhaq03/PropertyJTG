@@ -194,10 +194,20 @@
                         </p>
                     </div>
 
-                    <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                    <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                         <div class="rounded-2xl bg-white px-4 py-3 text-sm text-gray-600">
                             <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">{{ __('Harga Listing') }}</p>
                             <p class="mt-1 text-lg font-bold text-gray-900">Rp {{ number_format($property->harga, 0, ',', '.') }}</p>
+                        </div>
+                        <div class="rounded-2xl bg-white px-4 py-3 text-sm text-gray-600">
+                            <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">{{ __('Unit Tersedia') }}</p>
+                            <p class="mt-1 font-semibold text-gray-900">
+                                @if(is_null($property->units_available))
+                                    <span class="text-gray-400">{{ __('Belum diisi') }}</span>
+                                @else
+                                    {{ $property->units_available }} {{ __('unit') }}
+                                @endif
+                            </p>
                         </div>
                         <div class="rounded-2xl bg-white px-4 py-3 text-sm text-gray-600">
                             <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">{{ __('Media') }}</p>
