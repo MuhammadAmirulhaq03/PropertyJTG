@@ -20,7 +20,7 @@ class ClosePastVisitSchedules extends Command
      *
      * @var string
      */
-    protected $description = 'Automatically close visit schedules whose end time has passed.';
+    protected $description = 'Automatically update visit schedules whose end time has passed.';
 
     /**
      * Execute the console command.
@@ -29,34 +29,22 @@ class ClosePastVisitSchedules extends Command
     {
         $now = now();
 
+        // Slot kosong yang sudah lewat: ditutup agar tidak bisa dibooking
         $closedAvailable = VisitSchedule::query()
             ->where('end_at', '<', $now)
             ->where('status', 'available')
             ->update(['status' => 'closed']);
 
-        $closedBooked = 0;
-
-        VisitSchedule::query()
+        // Slot yang sudah dibooking dan waktunya lewat: tandai sebagai selesai (completed)
+        $completedBooked = VisitSchedule::query()
             ->where('end_at', '<', $now)
             ->where('status', 'booked')
-            ->chunkById(200, function ($schedules) use (&$closedBooked) {
-                DB::transaction(function () use ($schedules, &$closedBooked) {
-                    foreach ($schedules as $schedule) {
-                        $schedule->update([
-                            'status' => 'closed',
-                            'customer_id' => null,
-                            'booked_at' => null,
-                        ]);
-                        $closedBooked++;
-                    }
-                });
-            });
+            ->update(['status' => 'completed']);
 
-        $total = $closedAvailable + $closedBooked;
+        $total = $closedAvailable + $completedBooked;
 
-        $this->info("Closed {$total} past visit schedule(s).");
+        $this->info("Updated {$total} past visit schedule(s).");
 
         return self::SUCCESS;
     }
 }
-

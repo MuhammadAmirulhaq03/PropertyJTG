@@ -14,6 +14,7 @@ class Properti extends Model
         'nama',
         'lokasi',
         'harga',
+        'units_available',
         'tipe',
         'status',
         'spesifikasi',
@@ -24,6 +25,7 @@ class Properti extends Model
 
     protected $casts = [
         'harga' => 'float',
+        'units_available' => 'integer',
     ];
 
     protected static function booted(): void

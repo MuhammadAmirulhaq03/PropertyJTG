@@ -17,7 +17,7 @@
         @endif
 
         <section class="space-y-8">
-            <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-5">
+            <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-6">
                 <div class="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
                     <div class="flex items-center justify-between">
                         <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">{{ __('Total Jadwal') }}</p>
@@ -67,6 +67,16 @@
                     </div>
                     <p class="mt-2 text-2xl font-bold text-gray-900">{{ $stats['closed'] }}</p>
                     <p class="text-xs text-gray-500">{{ __('Sementara tidak tersedia untuk booking.') }}</p>
+                </div>
+                <div class="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
+                    <div class="flex items-center justify-between">
+                        <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">{{ __('Kunjungan Selesai') }}</p>
+                        <span class="inline-flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7" /></svg>
+                        </span>
+                    </div>
+                    <p class="mt-2 text-2xl font-bold text-emerald-600">{{ $stats['completed'] }}</p>
+                    <p class="text-xs text-gray-500">{{ __('Jadwal yang sudah dikunjungi pelanggan.') }}</p>
                 </div>
             </div>
 
@@ -149,6 +159,7 @@
                                 <option value="available" @selected($filters['status'] === 'available')>{{ __('Tersedia') }}</option>
                                 <option value="booked" @selected($filters['status'] === 'booked')>{{ __('Dibooking') }}</option>
                                 <option value="closed" @selected($filters['status'] === 'closed')>{{ __('Ditutup') }}</option>
+                                <option value="completed" @selected($filters['status'] === 'completed')>{{ __('Selesai') }}</option>
                             </select>
                         </div>
                         <div>
@@ -226,11 +237,26 @@
                                                     'available' => 'bg-emerald-50 text-emerald-600',
                                                     'booked' => 'bg-[#DB4437]/10 text-[#DB4437]',
                                                     'closed' => 'bg-gray-200 text-gray-600',
+                                                    'completed' => 'bg-emerald-50 text-emerald-700',
                                                 ][$schedule->status] ?? 'bg-gray-200 text-gray-600';
+
+                                                $dotClasses = [
+                                                    'available' => 'bg-emerald-500',
+                                                    'booked' => 'bg-[#DB4437]',
+                                                    'closed' => 'bg-gray-500',
+                                                    'completed' => 'bg-emerald-600',
+                                                ][$schedule->status] ?? 'bg-gray-500';
+
+                                                $statusLabels = [
+                                                    'available' => __('TERSEDIA'),
+                                                    'booked' => __('DIBOOKING'),
+                                                    'closed' => __('DITUTUP'),
+                                                    'completed' => __('SELESAI'),
+                                                ];
                                             @endphp
                                             <span class="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold {{ $badgeClasses }}">
-                                                <span class="h-2 w-2 rounded-full {{ $schedule->status === 'available' ? 'bg-emerald-500' : ($schedule->status === 'booked' ? 'bg-[#DB4437]' : 'bg-gray-500') }}"></span>
-                                                {{ Str::upper($schedule->status) }}
+                                                <span class="h-2 w-2 rounded-full {{ $dotClasses }}"></span>
+                                                {{ $statusLabels[$schedule->status] ?? Str::upper($schedule->status) }}
                                             </span>
                                         </td>
                                         <td class="px-4 py-4 text-right">

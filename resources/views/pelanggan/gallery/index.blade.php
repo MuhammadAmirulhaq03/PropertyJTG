@@ -188,6 +188,13 @@
                                 <div class="rounded-2xl bg-gray-50 px-4 py-3">
                                     <p class="text-xs font-semibold uppercase tracking-widest text-gray-400">{{ __('Harga') }}</p>
                                     <p class="text-lg font-bold text-[#DB4437]">Rp {{ number_format($property->harga, 0, ',', '.') }}</p>
+
+                                    @if(!is_null($property->units_available))
+                                        <div class="mt-2 inline-flex items-center gap-2 rounded-full bg-[#DB4437]/10 px-3 py-1 text-[11px] font-semibold text-[#DB4437]">
+                                            <span class="h-1.5 w-1.5 rounded-full bg-[#DB4437]"></span>
+                                            <span>{{ __('Sisa :count unit', ['count' => $property->units_available]) }}</span>
+                                        </div>
+                                    @endif
                                 </div>
                                 @if ($property->spesifikasi)
                                     <p class="line-clamp-3 text-sm leading-relaxed text-gray-600">

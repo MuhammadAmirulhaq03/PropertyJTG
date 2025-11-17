@@ -45,6 +45,12 @@
                     <p class="mt-1 text-xs text-gray-400">{{ __('Tuliskan tanpa tanda baca. Contoh: 1250000000') }}</p>
                 </div>
                 <div>
+                    <label for="units_available" class="text-xs font-semibold uppercase tracking-widest text-gray-500">{{ __('Unit Tersedia') }}</label>
+                    <input type="number" min="0" id="units_available" name="units_available" value="{{ old('units_available', $property->units_available) }}"
+                           class="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 text-sm focus:border-[#2563EB] focus:ring-[#2563EB]">
+                    <p class="mt-1 text-xs text-gray-400">{{ __('Opsional. Kosongkan jika tidak ingin menampilkan stok unit.') }}</p>
+                </div>
+                <div>
                     <label for="tipe" class="text-xs font-semibold uppercase tracking-widest text-gray-500">{{ __('Segmentasi Listing') }}</label>
                     <select id="tipe" name="tipe" required
                             class="mt-1 w-full rounded-2xl border border-gray-200 bg-gray-50 text-sm focus:border-[#2563EB] focus:ring-[#2563EB]">
@@ -315,4 +321,3 @@
         refreshControls();
     })();
 </script>
-

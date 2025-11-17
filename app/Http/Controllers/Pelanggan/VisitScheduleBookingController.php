@@ -21,8 +21,10 @@ class VisitScheduleBookingController extends Controller
             ->orderBy('start_at')
             ->get();
 
+        // Hanya tampilkan jadwal yang masih akan datang pada sisi pelanggan
         $myBookings = VisitSchedule::with('agent')
             ->where('customer_id', $user->id)
+            ->where('start_at', '>=', now())
             ->orderBy('start_at')
             ->get();
 

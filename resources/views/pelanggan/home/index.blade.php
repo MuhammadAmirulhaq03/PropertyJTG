@@ -23,7 +23,7 @@
                 </p>
             </div>
             <!-- Decorative search icons (no search button) -->
-            <div class="bg-white/95 backdrop-blur-xl rounded-3xl shadow-xl p-3 flex flex-col sm:flex-row items-center justify-between gap-2 max-w-4xl mx-auto border border-gray-100">
+            <div class="bg-white/95 backdrop-blur-xl rounded-3xl shadow-xl px-4 py-3 sm:py-4 flex flex-col sm:flex-row items-center justify-between gap-2 max-w-3xl mx-auto border border-gray-100">
                 <div class="group relative flex items-center gap-2 w-full sm:w-auto bg-gray-50 px-4 py-2.5 rounded-2xl text-sm font-medium text-gray-700 transition-all duration-300 hover:bg-white hover:shadow-md overflow-hidden">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-[#DB4437] transition-all duration-300 group-hover:scale-110" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
                         <path fill-rule="evenodd" d="M10 18a1 1 0 01-.832-.445C7.07 14.917 4 10.91 4 7a6 6 0 1112 0c0 3.91-3.07 7.917-5.168 10.555A1 1 0 0110 18zm0-13a3 3 0 100 6 3 3 0 000-6z" clip-rule="evenodd" />
