@@ -16,7 +16,7 @@
         <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 md:px-10 text-center md:text-left">
             <div class="animate-slide-up">
                 <h1 class="text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-tight mb-4 sm:mb-6 transform transition-all duration-700 hover:scale-[1.02]">
-                    Find A House<br class="hidden sm:block">That Suits You
+                    test auto deploy<br class="hidden sm:block">That Suits You
                 </h1>
                 <p class="text-gray-200 text-base sm:text-lg mb-6 sm:mb-10 max-w-xl">
                     Discover your dream home with flexible options and trusted consultants.
