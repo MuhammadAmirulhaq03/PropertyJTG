@@ -1,5 +1,5 @@
 <x-app-layout>
-    <section class="bg-[#FFF5EE] min-h-screen pt-[4.5rem] pb-10">
+    <section class="min-h-screen bg-[#FFF5EE] pt-[4.5rem] pb-10">
         <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
             <div class="grid gap-8 lg:grid-cols-[280px_minmax(0,1fr)]">
                 @php

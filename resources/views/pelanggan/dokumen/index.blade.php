@@ -42,7 +42,7 @@
             pointer-events: none;
         }
     </style>
-    <section class="bg-[#FFF5EE] min-h-screen pt-[4.5rem] pb-10">
+    <section class="min-h-screen bg-[#FFF5EE] pt-[4.5rem] pb-10">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-10">
             <div class="flex flex-col lg:flex-row gap-10">
                 <!-- Sidebar placeholder to mimic dashboard navigation -->
