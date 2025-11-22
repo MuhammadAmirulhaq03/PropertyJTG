@@ -1,4 +1,3 @@
-
 name: Auto Deploy to VPS
 
 on:
@@ -17,8 +16,12 @@ jobs:
       - name: Setup SSH
         uses: webfactory/ssh-agent@v0.8.0
         with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          ssh-private-key: ${{ secrets.SSH_DEPLOY_KEY }}
+
+      - name: Add VPS to known_hosts
+        run: |
+          ssh-keyscan -H 157.10.161.6 >> ~/.ssh/known_hosts
 
       - name: Deploy to VPS
         run: |
-          ssh -o StrictHostKeyChecking=no MuhammadAmirulhaq@157.10.161.6 "bash /var/www/jayatibargroup.com/deploy.sh"
+          ssh MuhammadAmirulhaq@157.10.161.6 "bash /var/www/jayatibargroup.com/deploy.sh"
