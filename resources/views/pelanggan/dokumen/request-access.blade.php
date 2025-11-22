@@ -1,5 +1,5 @@
 <x-app-layout>
-    <section class="bg-[#FFF5EE] min-h-screen py-10">
+    <section class="bg-[#FFF5EE] min-h-screen pt-[4.5rem] pb-10">
         <div class="max-w-3xl mx-auto px-4 sm:px-6 md:px-10">
             <div class="bg-white rounded-3xl shadow-lg border border-[#FFE7D6] p-6 sm:p-8">
                 <div class="flex items-start justify-between gap-4">
@@ -50,4 +50,3 @@
         </div>
     </section>
 </x-app-layout>
-
