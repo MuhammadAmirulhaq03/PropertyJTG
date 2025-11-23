@@ -184,9 +184,148 @@
                         </div>
                     </form>
 
-                <div class="mt-8 overflow-x-auto rounded-2xl border border-gray-100">
-                    <table class="min-w-[800px] divide-y divide-gray-100 text-[15px]">
-                        <thead class="sticky top-0 z-10 bg-white/95 backdrop-blur text-xs font-semibold uppercase tracking-widest text-gray-500">
+                {{-- Mobile-friendly card list --}}
+                <div class="mt-8 space-y-4 md:hidden">
+                    @forelse ($schedules as $schedule)
+                        @php
+                            $badgeClasses = [
+                                'available' => 'bg-emerald-50 text-emerald-600',
+                                'booked' => 'bg-[#DB4437]/10 text-[#DB4437]',
+                                'closed' => 'bg-gray-200 text-gray-600',
+                                'completed' => 'bg-emerald-50 text-emerald-700',
+                            ][$schedule->status] ?? 'bg-gray-200 text-gray-600';
+
+                            $dotClasses = [
+                                'available' => 'bg-emerald-500',
+                                'booked' => 'bg-[#DB4437]',
+                                'closed' => 'bg-gray-500',
+                                'completed' => 'bg-emerald-600',
+                            ][$schedule->status] ?? 'bg-gray-500';
+
+                            $statusLabels = [
+                                'available' => __('TERSEDIA'),
+                                'booked' => __('DIBOOKING'),
+                                'closed' => __('DITUTUP'),
+                                'completed' => __('SELESAI'),
+                            ];
+                        @endphp
+                        <article class="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm">
+                            <div class="flex items-start justify-between gap-3">
+                                <div class="flex flex-col gap-1">
+                                    <span class="text-sm font-semibold text-gray-900">
+                                        {{ $schedule->agent?->display_name ?? __('Tidak diketahui') }}
+                                    </span>
+                                    <span class="text-xs text-gray-500">
+                                        {{ $schedule->agent?->email ?? '—' }}
+                                    </span>
+                                </div>
+                                <span class="inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-semibold {{ $badgeClasses }}">
+                                    <span class="h-2 w-2 rounded-full {{ $dotClasses }}"></span>
+                                    {{ $statusLabels[$schedule->status] ?? Str::upper($schedule->status) }}
+                                </span>
+                            </div>
+
+                            @if ($schedule->customer)
+                                <div class="mt-3 rounded-2xl bg-gray-50 p-3 text-xs text-gray-600">
+                                    <p class="font-semibold text-gray-700">{{ __('Pelanggan') }}</p>
+                                    <p class="mt-1 text-sm">{{ $schedule->customer->name }}</p>
+                                    <p class="text-[11px] text-gray-400">{{ $schedule->customer->email }}</p>
+                                </div>
+                            @endif
+
+                            <div class="mt-3 space-y-1 text-sm text-gray-700">
+                                <p class="font-semibold">
+                                    {{ $schedule->start_at->translatedFormat('l, d M Y') }}
+                                </p>
+                                <p class="text-xs text-gray-500">
+                                    {{ $schedule->start_at->format('H:i') }} - {{ $schedule->end_at->format('H:i') }}
+                                    <span class="ml-2 inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-[11px] font-semibold text-gray-600">
+                                        {{ $schedule->durationMinutes() }} {{ __('menit') }}
+                                    </span>
+                                </p>
+                                @if ($schedule->booked_at)
+                                    <p class="text-[11px] uppercase tracking-[0.2em] text-gray-400">
+                                        {{ __('Dibooking pada') }} {{ $schedule->booked_at->format('d M Y H:i') }}
+                                    </p>
+                                @endif
+                            </div>
+
+                            <div class="mt-3 text-sm text-gray-700">
+                                <p class="font-semibold">
+                                    {{ $schedule->location ?? __('Belum ditentukan') }}
+                                </p>
+                                @if ($schedule->notes)
+                                    <p class="mt-2 rounded-2xl bg-gray-50 p-3 text-xs leading-relaxed text-gray-600">
+                                        {{ $schedule->notes }}
+                                    </p>
+                                @endif
+                            </div>
+
+                            <div class="mt-4 flex flex-wrap gap-2">
+                                <a href="{{ route('admin.visit-schedules.edit', $schedule) }}" class="inline-flex flex-1 items-center justify-center gap-2 rounded-full border border-gray-200 bg-white px-4 py-2 text-xs font-semibold text-gray-600 transition hover:border-gray-300 hover:bg-gray-50 hover:text-gray-900">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15.232 5.232l3.536 3.536M9 11l6-6 3 3-6 6H9v-3z" />
+                                    </svg>
+                                    {{ __('Ubah') }}
+                                </a>
+
+                                @if ($schedule->status === 'available')
+                                    <form method="POST" action="{{ route('admin.visit-schedules.close', $schedule) }}" class="flex-1">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit" class="inline-flex w-full items-center justify-center gap-2 rounded-full border border-amber-200 bg-white px-4 py-2 text-xs font-semibold text-amber-700 transition hover:border-amber-300 hover:bg-amber-50 hover:text-amber-800">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M18 12H6" />
+                                            </svg>
+                                            {{ __('Tutup slot') }}
+                                        </button>
+                                    </form>
+                                @elseif ($schedule->status === 'closed')
+                                    <form method="POST" action="{{ route('admin.visit-schedules.reopen', $schedule) }}" class="flex-1">
+                                        @csrf
+                                        @method('PATCH')
+                                        <button type="submit" class="inline-flex w-full items-center justify-center gap-2 rounded-full border border-emerald-200 bg-white px-4 py-2 text-xs font-semibold text-emerald-700 transition hover:border-emerald-300 hover:bg-emerald-50 hover:text-emerald-800">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7" />
+                                            </svg>
+                                            {{ __('Buka slot') }}
+                                        </button>
+                                    </form>
+                                @endif
+
+                                @if ($schedule->isBooked())
+                                    <span class="inline-flex flex-1 items-center justify-center gap-2 rounded-full border border-gray-200 bg-white px-4 py-2 text-xs font-semibold text-gray-400">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M18 6L6 18" />
+                                        </svg>
+                                        {{ __('Tidak dapat dihapus') }}
+                                    </span>
+                                @else
+                                    <form id="mobile-delete-schedule-{{ $schedule->id }}" method="POST" action="{{ route('admin.visit-schedules.destroy', $schedule) }}" class="flex-1">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="button" data-confirm-form="mobile-delete-schedule-{{ $schedule->id }}" data-confirm-title="{{ __('Hapus Jadwal') }}" data-confirm-message="{{ __('Yakin ingin menghapus jadwal ini? Tindakan ini tidak dapat dibatalkan.') }}" class="inline-flex w-full items-center justify-center gap-2 rounded-full border border-red-200 bg-white px-4 py-2 text-xs font-semibold text-red-600 transition hover:border-red-300 hover:bg-red-50 hover:text-red-700">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
+                                            </svg>
+                                            {{ __('Hapus') }}
+                                        </button>
+                                    </form>
+                                @endif
+                            </div>
+                        </article>
+                    @empty
+                        <p class="py-6 text-center text-sm text-gray-500">
+                            {{ __('Belum ada jadwal kunjungan yang sesuai filter.') }}
+                        </p>
+                    @endforelse
+                </div>
+
+                {{-- Desktop table --}}
+                <div class="mt-8 hidden md:block">
+                    <div class="overflow-x-auto rounded-2xl border border-gray-100">
+                        <table class="min-w-[800px] divide-y divide-gray-100 text-[15px]">
+                            <thead class="sticky top-0 z-10 bg-white/95 backdrop-blur text-xs font-semibold uppercase tracking-widest text-gray-500">
                                 <tr>
                                     <th scope="col" class="px-4 py-3 text-left">{{ __('Agen') }}</th>
                                     <th scope="col" class="px-4 py-3 text-left">{{ __('Waktu') }}</th>
@@ -324,6 +463,7 @@
                             </tbody>
                         </table>
                     </div>
+                </div>
                 </article>
             </div>
         </section>
