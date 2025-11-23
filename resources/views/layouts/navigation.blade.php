@@ -133,7 +133,7 @@
             </div>
 
             <!-- Hamburger (Mobile) -->
-            <div class="flex md:hidden">
+            <div class="flex justify-end md:hidden col-start-3 row-start-1">
                 <button @click="open = ! open" class="p-2 rounded-md text-white hover:bg-[#C23321] focus:outline-none transition">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex"
