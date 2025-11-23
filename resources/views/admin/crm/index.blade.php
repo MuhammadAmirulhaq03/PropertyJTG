@@ -123,90 +123,171 @@
             </form>
         </section>
 
-        <section class="rounded-3xl border border-gray-200 bg-white shadow-sm">
-            <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
-                        <tr class="text-left text-xs font-semibold uppercase tracking-widest text-gray-500">
-                            <th class="px-6 py-3">{{ __('Pelanggan') }}</th>
-                            <th class="px-6 py-3">{{ __('Kontak') }}</th>
-                            <th class="px-6 py-3">{{ __('Alamat') }}</th>
-                            <th class="px-6 py-3">{{ __('Status') }}</th>
-                            <th class="px-6 py-3 text-right">{{ __('Tindakan') }}</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-100 text-sm text-gray-700">
-                        @forelse ($customers as $customer)
-                            <tr class="hover:bg-[#F8FAFC]">
-                                <td class="px-6 py-4 align-top">
-                                    <div class="flex items-start gap-3">
-                                        <span class="mt-1 inline-flex h-2.5 w-2.5 rounded-full {{ $customer->is_online ? 'bg-emerald-400' : 'bg-gray-300' }}"></span>
-                                        <div>
-                                            <p class="font-semibold text-gray-900">{{ $customer->name }}</p>
-                                            <p class="text-xs text-gray-500">{{ __('Terakhir terlihat') }}: {{ $customer->last_seen_label }}</p>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td class="px-6 py-4 align-top space-y-2">
-                                    <a href="{{ $customer->email_link }}" class="inline-flex items-center gap-2 text-[#2563EB] hover:text-[#1E3A8A]">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 6l7.553 6.037a2 2 0 002.894 0L21 6M4 6v12h16V6" />
-                                        </svg>
-                                        {{ $customer->email }}
+        <section class="rounded-3xl border border-gray-200 bg-white p-4 sm:p-6 shadow-sm">
+            {{-- Mobile-friendly card list --}}
+            <div class="space-y-4 md:hidden">
+                @forelse ($customers as $customer)
+                    <article class="rounded-2xl border border-gray-100 bg-white p-4 shadow-sm">
+                        <div class="flex items-start justify-between gap-3">
+                            <div class="flex items-start gap-3">
+                                <span class="mt-1 inline-flex h-2.5 w-2.5 rounded-full {{ $customer->is_online ? 'bg-emerald-400' : 'bg-gray-300' }}"></span>
+                                <div>
+                                    <p class="text-sm font-semibold text-gray-900">{{ $customer->name }}</p>
+                                    <p class="text-xs text-gray-500">
+                                        {{ __('Terakhir terlihat') }}: {{ $customer->last_seen_label }}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <span class="inline-flex items-center gap-2 rounded-full px-3 py-1 text-[11px] font-semibold {{ $customer->status === 'aktif' ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-200 text-gray-600' }}">
+                                <span class="h-2 w-2 rounded-full {{ $customer->status === 'aktif' ? 'bg-emerald-500' : 'bg-gray-400' }}"></span>
+                                {{ Str::headline($customer->status) }}
+                            </span>
+                        </div>
+
+                        <div class="mt-3 space-y-2 text-sm">
+                            <div class="flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-[#2563EB]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 6l7.553 6.037a2 2 0 002.894 0L21 6M4 6v12h16V6" />
+                                </svg>
+                                <a href="{{ $customer->email_link }}" class="truncate text-sm text-[#2563EB] hover:text-[#1E3A8A]">
+                                    {{ $customer->email }}
+                                </a>
+                            </div>
+
+                            <div class="flex items-center gap-2">
+                                @if($customer->whatsapp_link)
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-[#16A34A]" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12.04 2C6.57 2 2.1 6.26 2.1 11.61c0 1.85.54 3.58 1.48 5.07L2 22l5.52-1.44A9.88 9.88 0 0012.04 21c5.47 0 9.94-4.26 9.94-9.62C21.98 6.26 17.5 2 12.04 2Zm0 17.52c-1.73 0-3.34-.5-4.69-1.36l-.34-.21-3.27.85.87-3.12-.22-.33A7.64 7.64 0 014.4 11.6c0-4.18 3.46-7.58 7.64-7.58 4.21 0 7.64 3.4 7.64 7.58 0 4.18-3.43 7.58-7.64 7.58Zm4.48-5.7c-.24-.12-1.43-.71-1.65-.79-.22-.08-.38-.12-.54.12-.16.24-.62.79-.76.95-.14.16-.28.18-.52.06-.24-.12-1.02-.37-1.94-1.17-.72-.64-1.2-1.43-1.34-1.67-.14-.24-.01-.37.11-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.3-.74-1.78-.2-.48-.4-.42-.54-.42-.14 0-.3-.02-.46-.02-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2 0 1.18.86 2.32.98 2.48.12.16 1.68 2.68 4.07 3.76.57.25 1.02.4 1.36.51.57.18 1.08.16 1.49.1.45-.07 1.43-.58 1.63-1.14.2-.56.2-1.04.14-1.14-.06-.1-.24-.16-.48-.28Z" />
+                                    </svg>
+                                    <a href="{{ $customer->whatsapp_link }}" target="_blank" rel="noopener" class="truncate text-sm text-[#16A34A] hover:text-[#166534]">
+                                        {{ $customer->phone }}
                                     </a>
-                                    @if($customer->whatsapp_link)
-                                        <a href="{{ $customer->whatsapp_link }}" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-[#16A34A] hover:text-[#166534]">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
-                                                <path d="M12.04 2C6.57 2 2.1 6.26 2.1 11.61c0 1.85.54 3.58 1.48 5.07L2 22l5.52-1.44A9.88 9.88 0 0012.04 21c5.47 0 9.94-4.26 9.94-9.62C21.98 6.26 17.5 2 12.04 2Zm0 17.52c-1.73 0-3.34-.5-4.69-1.36l-.34-.21-3.27.85.87-3.12-.22-.33A7.64 7.64 0 014.4 11.6c0-4.18 3.46-7.58 7.64-7.58 4.21 0 7.64 3.4 7.64 7.58 0 4.18-3.43 7.58-7.64 7.58Zm4.48-5.7c-.24-.12-1.43-.71-1.65-.79-.22-.08-.38-.12-.54.12-.16.24-.62.79-.76.95-.14.16-.28.18-.52.06-.24-.12-1.02-.37-1.94-1.17-.72-.64-1.2-1.43-1.34-1.67-.14-.24-.01-.37.11-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.3-.74-1.78-.2-.48-.4-.42-.54-.42-.14 0-.3-.02-.46-.02-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2 0 1.18.86 2.32.98 2.48.12.16 1.68 2.68 4.07 3.76.57.25 1.02.4 1.36.51.57.18 1.08.16 1.49.1.45-.07 1.43-.58 1.63-1.14.2-.56.2-1.04.14-1.14-.06-.1-.24-.16-.48-.28Z" />
-                                            </svg>
-                                            {{ $customer->phone }}
-                                        </a>
-                                    @elseif($customer->phone)
-                                        <span class="inline-flex items-center gap-2 text-gray-500">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8" />
-                                            </svg>
-                                            {{ $customer->phone }}
-                                        </span>
-                                    @else
-                                        <span class="text-xs text-gray-400">{{ __('Tidak ada nomor telepon') }}</span>
-                                    @endif
-                                </td>
-                                <td class="px-6 py-4 align-top">
-                                    <p class="text-sm text-gray-700">{{ $customer->alamat ?: __('Belum diisi') }}</p>
-                                </td>
-                                <td class="px-6 py-4 align-top">
-                                    <span class="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold {{ $customer->status === 'aktif' ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-200 text-gray-600' }}">
-                                        <span class="h-2 w-2 rounded-full {{ $customer->status === 'aktif' ? 'bg-emerald-500' : 'bg-gray-400' }}"></span>
-                                        {{ Str::headline($customer->status) }}
+                                @elseif($customer->phone)
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8" />
+                                    </svg>
+                                    <span class="truncate text-sm text-gray-600">
+                                        {{ $customer->phone }}
                                     </span>
-                                </td>
-                                <td class="px-6 py-4 text-right align-top">
-                                    <div class="flex flex-col items-end gap-2">
-                                        <a href="{{ $customer->document_reminder_link }}" class="inline-flex items-center gap-2 rounded-full border border-[#DB4437]/20 px-4 py-1.5 text-xs font-semibold text-[#DB4437] transition hover:bg-[#DB4437]/10">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12H9m0 0l3-3m-3 3l3 3" />
-                                            </svg>
-                                            {{ __('Ingatkan Dokumen') }}
-                                        </a>
-                                        <a href="{{ $customer->schedule_reminder_link }}" class="inline-flex items-center gap-2 rounded-full bg-[#0F766E] px-4 py-1.5 text-xs font-semibold text-white transition hover:bg-[#115E59]">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2v-9a2 2 0 00-2-2H5a2 2 0 00-2 2v9a2 2 0 002 2z" />
-                                            </svg>
-                                            {{ __('Ingatkan Jadwal') }}
-                                        </a>
-                                    </div>
-                                </td>
+                                @else
+                                    <span class="text-xs text-gray-400">{{ __('Tidak ada nomor telepon') }}</span>
+                                @endif
+                            </div>
+
+                            <p class="text-sm text-gray-700">
+                                {{ $customer->alamat ?: __('Belum diisi') }}
+                            </p>
+                        </div>
+
+                        <div class="mt-4 flex flex-wrap gap-2">
+                            <a href="{{ $customer->document_reminder_link }}" class="inline-flex flex-1 items-center justify-center gap-2 rounded-full border border-[#DB4437]/20 px-4 py-2 text-xs font-semibold text-[#DB4437] transition hover:bg-[#DB4437]/10">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12H9m0 0l3-3m-3 3l3 3" />
+                                </svg>
+                                {{ __('Ingatkan Dokumen') }}
+                            </a>
+                            <a href="{{ $customer->schedule_reminder_link }}" class="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-[#0F766E] px-4 py-2 text-xs font-semibold text-white transition hover:bg-[#115E59]">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2v-9a2 2 0 00-2-2H5a2 2 0 00-2 2v9a2 2 0 002 2z" />
+                                </svg>
+                                {{ __('Ingatkan Jadwal') }}
+                            </a>
+                        </div>
+                    </article>
+                @empty
+                    <p class="py-6 text-center text-sm text-gray-500">
+                        {{ __('Belum ada data pelanggan yang sesuai dengan filter saat ini.') }}
+                    </p>
+                @endforelse
+            </div>
+
+            {{-- Desktop table view --}}
+            <div class="hidden md:block">
+                <div class="mt-2 overflow-x-auto rounded-2xl border border-gray-100">
+                    <table class="min-w-[900px] divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr class="text-left text-xs font-semibold uppercase tracking-widest text-gray-500">
+                                <th class="px-6 py-3">{{ __('Pelanggan') }}</th>
+                                <th class="px-6 py-3">{{ __('Kontak') }}</th>
+                                <th class="px-6 py-3">{{ __('Alamat') }}</th>
+                                <th class="px-6 py-3">{{ __('Status') }}</th>
+                                <th class="px-6 py-3 text-right">{{ __('Tindakan') }}</th>
                             </tr>
-                        @empty
-                            <tr>
-                                <td colspan="5" class="px-6 py-10 text-center text-sm text-gray-500">
-                                    {{ __('Belum ada data pelanggan yang sesuai dengan filter saat ini.') }}
-                                </td>
-                            </tr>
-                        @endforelse
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100 text-sm text-gray-700">
+                            @forelse ($customers as $customer)
+                                <tr class="hover:bg-[#F8FAFC]">
+                                    <td class="px-6 py-4 align-top">
+                                        <div class="flex items-start gap-3">
+                                            <span class="mt-1 inline-flex h-2.5 w-2.5 rounded-full {{ $customer->is_online ? 'bg-emerald-400' : 'bg-gray-300' }}"></span>
+                                            <div>
+                                                <p class="font-semibold text-gray-900">{{ $customer->name }}</p>
+                                                <p class="text-xs text-gray-500">{{ __('Terakhir terlihat') }}: {{ $customer->last_seen_label }}</p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 align-top space-y-2">
+                                        <a href="{{ $customer->email_link }}" class="inline-flex items-center gap-2 text-[#2563EB] hover:text-[#1E3A8A]">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 6l7.553 6.037a2 2 0 002.894 0L21 6M4 6v12h16V6" />
+                                            </svg>
+                                            {{ $customer->email }}
+                                        </a>
+                                        @if($customer->whatsapp_link)
+                                            <a href="{{ $customer->whatsapp_link }}" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-[#16A34A] hover:text-[#166534]">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="currentColor">
+                                                    <path d="M12.04 2C6.57 2 2.1 6.26 2.1 11.61c0 1.85.54 3.58 1.48 5.07L2 22l5.52-1.44A9.88 9.88 0 0012.04 21c5.47 0 9.94-4.26 9.94-9.62C21.98 6.26 17.5 2 12.04 2Zm0 17.52c-1.73 0-3.34-.5-4.69-1.36l-.34-.21-3.27.85.87-3.12-.22-.33A7.64 7.64 0 014.4 11.6c0-4.18 3.46-7.58 7.64-7.58 4.21 0 7.64 3.4 7.64 7.58 0 4.18-3.43 7.58-7.64 7.58Zm4.48-5.7c-.24-.12-1.43-.71-1.65-.79-.22-.08-.38-.12-.54.12-.16.24-.62.79-.76.95-.14.16-.28.18-.52.06-.24-.12-1.02-.37-1.94-1.17-.72-.64-1.2-1.43-1.34-1.67-.14-.24-.01-.37.11-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.3-.74-1.78-.2-.48-.4-.42-.54-.42-.14 0-.3-.02-.46-.02-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2 0 1.18.86 2.32.98 2.48.12.16 1.68 2.68 4.07 3.76.57.25 1.02.4 1.36.51.57.18 1.08.16 1.49.1.45-.07 1.43-.58 1.63-1.14.2-.56.2-1.04.14-1.14-.06-.1-.24-.16-.48-.28Z" />
+                                                </svg>
+                                                {{ $customer->phone }}
+                                            </a>
+                                        @elseif($customer->phone)
+                                            <span class="inline-flex items-center gap-2 text-gray-500">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8" />
+                                                </svg>
+                                                {{ $customer->phone }}
+                                            </span>
+                                        @else
+                                            <span class="text-xs text-gray-400">{{ __('Tidak ada nomor telepon') }}</span>
+                                        @endif
+                                    </td>
+                                    <td class="px-6 py-4 align-top">
+                                        <p class="text-sm text-gray-700">{{ $customer->alamat ?: __('Belum diisi') }}</p>
+                                    </td>
+                                    <td class="px-6 py-4 align-top">
+                                        <span class="inline-flex items-center gap-2 rounded-full px-3 py-1 text-xs font-semibold {{ $customer->status === 'aktif' ? 'bg-emerald-100 text-emerald-700' : 'bg-gray-200 text-gray-600' }}">
+                                            <span class="h-2 w-2 rounded-full {{ $customer->status === 'aktif' ? 'bg-emerald-500' : 'bg-gray-400' }}"></span>
+                                            {{ Str::headline($customer->status) }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 text-right align-top">
+                                        <div class="flex flex-col items-end gap-2">
+                                            <a href="{{ $customer->document_reminder_link }}" class="inline-flex items-center gap-2 rounded-full border border-[#DB4437]/20 px-4 py-1.5 text-xs font-semibold text-[#DB4437] transition hover:bg-[#DB4437]/10">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12H9m0 0l3-3m-3 3l3 3" />
+                                                </svg>
+                                                {{ __('Ingatkan Dokumen') }}
+                                            </a>
+                                            <a href="{{ $customer->schedule_reminder_link }}" class="inline-flex items-center gap-2 rounded-full bg-[#0F766E] px-4 py-1.5 text-xs font-semibold text-white transition hover:bg-[#115E59]">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2v-9a2 2 0 00-2-2H5a2 2 0 00-2 2v9a2 2 0 002 2z" />
+                                                </svg>
+                                                {{ __('Ingatkan Jadwal') }}
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="5" class="px-6 py-10 text-center text-sm text-gray-500">
+                                        {{ __('Belum ada data pelanggan yang sesuai dengan filter saat ini.') }}
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </section>
     </div>

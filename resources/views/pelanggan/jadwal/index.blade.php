@@ -1,5 +1,5 @@
 ﻿<x-app-layout>
-    <section class="min-h-screen bg-[#FFF5EE] pt-[4.5rem] pb-10">
+    <section class="bg-[#FFF5EE] min-h-screen pt-[4.5rem] pb-10">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid gap-8 lg:grid-cols-[280px_minmax(0,1fr)]">
                 <aside class="bg-white rounded-3xl shadow-md border border-[#FFDCC4] overflow-hidden">
