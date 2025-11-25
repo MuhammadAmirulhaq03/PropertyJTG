@@ -14,6 +14,10 @@
         <!-- Font Awesome CDN -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
+                <!-- Favicon -->
+        <link rel="icon" type="image/png" href="{{ asset('assets/jtg.png') }}">
+        <link rel="shortcut icon" href="{{ asset('assets/jtg.png') }}" type="image/png">
+
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
