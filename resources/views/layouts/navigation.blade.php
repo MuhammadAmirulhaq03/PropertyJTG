@@ -8,7 +8,7 @@
                     class="block h-9 md:h-10 w-auto p-0.5 rounded-lg ring ring-white ring-offset-0" 
                     alt="Logo">
                     <div class="leading-none">
-                        <div class="text-base md:text-lg font-bold tracking-wide">JAYA TIBAR GROUP</div>
+                        <div class="text-base md:text-lg font-bold tracking-wide">JAYA TIBAR GROUP test</div>
                         <div class="text-[11px] md:text-xs text-gray-100 mt-0.5">Real Estate Management Platform</div>
                     </div>
                 </a>
